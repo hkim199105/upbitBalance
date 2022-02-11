@@ -34,6 +34,7 @@
         if ($rawDataTransfer == null || sizeof($rawDataTransfer) == 0) {
             return;
         }
+        $rawDataTransfer = str_replace("-", "- -", $rawDataTransfer);
 
         $startFlag = "주문시간";
         $endFlag = "보유코인	보유수량	매수평균가 	매수금액 	평가금액 	평가손익(%)";
