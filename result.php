@@ -71,16 +71,16 @@
 
 
         $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);
-        if (sizeof($rawDataTransfer) % 10 > 0) {
+        if (sizeof($rawDataTransfer) % 12 > 0) {
             echo "데이터 형식이 틀립니다.(2) " . json_encode($rawDataTransfer) . "\n";
         }
         // $rawdatabalance =explode ...
 
         $dataTransfer = [];
-        for ($i = 0; $i < sizeof($rawDataTransfer) / 10; $i++) {
+        for ($i = 0; $i < sizeof($rawDataTransfer) / 12; $i++) {
             $row = [];
-            for ($j = 0; $j < 10; $j++) {
-                array_push($row,$rawDataTransfer[$i * 10 + $j]);
+            for ($j = 0; $j < 12; $j++) {
+                array_push($row,$rawDataTransfer[$i * 12 + $j]);
             }
 
             array_push($dataTransfer, $row);
@@ -98,24 +98,26 @@
 
         
         # parse transfer data
-        # 0: 체결시간
-        # 1: 코인
-        # 2: 마켓
-        # 3: 종류(입금, 매수, 매도, 출금)
-        # 4: 거래수량
-        # 5: 거래단가   // 평단
-        # 6: 거래금액
-        # 7: 수수료
-        # 8: 정산금액
-        # 9: 주문시간
+        # 0: 체결일자
+        # 1: 체결시간
+        # 2: 코인
+        # 3: 마켓
+        # 4: 종류(입금, 매수, 매도, 출금)
+        # 5: 거래수량
+        # 6: 거래단가   // 평단
+        # 7: 거래금액
+        # 8: 수수료
+        # 9: 정산금액
+        # 10: 주문일자
+        # 11: 주문시간
         foreach ( array_reverse($dataTransfer) as $row ) {
-            $mCoin = trim($row[1]);
-            $mQuantity = floatval(trim($row[4]));
-            $mPriceTotal = floatval(trim($row[6]));
-            $mPriceAvg = floatval(trim($row[5]));
-            $mFee = floatval(trim($row[7]));
-            $mType = trim($row[3]);
-            $mTime = trim($row[0]);
+            $mCoin = trim($row[2]);
+            $mQuantity = floatval(trim($row[5]));
+            $mPriceTotal = floatval(trim($row[7]));
+            $mPriceAvg = floatval(trim($row[6]));
+            $mFee = floatval(trim($row[8]));
+            $mType = trim($row[4]);
+            $mTime = trim($row[0]) . " " . trim($row[1]);
             #
             # 수량 2, 평단 100원
             # +
