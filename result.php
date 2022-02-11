@@ -31,10 +31,11 @@
         //     return sym
 
         $rawDataTransfer = $_POST["transaction"];
-        if ($rawDataTransfer == null || sizeof($rawDataTransfer) == 0) {
+        // $rawDataTransfer = "체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간            2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            2021.02.18 21:43            ETH            KRW            매도            0.85666666ETH            2,114,000KRW            1,810,993KRW            905.49KRW            1,810,087KRW            2021.02.18 21:43            2021.02.18 12:46            ETH            KRW            매수            0.38002224ETH            2,100,000KRW            798,047KRW            399.02KRW            798,446KRW            2021.02.18 12:46            2021.02.18 12:46            ETH            KRW            매수            0.47664442ETH            2,100,000KRW            1,000,954KRW            500.47KRW            1,001,454KRW            2021.02.18 12:46            2021.02.18 12:42            BTC            KRW            매수            0.00346686BTC            57,689,000KRW            200,000KRW            99.99KRW            200,100KRW            2021.02.18 12:42            2021.02.18 11:45            KRW            -            입금            2,000,000KRW            0KRW            2,000,000KRW            0KRW            2,000,000KRW            -            2021.02.18 11:43            BTC            -            입금            0.00026000BTC            57,792,000KRW            15,026KRW            0BTC            0.00026000BTC            - 2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            ";
+        if ($rawDataTransfer == null || strlen($rawDataTransfer) == 0) {
             return;
         }
-        $rawDataTransfer = str_replace("-", "- -", $rawDataTransfer);
+        
 
         $startFlag = "주문시간";
         $endFlag = "보유코인	보유수량	매수평균가 	매수금액 	평가금액 	평가손익(%)";
@@ -70,18 +71,27 @@
             echo "데이터 형식이 틀립니다.(1) ". strval($startIndex) . "\n";
         }
 
+        $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
+        for ($i = 0; $i < sizeof($rawDataTransfer); $i++) {
+            if ($i % 10 == 0 || $i % 10 == 9) {
+                if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
+                    $rawDataTransfer[$i] = $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1];
+                    array_splice($rawDataTransfer, $i + 1, 1);
+                }
+            }
+        }
 
-        $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);
-        if (sizeof($rawDataTransfer) % 12 > 0) {
+
+        if (sizeof($rawDataTransfer) % 10 > 0) {
             echo "데이터 형식이 틀립니다.(2) " . json_encode($rawDataTransfer) . "\n";
         }
         // $rawdatabalance =explode ...
 
         $dataTransfer = [];
-        for ($i = 0; $i < sizeof($rawDataTransfer) / 12; $i++) {
+        for ($i = 0; $i < sizeof($rawDataTransfer) / 10; $i++) {
             $row = [];
-            for ($j = 0; $j < 12; $j++) {
-                array_push($row,$rawDataTransfer[$i * 12 + $j]);
+            for ($j = 0; $j < 10; $j++) {
+                array_push($row,$rawDataTransfer[$i * 10 + $j]);
             }
 
             array_push($dataTransfer, $row);
