@@ -31,7 +31,7 @@
         //     return sym
 
         $rawDataTransfer = $_POST["transaction"];
-        // $rawDataTransfer = "체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간            2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            2021.02.18 21:43            ETH            KRW            매도            0.85666666ETH            2,114,000KRW            1,810,993KRW            905.49KRW            1,810,087KRW            2021.02.18 21:43            2021.02.18 12:46            ETH            KRW            매수            0.38002224ETH            2,100,000KRW            798,047KRW            399.02KRW            798,446KRW            2021.02.18 12:46            2021.02.18 12:46            ETH            KRW            매수            0.47664442ETH            2,100,000KRW            1,000,954KRW            500.47KRW            1,001,454KRW            2021.02.18 12:46            2021.02.18 12:42            BTC            KRW            매수            0.00346686BTC            57,689,000KRW            200,000KRW            99.99KRW            200,100KRW            2021.02.18 12:42            2021.02.18 11:45            KRW            -            입금            2,000,000KRW            0KRW            2,000,000KRW            0KRW            2,000,000KRW            -            2021.02.18 11:43            BTC            -            입금            0.00026000BTC            57,792,000KRW            15,026KRW            0BTC            0.00026000BTC            - 2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            ";
+        // $rawDataTransfer = "체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간";
         if ($rawDataTransfer == null || strlen($rawDataTransfer) == 0) {
             return;
         }
@@ -110,25 +110,23 @@
         
         # parse transfer data
         # 0: 체결일자
-        # 1: 체결시간
-        # 2: 코인
-        # 3: 마켓
-        # 4: 종류(입금, 매수, 매도, 출금)
-        # 5: 거래수량
-        # 6: 거래단가   // 평단
-        # 7: 거래금액
-        # 8: 수수료
-        # 9: 정산금액
-        # 10: 주문일자
-        # 11: 주문시간
+        # 1: 코인
+        # 2: 마켓
+        # 3: 종류(입금, 매수, 매도, 출금)
+        # 4: 거래수량
+        # 5: 거래단가   // 평단
+        # 6: 거래금액
+        # 7: 수수료
+        # 8: 정산금액
+        # 9: 주문일자
         foreach ( array_reverse($dataTransfer) as $row ) {
-            $mCoin = trim($row[2]);
-            $mQuantity = floatval(trim($row[5]));
-            $mPriceTotal = floatval(trim($row[7]));
-            $mPriceAvg = floatval(trim($row[6]));
-            $mFee = floatval(trim($row[8]));
-            $mType = trim($row[4]);
-            $mTime = trim($row[0]) . " " . trim($row[1]);
+            $mCoin = trim($row[1]);
+            $mQuantity = floatval(trim($row[4]));
+            $mPriceTotal = floatval(trim($row[6]));
+            $mPriceAvg = floatval(trim($row[5]));
+            $mFee = floatval(trim($row[7]));
+            $mType = trim($row[3]);
+            $mTime = trim($row[0]);
             #
             # 수량 2, 평단 100원
             # +
@@ -220,6 +218,7 @@
         // # 코인별 수익
         $sum = 0;
         // $profitCoinly = sorted(profitCoinly.items(), key = lambda x:x[1])
+        
         foreach ($profitCoinly as $coin => $coinProfit) {
             echo $coin . ":\t" . number_format($coinProfit) . "원\n";
             $sum += $coinProfit;
