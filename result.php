@@ -70,8 +70,7 @@
         }
 
 
-
-        $rawDataTransfer = explode("\n", $rawDataTransfer);
+        $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);
         if (sizeof($rawDataTransfer) % 10 > 0) {
             echo "데이터 형식이 틀립니다.(2) " . json_encode($rawDataTransfer) . "\n";
         }
