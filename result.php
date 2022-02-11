@@ -31,7 +31,7 @@
         //     return sym
 
         $rawDataTransfer = $_POST["transaction"];
-        // $rawDataTransfer = "체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간";
+        // $rawDataTransfer = "";
         if ($rawDataTransfer == null || strlen($rawDataTransfer) == 0) {
             return;
         }
@@ -214,12 +214,13 @@
         //     balanceReal[mCoin] = {"Quantity": mQuantity, "PriceAvg": mPriceAvg, "Profit": mProfit}
 
 
-        // # print
-        // # 코인별 수익
+        # print
+        # 코인별 수익
         $sum = 0;
         // $profitCoinly = sorted(profitCoinly.items(), key = lambda x:x[1])
         
         foreach ($profitCoinly as $coin => $coinProfit) {
+            echo "<br>";
             echo $coin . ":\t" . number_format($coinProfit) . "원\n";
             $sum += $coinProfit;
         }
@@ -272,15 +273,18 @@
         // sum += profitExchange
 
 
-        // # 요약
-        // print("")
-        // if "KRW" in withdraw:
-        //     print("투자금액\t\t" + decimalToPriceString(withdraw["KRW"]) + "원")
+        # 요약
+        if (isset($withdraw["KRW"])) {
+            echo "<br>";
+            echo "투자금액\t\t" . number_format($withdraw["KRW"]) . "원";
+        }
 
-        // print("총수익\t\t" + decimalToPriceString(sum) + "원(" + decimalToPercentString(sum / withdraw["KRW"]) + "%)")
-        // print("총수수료:\t" + decimalToPriceString(fee) + "원")
-        // print("총수익\t\t" + decimalToPriceString(sum - fee) + "원(" + decimalToPercentString((sum - fee) / withdraw["KRW"]) + "%)")
-        // print("")
+        echo "<br>";
+        echo "총수익\t\t" . number_format($sum) . "원(" . number_format($sum / $withdraw["KRW"] * 100, 2) . "%)";
+        echo "<br>";
+        echo "총수수료:\t" . number_format($fee) . "원";
+        echo "<br>";
+        echo "총수익\t\t" . number_format($sum - $fee) . "원(" . number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2) . "%)";
         ?>
     </div>
     <div style="background-color:#eeeeee;text-align:left;font-weight: lighter;color:grey;font-size: smaller;padding:10px; border:darkgray;">
