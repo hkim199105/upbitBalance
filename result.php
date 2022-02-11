@@ -73,7 +73,7 @@
 
         $rawDataTransfer = explode("\n", $rawDataTransfer);
         if (sizeof($rawDataTransfer) % 10 > 0) {
-            echo "데이터 형식이 틀립니다.(2) " . strval(sizeof($rawDataTransfer)) . "\n";
+            echo "데이터 형식이 틀립니다.(2) " . json_encode($rawDataTransfer) . "\n";
         }
         // $rawdatabalance =explode ...
 
@@ -208,7 +208,6 @@
         // # 코인별 수익
         $sum = 0;
         // $profitCoinly = sorted(profitCoinly.items(), key = lambda x:x[1])
-        echo "WOW" . sizeof($profitCoinly);
         foreach ($profitCoinly as $coin => $coinProfit) {
             echo $coin . ":\t" . number_format($coinProfit) . "원\n";
             $sum += $coinProfit;
