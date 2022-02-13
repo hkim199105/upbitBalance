@@ -1443,10 +1443,10 @@
         0BTC
         0.00026000BTC
         -";
-        $rawDataBalance = "보유코인	보유수량	매수평균가 	매수금액 	평가금액 	평가손익(%) 	  저스트 JST 11,681.71796454JST 102KRW 수정	 1,191,536KRW 732,443KRW -38.53 % -459,092 KRW 주문 스팀 STEEM 1,193.64240472STEEM 920KRW 수정	 1,097,784KRW 497,748KRW -54.66 % -600,035 KRW 주문 베이직어텐션토큰 BAT 442.00748663BAT 1,870KRW 수정	 826,554KRW 434,493KRW -47.43 % -392,061 KRW 주문 메디블록 MED 110.49723756MED 90.50KRW 수정	 10,000KRW 5,679KRW -43.20 % -4,320 KRW 주문 리퍼리움 RFR 460.82949308RFR 21.70KRW 수정	 10,000KRW 5,668KRW -43.32 % -4,332 KRW 주문 쿼크체인 QKC 194.55252918QKC 51.40KRW 수정	 10,000KRW 3,871KRW -61.28 % -6,128 KRW 주문 페이코인 PCI 3.83141762PCI 2,610KRW 수정	 10,000KRW 3,651KRW -63.49 % -6,349 KRW 주문 에브리피디아 IQ 313.47962382IQ 31.90KRW 수정	 10,000KRW 3,542KRW -64.58 % -6,458 KRW 주문 썬더코어 TT 342.46575342TT 29.20KRW 수정	 10,000KRW 3,458KRW -65.41 % -6,541 KRW 주문 스톰엑스 STMX 184.84288354STMX 54.10KRW 수정	 10,000KRW 3,419KRW -65.80 % -6,580 KRW 주문 썸씽 SSX 59.88023952SSX 167KRW 수정	 10,000KRW 3,413KRW -65.87 % -6,587 KRW 주문 디카르고 DKA 28.90173410DKA 346KRW 수정	 10,000KRW 3,323KRW -66.76 % -6,676 KRW 주문 오브스 ORBS 36.49635036ORBS 274KRW 수정	 10,000KRW 3,211KRW -67.88 % -6,788 KRW 주문 무비블록 MBL 406.50406504MBL 24.60KRW 수정	 10,000KRW 3,097KRW -69.02 % -6,902 KRW 주문 칠리즈 CHZ 12.07729468CHZ 828KRW 수정	 10,000KRW 3,031KRW -69.69 % -6,969 KRW 주문 캐리프로토콜 CRE 308.64197530CRE 32.40KRW 수정	 10,000KRW 2,941KRW -70.59 % -7,059 KRW 주문 솔브케어 SOLVE 24.15458937SOLVE 414KRW 수정	 10,000KRW 2,518KRW -74.81 % -7,481 KRW 주문 가스 GAS 0.07371602GAS 14,335KRW 수정	 1,057KRW 459KRW -56.47 % -597 KRW 주문 트론 TRX 0.00000097TRX 120KRW 수정	 1KRW 0KRW -34.83 % 0 KRW 주문 VTHO VTHO 36.28794438VTHO -	-	-	-	주문 픽셀 PXL 50.00000000PXL -	-	-	-	주문 APENFT APENFT 1,980,759.67314143APENFT -	-	-	-	주문";
+        $rawDataBalance = "보유코인	보유수량	매수평균가 	매수금액 	평가금액 	평가손익(%) 	  저스트 JST 11,681.71796454JST 102KRW 수정	 1,191,536KRW 737,116KRW -38.14 % -454,419 KRW 주문 스팀 STEEM 1,193.64240472STEEM 920KRW 수정	 1,097,784KRW 494,167KRW -54.98 % -603,616 KRW 주문 베이직어텐션토큰 BAT 442.00748663BAT 1,870KRW 수정	 826,554KRW 437,587KRW -47.06 % -388,967 KRW 주문 메디블록 MED 110.49723756MED 90.50KRW 수정	 10,000KRW 5,679KRW -43.20 % -4,320 KRW 주문 리퍼리움 RFR 460.82949308RFR 21.70KRW 수정	 10,000KRW 5,668KRW -43.32 % -4,332 KRW 주문 쿼크체인 QKC 194.55252918QKC 51.40KRW 수정	 10,000KRW 3,891KRW -61.09 % -6,109 KRW 주문 페이코인 PCI 3.83141762PCI 2,610KRW 수정	 10,000KRW 3,607KRW -63.93 % -6,393 KRW 주문 에브리피디아 IQ 313.47962382IQ 31.90KRW 수정	 10,000KRW 3,605KRW -63.95 % -6,395 KRW 주문 썬더코어 TT 342.46575342TT 29.20KRW 수정	 10,000KRW 3,458KRW -65.41 % -6,541 KRW 주문 스톰엑스 STMX 184.84288354STMX 54.10KRW 수정	 10,000KRW 3,438KRW -65.62 % -6,562 KRW 주문 썸씽 SSX 59.88023952SSX 167KRW 수정	 10,000KRW 3,425KRW -65.75 % -6,575 KRW 주문 디카르고 DKA 28.90173410DKA 346KRW 수정	 10,000KRW 3,323KRW -66.76 % -6,676 KRW 주문 오브스 ORBS 36.49635036ORBS 274KRW 수정	 10,000KRW 3,197KRW -68.03 % -6,803 KRW 주문 무비블록 MBL 406.50406504MBL 24.60KRW 수정	 10,000KRW 3,113KRW -68.86 % -6,886 KRW 주문 칠리즈 CHZ 12.07729468CHZ 828KRW 수정	 10,000KRW 3,043KRW -69.57 % -6,957 KRW 주문 캐리프로토콜 CRE 308.64197530CRE 32.40KRW 수정	 10,000KRW 2,922KRW -70.77 % -7,077 KRW 주문 솔브케어 SOLVE 24.15458937SOLVE 414KRW 수정	 10,000KRW 2,511KRW -74.89 % -7,489 KRW 주문 가스 GAS 0.07371602GAS 14,335KRW 수정	 1,057KRW 461KRW -56.30 % -595 KRW 주문 트론 TRX 0.00000097TRX 120KRW 수정	 1KRW 0KRW -34.67 % 0 KRW 주문 VTHO VTHO 36.28794438VTHO -	-	-	-	주문 픽셀 PXL 50.00000000PXL -	-	-	-	주문 APENFT APENFT 1,980,759.67314143APENFT -	-	-	-	주문";
 
-        $rawDataTransfer = $_POST["transaction"];
-        $rawDataBalance = $_POST["balance"];
+        // $rawDataTransfer = $_POST["transaction"];
+        // $rawDataBalance = $_POST["balance"];
         if ($rawDataTransfer == null || strlen($rawDataTransfer) == 0 || $rawDataBalance == null || strlen($rawDataBalance) == 0) {
             return;
         }
@@ -1498,12 +1498,12 @@
             }
         }
 
-        if (sizeof($rawDataTransfer) % 10 > 0) {
-            echo "데이터 형식이 틀립니다.(2)\n";
-        }
-
         $dataTransfer = [];
         for ($i = 0; $i < sizeof($rawDataTransfer) / 10; $i++) {
+            if (sizeof($rawDataTransfer) < $i * 10 + 10) {
+                break;
+            }
+
             $row = [];
             for ($j = 0; $j < 10; $j++) {
                 array_push($row,$rawDataTransfer[$i * 10 + $j]);
@@ -1533,12 +1533,12 @@
             }
         }
 
-        if (sizeof($rawDataBalance) % 8 > 0) {
-            echo "데이터 형식이 틀립니다.(4)\n";
-        }
-
         $dataBalance = [];
         for ($i = 0; $i < sizeof($rawDataBalance) / 8; $i++) {
+            if (sizeof($rawDataBalance) < $i * 8 + 8) {
+                break;
+            }
+
             $row = [];
             for ($j = 0; $j < 8; $j++) {
                 array_push($row, $rawDataBalance[$i * 8 + $j]);
@@ -1546,7 +1546,6 @@
 
             array_push($dataBalance, $row);
         }
-        echo json_encode($dataBalance);
 
         # parse transfer data
         # 0: 체결일자
@@ -1644,7 +1643,6 @@
             $mQuantity = filter_var($row[2], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
             $mPriceAvg = filter_var($row[3], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
             $mProfit = filter_var($row[7], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-            echo $mCoin ." ".$mProfit."\n"    ;
             $balanceReal[$mCoin] = ["Quantity" => $mQuantity, "PriceAvg" => $mPriceAvg, "Profit" => $mProfit];
         }
 
