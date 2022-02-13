@@ -22,7 +22,7 @@
     </div>
     <form action="./result.php" method="post">
         <div style="background-color:\;text-align:center;">
-            <input type="textarea" style="display:none;" name="transaciton" value="<?if (isset($_POST["transaction"])) {echo $_POST["transaction"];}?>"/>
+            <input type="textarea" style="display:none;" name="transaciton" value="<?php if (isset($_POST["transaction"])) {echo $_POST["transaction"];} ?>"/>
             <input type="textarea" style="width:90%;height:500px;" placeholder="여기에 붙여넣으세요."
             name="balance"
             value="보유코인	보유수량	매수평균가 	매수금액 	평가금액 	평가손익(%) 	 
