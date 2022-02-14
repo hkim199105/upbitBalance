@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon">
     <title>UPBIT 수익 계산기</title>
-    <link rel="stylesheet" media="screen" href="./assets/style.css">
+    <link rel="stylesheet" media="screen" href="./assets/style.css?<?php echo time();?>">
     <!--script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script-->
 
     <style>
@@ -72,30 +72,6 @@
 </head>
 
 <body>
-    <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
-        <div style="text-align:left;font-size: 20px;min-width:500px;display: table;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;font-weight: bolder;">
-            코인별 수익
-        </div>
-    </div>
-    <div style="text-align:center;">
-    <table style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
-        <thead>
-            <tr class="table_head">
-                <th class="table_head_cell" style="width:37%;">
-                    코인명
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    수익
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    투자원금
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    매도금액
-                </th>
-            </tr>
-        </thead>
-        <tbody>
         <?php
         // def symbolToKor(sym):
         // if sym in coinInfo:
@@ -1763,6 +1739,32 @@
         # 코인별 수익
         $sum = 0;
         // $profitCoinly = sorted(profitCoinly.items(), key = lambda x:x[1])
+        echo '
+        
+    <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
+        <div style="text-align:left;font-size: 20px;min-width:500px;display: table;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;font-weight: bolder;">
+            코인별 수익
+        </div>
+    </div>
+    <div style="text-align:center;">
+    <table style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+        <thead>
+            <tr class="table_head">
+                <th class="table_head_cell" style="width:37%;">
+                    코인명
+                </th>
+                <th class="table_head_cell" style="width:21%;">
+                    수익
+                </th>
+                <th class="table_head_cell" style="width:21%;">
+                    투자원금
+                </th>
+                <th class="table_head_cell" style="width:21%;">
+                    매도금액
+                </th>
+            </tr>
+        </thead>
+        <tbody>';
         
         foreach ($profitCoinly as $coin => $coinProfit) {
             echo '
@@ -1770,7 +1772,7 @@
                 <td class="table_body_cell">';
             
             if (isset($coinInfo[$coin])) {
-                echo $coinInfo[$coin].'<span class="coin_eng">'.$coin.'</span>';
+                echo $coinInfo[$coin].' <span class="coin_eng">'.$coin.'</span>';
             } else {
                 echo $coin;
             }
@@ -1802,6 +1804,11 @@
 
             $sum += $coinProfit;
         }
+        echo '
+        
+        </tbody>
+    </table>
+</div>';
 
         // # 일자별 수익
         // profitTimely = sorted(profitTimely, key = lambda x:x[0])
@@ -1842,9 +1849,6 @@
         }
 
         ?>
-            </tbody>
-        </table>
-    </div>
 </body>
 
 </html>
