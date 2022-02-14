@@ -1734,13 +1734,16 @@
 
         }
 
+        # sort
+        foreach ((array) $profitCoinly as $key => $value) {
+            $sort[$key] = $value;
+        }
+        array_multisort($sort, SORT_ASC, $profitCoinly);
 
         # print
         # 코인별 수익
         $sum = 0;
-        // $profitCoinly = sorted(profitCoinly.items(), key = lambda x:x[1])
         echo '
-        
     <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
         <div style="text-align:left;font-size: 20px;min-width:500px;display: table;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;font-weight: bolder;">
             코인별 수익
