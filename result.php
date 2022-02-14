@@ -1765,7 +1765,7 @@
             </tr>
         </thead>
         <tbody>';
-        
+
         foreach ($profitCoinly as $coin => $coinProfit) {
             echo '
             <tr class="table_body">
@@ -1786,9 +1786,9 @@
             $mProfitRate = number_format(($mTobeAsset - $mAsisAsset) / $mAsisAsset * 100, 2);
 
             if ($mProfit > 0) {
-                echo '<span class="profit_positive">+'.$mProfit.'<span class="profit_percentage">'.$mProfitRate.'%</span></span>';
+                echo '<span class="profit_positive">+'.$mProfit.' <span class="profit_percentage">'.$mProfitRate.'%</span></span>';
             } elseif ($mProfit < 0) {
-                echo '<span class="profit_negative">'.$mProfit.'<span class="profit_percentage">'.$mProfitRate.'%</span></span>';
+                echo '<span class="profit_negative">'.$mProfit.' <span class="profit_percentage">'.$mProfitRate.'%</span></span>';
             } else {
                 echo '<span class="profit_zero">-</span>';
             }
