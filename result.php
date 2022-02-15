@@ -697,7 +697,7 @@
 
                 foreach ($profitCoinly as $coin => $coinProfit) {
                     echo '
-                    <tr class="tableCoinly_body" onclick="openModal()">>
+                    <tr class="tableCoinly_body" onclick="openModal()">
                         <td class="tableCoinly_body_cell">';
                     
                     if (isset($coinInfo[$coin])) {
