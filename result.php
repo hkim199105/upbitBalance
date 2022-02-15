@@ -676,9 +676,11 @@ function openModal() {
         // array_multisort($sort, SORT_ASC, $profitCoinly);
 
         # 코인별 수익
-        $sum = 0;
+        $sumProfit = 0;
+        $sumBuy = 0;
         foreach ($profitCoinly as $coin => $coinProfit) {
-            $sum += $coinProfit;
+            $sumProfit += $coinProfit;
+            $sumBuy += $balanceExpected[$coin]["PriceBuyTotal"] + $balanceExpected[$coin]["FeeBuyTotal"];
         }
         # print
         // # 일자별 수익
@@ -724,17 +726,17 @@ function openModal() {
     <div
         style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
         <div
-            style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #<?=number_format($sum - $fee) > 0 ? 'EB5374':'5673EB' ?>;">
+            style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #<?=number_format($sumProfit - $fee) > 0 ? 'EB5374':'5673EB' ?>;">
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익</div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
-                        class="<?=number_format($sum - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format($sum - $fee)?></span></div>
+                        class="<?=number_format($sumProfit - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format($sumProfit - $fee)?></span></div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
-                        class="<?=number_format($sum - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2)?>%</span></div>
+                        class="<?=number_format($sumProfit - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format(($sumProfit - $fee) / $withdraw["KRW"] * 100, 2)?>%</span></div>
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
-                <div style="text-align: center;font-size:32px;font-weight: bolder;"><?=number_format($withdraw["KRW"])?></div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;"><?=number_format($sumBuy)?></div>
             </div>
         </div>
     </div>
@@ -754,7 +756,7 @@ function openModal() {
                             수익
                         </th>
                         <th class="table_head_cell" style="width:21%;">
-                            투자원금
+                            투자금액
                         </th>
                         <th class="table_head_cell" style="width:21%;">
                             매도금액
