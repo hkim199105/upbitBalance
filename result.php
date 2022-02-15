@@ -790,9 +790,9 @@ function openModal() {
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익</div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
-                        class="profit_negative">-1,199,199,199,588</span></div>
+                        class="<?=number_format($sum - $fee) > 0 ? 'profit_positive':'profit_negative' ?>"><?=number_format($sum - $fee)?></span></div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
-                        class="profit_negative">-46.14%</span></div>
+                        class="profit_negative"><?=number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2)?>%</span></div>
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
