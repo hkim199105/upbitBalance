@@ -763,23 +763,23 @@ function openModal() {
         //         print("\t" + symbolToKor(coin) + ": " + decimalToPriceString(profitTimelyFormated[day][coin]) + "원")
 
         # 요약
-        if (isset($withdraw["KRW"])) {
-            echo "<br>";
-            echo "투자금액\t\t" . number_format($withdraw["KRW"]) . "원";
-            echo "<br>";
-            echo "총수익\t\t" . number_format($sum) . "원(" . number_format($sum / $withdraw["KRW"] * 100, 2) . "%)";
-            echo "<br>";
-            echo "총수수료:\t" . number_format($fee) . "원";
-            echo "<br>";
-            echo "총수익\t\t" . number_format($sum - $fee) . "원(" . number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2) . "%)";
-        } else {
-            echo "<br>";
-            echo "총수익\t\t" . number_format($sum) . "원";
-            echo "<br>";
-            echo "총수수료:\t" . number_format($fee) . "원";
-            echo "<br>";
-            echo "총수익\t\t" . number_format($sum - $fee) . "원";
-        }
+        // if (isset($withdraw["KRW"])) {
+        //     echo "<br>";
+        //     echo "투자금액\t\t" . number_format($withdraw["KRW"]) . "원";
+        //     echo "<br>";
+        //     echo "총수익\t\t" . number_format($sum) . "원(" . number_format($sum / $withdraw["KRW"] * 100, 2) . "%)";
+        //     echo "<br>";
+        //     echo "총수수료:\t" . number_format($fee) . "원";
+        //     echo "<br>";
+        //     echo "총수익\t\t" . number_format($sum - $fee) . "원(" . number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2) . "%)";
+        // } else {
+        //     echo "<br>";
+        //     echo "총수익\t\t" . number_format($sum) . "원";
+        //     echo "<br>";
+        //     echo "총수수료:\t" . number_format($fee) . "원";
+        //     echo "<br>";
+        //     echo "총수익\t\t" . number_format($sum - $fee) . "원";
+        // }
         
         ?>
         
@@ -788,7 +788,7 @@ function openModal() {
         <div
             style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #5673EB;">
             <div style="margin:10px;width:50%;flex-direction: column;">
-                <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익 </div>
+                <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익</div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
                         class="profit_negative">-1,199,199,199,588</span></div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
@@ -796,7 +796,7 @@ function openModal() {
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
-                <div style="text-align: center;font-size:32px;font-weight: bolder;">199,199,199,588</div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;"><?=number_format($withdraw["KRW"])?></div>
             </div>
         </div>
     </div>
