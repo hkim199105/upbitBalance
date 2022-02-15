@@ -12,6 +12,7 @@
             rx: 5px;
             ry: 5px;
         }
+
         .negative {
             fill: #EB5374;
             rx: 5px;
@@ -20,60 +21,125 @@
     </style>
     <script src="./d3.js"></script>
     <script>
-        var coins =  [
-            {name: "이더리움" ,profit: -70064},
-            {name: "PXL" ,profit: 373201},
-            {name: "비트코인" ,profit: -21140},
-            {name: "네오" ,profit: 90326},
-            {name: "비체인" ,profit: 68255},
-            {name: "테조스" ,profit: 108853},
-            {name: "이오스" ,profit: 61643},
-            {name: "메타디움" ,profit: -775219},
-            {name: "아하토큰" ,profit: -5860},
-            {name: "디카르고" ,profit: 2341099},
-            {name: "보라" ,profit: -65708},
-            {name: "엠블" ,profit: -3385853},
-            {name: "NPXS" ,profit: -10000},
-            {name: "크립토닷컴체인" ,profit: -10000},
-            {name: "에이다" ,profit: -10000},
-            {name: "비트토렌트" ,profit: -10000},
-            {name: "리플" ,profit: -10000},
-            {name: "모스코인" ,profit: -10000},
-            {name: "넴" ,profit: -10000},
-            {name: "휴먼스케이프" ,profit: -10000},
-            {name: "시아코인" ,profit: -10000},
-            {name: "저스트" ,profit: 170879}
+        var coins = [{
+                name: "이더리움",
+                profit: -70064
+            },
+            {
+                name: "PXL",
+                profit: 373201
+            },
+            {
+                name: "비트코인",
+                profit: -21140
+            },
+            {
+                name: "네오",
+                profit: 90326
+            },
+            {
+                name: "비체인",
+                profit: 68255
+            },
+            {
+                name: "테조스",
+                profit: 108853
+            },
+            {
+                name: "이오스",
+                profit: 61643
+            },
+            {
+                name: "메타디움",
+                profit: -775219
+            },
+            {
+                name: "아하토큰",
+                profit: -5860
+            },
+            {
+                name: "디카르고",
+                profit: 2341099
+            },
+            {
+                name: "보라",
+                profit: -65708
+            },
+            {
+                name: "엠블",
+                profit: -3385853
+            },
+            {
+                name: "NPXS",
+                profit: -10000
+            },
+            {
+                name: "크립토닷컴체인",
+                profit: -10000
+            },
+            {
+                name: "에이다",
+                profit: -10000
+            },
+            {
+                name: "비트토렌트",
+                profit: -10000
+            },
+            {
+                name: "리플",
+                profit: -10000
+            },
+            {
+                name: "모스코인",
+                profit: -10000
+            },
+            {
+                name: "넴",
+                profit: -10000
+            },
+            {
+                name: "휴먼스케이프",
+                profit: -10000
+            },
+            {
+                name: "시아코인",
+                profit: -10000
+            },
+            {
+                name: "저스트",
+                profit: 170879
+            }
         ];
 
-        window.onload = function() {
+        window.onload = function () {
             var render = (selector, size, data) => {
                 var margin = size.margin;
                 var width = size.width - margin.left - margin.right;
                 var height = size.height - margin.top - margin.bottom;
-                
+
                 var y = d3.scaleLinear()
-                .domain(d3.extent(data, d => d.profit))
-                .range([0, height]);
-                
+                    .domain(d3.extent(data, d => d.profit))
+                    .range([0, height]);
+
                 var x = d3.scaleBand()
-                .domain(data.map(d => d.name))
-                .rangeRound([0, width])
-                .padding(0.2);
-                
+                    .domain(data.map(d => d.name))
+                    .rangeRound([0, width])
+                    .padding(0.2);
+
                 var xAxis = d3.axisBottom(x);
-                
+
                 var yAxis = d3.axisLeft(y);
-                
+
                 var svg = d3.select(selector)
-                .attr('width', size.width)
-                .attr('height', size.height);
-                
+                    .attr('width', size.width)
+                    .attr('height', size.height);
+
                 var chart = svg.append('g')
-                .attr('transform', `translate(${ margin.left }, ${ margin.top })`);
-                
+                    .attr('transform', `translate(${ margin.left }, ${ margin.top })`);
+
                 var bar = chart.selectAll('.bar')
-                .data(data)
-                .enter().append('rect')
+                    .data(data)
+                    .enter().append('rect')
                     .attr('class', d => `bar ${ d.profit < 0 ? 'negative': 'positive' }`)
                     .attr('y', d => y(Math.min(0, -d.profit)))
                     .attr('x', d => x(d.name))
@@ -81,14 +147,14 @@
                     .attr('width', x.bandwidth());
 
                 chart.append('g')
-                .attr('transform', `translate(0, ${ width })`)
-                .attr('class', 'axis y')
-                .call(xAxis);
-                
+                    .attr('transform', `translate(0, ${ width })`)
+                    .attr('class', 'axis y')
+                    .call(xAxis);
+
                 chart.append('g')
-                .attr('class', 'axis x')
-                .attr('transform', `translate(${ y(0) }, 0)`)
-                .call(yAxis);
+                    .attr('class', 'axis x')
+                    .attr('transform', `translate(${ y(0) }, 0)`)
+                    .call(yAxis);
             };
 
             var settings = {
@@ -101,11 +167,9 @@
                     left: 40
                 }
             };
-            
+
             render('#chart', settings, coins);
         }
-        
-
     </script>
 </head>
 
@@ -114,301 +178,607 @@
         table {
             font-size: 18px;
         }
-        .table_head_cell{
+
+        .tableCoinly_head_cell {
             text-align: left;
+            font-size: 14px;
             padding: 16px;
             padding-left: 32px;
             font-weight: bolder;
         }
-        .table_body_cell{
+
+        .tableCoinly_body_cell {
             text-align: left;
+            white-space: nowrap;
             padding: 16px;
             padding-left: 32px;
             color: white;
+            cursor: pointer;
         }
-        .table_head_cell:first-child {
+
+        .tableCoinly_head_cell:first-child {
             /* text-align: right; */
         }
-        .table_body_cell:first-child {
+
+        .tableCoinly_body_cell:first-child {
             border-top-left-radius: 16px;
             border-bottom-left-radius: 16px;
             /* text-align: right; */
         }
-        .table_body_cell:last-child {
+
+        .tableCoinly_body_cell:last-child {
             border-top-right-radius: 16px;
             border-bottom-right-radius: 16px;
         }
-        .table_body:hover td {
+
+        .tableCoinly_body:hover td {
             background-color: #f8f6ff10;
         }
-        .table_body:nth-child(odd) {
+
+        .tableCoinly_body:nth-child(odd) {
             background-color: #f8f6ff10;
         }
-        .table_body:nth-child(even) {
+
+        .tableCoinly_body:nth-child(even) {
             background-color: #f8f6ff08;
         }
+
+        .tableCoinlyDetail_head_cell {
+            text-align: left;
+            vertical-align: top;
+            font-size: 14px;
+            font-weight: lighter;
+            padding: 4px;
+            padding-left: 8px;
+            color: #ffffff88;
+        }
+
+        .tableCoinlyDetail_body_cell {
+            text-align: left;
+            white-space: nowrap;
+            padding: 4px;
+            padding-left: 8px;
+            color: white;
+            cursor: default;
+            font-size: 14px;
+        }
+
+        .type_sell {
+            color: #5673EB
+        }
+
+        .type_buy {
+            color: #EB5374
+        }
+
         .profit_positive {
-            color:#EB5374
+            color: #EB5374
         }
+
         .profit_negative {
-            color:#5673EB
+            color: #5673EB
         }
+
         .profit_zero {
-            color:gray;
+            color: gray;
         }
+
         .profit_percentage {
             font-size: 14px;
             font-weight: lighter;
         }
+
         .coin_eng {
             font-size: 14px;
             font-weight: lighter;
             color: #999999;
         }
-        *, html {
-            margin:0;
-            padding:0;  
+
+        *,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .not-scroll {
+            overflow: hidden;
+        }
+
+        .modalContainer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: #00000099;
+        }
+
+        .modalWrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #273456;
+            border-radius: 16px;
+            padding: 0px;
+            height: 60vh;
+            max-height: 500px;
+        }
+
+        .modal {
+            width: 700px;
+            height: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-left: 16px;
+            padding-right: 16px;
+            display: inline-block;
+        }
+
+        .modal::-webkit-scrollbar {
+            width: 16px;
+            height: 5px;
+        }
+
+        .modal::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px F2F2F2;
+            border-radius: 0px;
+            margin-block: 16px;
+        }
+
+        .modal::-webkit-scrollbar-thumb {
+            background-color: #00000055;
+            border-radius: 10px;
+            background-clip: padding-box;
+            border: 5.5px solid transparent;
+        }
+
+        .level {
+            z-index: 2;
         }
     </style>
-
-    <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
+    <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
+        <div
+            style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #5673EB;">
+            <div style="margin:10px;width:50%;flex-direction: column;">
+                <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익 </div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
+                        class="profit_negative">-1,199,199,199,588</span></div>
+                <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
+                        class="profit_negative">-46.14%</span></div>
+            </div>
+            <div style="margin:10px;width:50%;flex-direction: column;">
+                <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;">199,199,199,588</div>
+            </div>
+        </div>
+    </div>
+    <!-- <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
         <div style="text-align:left;font-size: 20px;min-width:500px;display: table;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;font-weight: bolder;">
             코인별 수익
         </div>
-    </div>
+    </div> -->
     <div style="text-align:center;">
-    <table style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
-        <thead>
-            <tr class="table_head">
-                <th class="table_head_cell" style="width:37%;">
-                    코인명
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    수익
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    투자원금
-                </th>
-                <th class="table_head_cell" style="width:21%;">
-                    매도금액
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인 <span class="coin_eng">BTC</span>
-                </td>
-                <td class="table_body_cell">
-                    <span class="profit_positive">+380,000 <span class="profit_percentage">38.5%</span></span>
-                </td>
-                <td class="table_body_cell">
-                    380,000
-                </td>
-                <td class="table_body_cell">
-                    380,000
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    <span class="profit_zero">-</span>
-                </td>
-                <td class="table_body_cell">
-                    380,000
-                </td>
-                <td class="table_body_cell">
-                    380,000
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    <span class="profit_negative">-380,000 <span class="profit_percentage">-38.5%</span></span>
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-            <tr class="table_body">
-                <td class="table_body_cell">
-                    비트코인
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-                <td class="table_body_cell">
-                    380,000원
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<svg id="chart"></svg>
+        <table
+            style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+            <thead>
+                <tr class="tableCoinly_head">
+                    <th class="tableCoinly_head_cell" style="width:37%;">
+                        코인명
+                    </th>
+                    <th class="tableCoinly_head_cell" style="width:21%;">
+                        수익
+                    </th>
+                    <th class="tableCoinly_head_cell" style="width:21%;">
+                        투자원금
+                    </th>
+                    <th class="tableCoinly_head_cell" style="width:21%;">
+                        매도금액
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tableCoinly_body" onclick="openModal()">
+                    <td class="tableCoinly_body_cell">이더리움 <span class="coin_eng">ETH</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-70,064 <span
+                                class="profit_percentage">-1.62%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        4,621,553
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        4,546,903
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">PXL
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+373,201 <span
+                                class="profit_percentage">7.46%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        4,802,953
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        5,161,171
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">비트코인 <span class="coin_eng">BTC</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-21,140 <span
+                                class="profit_percentage">-0.42%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        2,248,894
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        2,239,338
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">네오 <span class="coin_eng">NEO</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+90,326 <span
+                                class="profit_percentage">4.60%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        1,919,154
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        2,007,517
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">비체인 <span class="coin_eng">VET</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+68,255 <span
+                                class="profit_percentage">10.13%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        666,543
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        734,097
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">테조스 <span class="coin_eng">XTZ</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+108,853 <span
+                                class="profit_percentage">14.72%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        734,098
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        842,161
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">이오스 <span class="coin_eng">EOS</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+61,643 <span
+                                class="profit_percentage">3.98%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        1,509,371
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        1,569,475
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">메타디움 <span class="coin_eng">META</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-775,219 <span
+                                class="profit_percentage">-22.21%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        3,504,267
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        2,725,932
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">아하토큰 <span class="coin_eng">AHT</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-5,860 <span
+                                class="profit_percentage">-0.84%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        791,146
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        784,499
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">디카르고 <span class="coin_eng">DKA</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+2,341,099 <span
+                                class="profit_percentage">219.98%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        1,058,667
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        3,387,538
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">보라 <span class="coin_eng">BORA</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-65,708 <span
+                                class="profit_percentage">-8.47%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        784,501
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        718,042
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">엠블 <span class="coin_eng">MVL</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-3,385,853 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        3,387,546
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">NPXS
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">크립토닷컴체인 <span class="coin_eng">CRO</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">에이다 <span class="coin_eng">ADA</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">비트토렌트 <span class="coin_eng">BTT</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">리플 <span class="coin_eng">XRP</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">모스코인 <span class="coin_eng">MOC</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">넴 <span class="coin_eng">XEM</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">휴먼스케이프 <span class="coin_eng">HUM</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">시아코인 <span class="coin_eng">SC</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        10,005
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+                <tr class="tableCoinly_body">
+                    <td class="tableCoinly_body_cell">저스트 <span class="coin_eng">JST</span>
+                    </td>
+                    <td class="tableCoinly_body_cell"><span class="profit_positive">+170,879 <span
+                                class="profit_percentage">-100.00%</span></span>
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        1,067,917
+                    </td>
+                    <td class="tableCoinly_body_cell">
+                        0
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <svg id="chart"></svg>
+
+
+
+
+    <script>
+        function openModal() {
+            let body = document.getElementsByTagName('body')[0];
+            let modalHtml = `
+    <div id="modalContainer" class="modalContainer">
+        <div class="modalWrap">
+            <img src="assets/btnClose.png" style="width:24px;
+        position:absolute;
+        z-index:999;
+        top:16px;
+        right:16px;" onclick="closeModal();">
+
+            <div class="modal">
+                <div
+                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
+                    이더리움 <span class="coin_eng">ETH</span>
+                </div>
+
+                <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
+                    2021.01.01 - 2022.01.31
+                </div>
+                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
+                <table style="margin-left:auto;margin-right:auto;width:100%;">
+                    <thead>
+                        <tr class="table_head">
+                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                체결시간
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                구분
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래수량<br><span class="coin_eng">(ETH)</span>
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래단가
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래금액
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                주문시간
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tableCoinlyDetail_body">
+                            <td class="tableCoinlyDetail_body_cell">2021.12.01 09:32
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell"><span class="type_sell">매도</span>
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                393,319.90395507
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                4,546,903
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                4,546,903,546,903
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                2021.12.01 09:32
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <button onclick="openCheck()">확인</button>
+            <button onclick="closeModal()">닫기</button> -->
+            </div>
+        </div>
+    </div>
+        `
+            body.classList.add("not-scroll");
+            body.insertAdjacentHTML('afterend', modalHtml);
+        }
+
+        function closeModal() {
+            let body = document.getElementsByTagName('body')[0];
+            let modalContainer = document.getElementById('modalContainer');
+
+            body.classList.remove("not-scroll");
+            modalContainer.remove();
+        }
+
+        function openCheck() {
+            let body = document.getElementsByTagName('body')[0];
+            let modalHtml = `
+        <div id="check" class="modalContainer level">
+            <div class="modalWrap">
+                <div class="modal">
+                    정말 실행하시겠습니까?
+                    <button onclick="closeCheck()">닫기</button>
+                </div>
+            </div>
+        </div>
+        `
+            body.classList.add("not-scroll");
+            body.insertAdjacentHTML('afterend', modalHtml);
+        }
+
+        function closeCheck() {
+            let check = document.getElementById('check');
+            check.remove();
+        }
+    </script>
 </body>
 
 </html>
