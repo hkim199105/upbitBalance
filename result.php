@@ -768,7 +768,7 @@
                             </div>
                         </div>
                     
-                    `)">>
+                    `)">
                         <td class="tableCoinly_body_cell">';
                     
                     if (isset($coinInfo[$coin])) {
