@@ -174,78 +174,8 @@
         }
     </style>
     <script>
-
-function openModal() {
+        function openModal(modalHtml) {
             let body = document.getElementsByTagName('body')[0];
-            let modalHtml = `
-    <div id="modalContainer" class="modalContainer">
-        <div class="modalWrap">
-            <img src="assets/btnClose.png" style="width:24px;
-        position:absolute;
-        z-index:999;
-        top:16px;
-        right:16px;" onclick="closeModal();">
-
-            <div class="modal">
-                <div
-                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
-                    이더리움 <span class="coin_eng">ETH</span>
-                </div>
-
-                <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
-                    2021.01.01 - 2022.01.31
-                </div>
-                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
-                <table style="margin-left:auto;margin-right:auto;width:100%;">
-                    <thead>
-                        <tr class="table_head">
-                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
-                                체결시간
-                            </th>
-                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                구분
-                            </th>
-                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                거래수량<br><span class="coin_eng">(ETH)</span>
-                            </th>
-                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                거래단가
-                            </th>
-                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                거래금액
-                            </th>
-                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
-                                주문시간
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="tableCoinlyDetail_body">
-                            <td class="tableCoinlyDetail_body_cell">2021.12.01 09:32
-                            </td>
-                            <td class="tableCoinlyDetail_body_cell"><span class="type_sell">매도</span>
-                            </td>
-                            <td class="tableCoinlyDetail_body_cell">
-                                393,319.90395507
-                            </td>
-                            <td class="tableCoinlyDetail_body_cell">
-                                4,546,903
-                            </td>
-                            <td class="tableCoinlyDetail_body_cell">
-                                4,546,903,546,903
-                            </td>
-                            <td class="tableCoinlyDetail_body_cell">
-                                2021.12.01 09:32
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- <button onclick="openCheck()">확인</button>
-            <button onclick="closeModal()">닫기</button> -->
-            </div>
-        </div>
-    </div>
-        `
             body.classList.add("not-scroll");
             body.insertAdjacentHTML('afterend', modalHtml);
         }
@@ -748,17 +678,17 @@ function openModal() {
             <div style="text-align:center;">
             <table style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
                 <thead>
-                    <tr class="table_head">
-                        <th class="table_head_cell" style="width:37%;">
+                    <tr class="tableCoinly_head">
+                        <th class="tableCoinly_head_cell" style="width:37%;">
                             코인명
                         </th>
-                        <th class="table_head_cell" style="width:21%;">
+                        <th class="tableCoinly_head_cell" style="width:21%;">
                             수익
                         </th>
-                        <th class="table_head_cell" style="width:21%;">
+                        <th class="tableCoinly_head_cell" style="width:21%;">
                             투자금액
                         </th>
-                        <th class="table_head_cell" style="width:21%;">
+                        <th class="tableCoinly_head_cell" style="width:21%;">
                             매도금액
                         </th>
                     </tr>
@@ -767,7 +697,74 @@ function openModal() {
 
                 foreach ($profitCoinly as $coin => $coinProfit) {
                     echo '
-                    <tr class="tableCoinly_body">
+                    <tr class="tableCoinly_body" onclick="openModal(`
+                    <div id="modalContainer" class="modalContainer">
+                        <div class="modalWrap">
+                            <img src="assets/btnClose.png" style="width:24px;
+                        position:absolute;
+                        z-index:999;
+                        top:16px;
+                        right:16px;" onclick="closeModal();">
+                
+                            <div class="modal">
+                                <div
+                                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
+                                    이더리움 <span class="coin_eng">ETH</span>
+                                </div>
+                
+                                <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
+                                    2021.01.01 - 2022.01.31
+                                </div>
+                                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
+                                <table style="margin-left:auto;margin-right:auto;width:100%;">
+                                    <thead>
+                                        <tr class="table_head">
+                                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                                체결시간
+                                            </th>
+                                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                                구분
+                                            </th>
+                                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                                거래수량<br><span class="coin_eng">(ETH)</span>
+                                            </th>
+                                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                                거래단가
+                                            </th>
+                                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                                거래금액
+                                            </th>
+                                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                                주문시간
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="tableCoinlyDetail_body">
+                                            <td class="tableCoinlyDetail_body_cell">2021.12.01 09:32
+                                            </td>
+                                            <td class="tableCoinlyDetail_body_cell"><span class="type_sell">매도</span>
+                                            </td>
+                                            <td class="tableCoinlyDetail_body_cell">
+                                                393,319.90395507
+                                            </td>
+                                            <td class="tableCoinlyDetail_body_cell">
+                                                4,546,903
+                                            </td>
+                                            <td class="tableCoinlyDetail_body_cell">
+                                                4,546,903,546,903
+                                            </td>
+                                            <td class="tableCoinlyDetail_body_cell">
+                                                2021.12.01 09:32
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <button onclick="openCheck()">확인</button>
+                            <button onclick="closeModal()">닫기</button> -->
+                            </div>
+                        </div>
+                    </div>`)">>
                         <td class="tableCoinly_body_cell">';
                     
                     if (isset($coinInfo[$coin])) {
