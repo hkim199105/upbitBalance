@@ -7,13 +7,11 @@
     <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon">
     <title>UPBIT 수익 계산기</title>
     <link rel="stylesheet" media="screen" href="./assets/style.css?<?php echo time();?>">
+    <script src="./jquery-3.6.0.min.js"></script>
+    <script src="./jquery.sortElements.js"></script>
     <!--script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script-->
 
     <style>
-        table {
-            font-size: 18px;
-        }
-
         .tableCoinly_head_cell {
             text-align: left;
             font-size: 14px;
@@ -25,6 +23,7 @@
         .tableCoinly_body_cell {
             text-align: left;
             white-space: nowrap;
+            font-size: 16px;
             padding: 16px;
             padding-left: 32px;
             color: white;
@@ -99,12 +98,12 @@
         }
 
         .profit_percentage {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: lighter;
         }
 
         .coin_eng {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: lighter;
             color: #999999;
         }
@@ -179,7 +178,7 @@
         function openModal(coinIndex) {
             let body = document.getElementsByTagName('body')[0];
             let modalHtml = `
-    <div id="modalContainer" class="modalContainer">
+    <div id="modalContainer" class="modalContainer" onclick="closeModal();">
         <div class="modalWrap">
             <img src="assets/btnClose.png" style="width:24px;
         position:absolute;
@@ -207,7 +206,7 @@
                                 구분
                             </th>
                             <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                거래수량<br><span class="coin_eng">(ETH)</span>
+                                거래수량
                             </th>
                             <th class="tableCoinlyDetail_head_cell" style="width:15%;">
                                 거래단가
@@ -280,6 +279,55 @@
             let check = document.getElementById('check');
             check.remove();
         }
+
+        
+        window.onload = function () {
+
+            var tableCoinlySortDesc = false;
+            var tableCoinlySortThIndex = -1;
+            $('.tableCoinly_head_cell')
+                .wrapInner('<span title="sort this column"/>')
+                .each(function () {
+                    var th = $(this),
+                        thIndex = th.index();
+
+                    th.click(function () {
+                        if (tableCoinlySortThIndex > -1 && tableCoinlySortThIndex != thIndex) {
+                            tableCoinlySortDesc = false; // 다른 칼럼 누른 경우 초기화. 처음엔 숫자 내림차순, 문자 오름차순
+                        }
+                        tableCoinlySortThIndex = thIndex;
+
+                        $('#tableCoinly').find('td').filter(function () {
+                            return $(this).index() === thIndex;
+
+                        }).sortElements(function (a, b) {
+                            if (isNaN(parseFloat($.text([a]))) || isNaN(parseFloat($.text([
+                                b])))) {
+                                return $.text([a]) > $.text([b]) ?
+
+                                    tableCoinlySortDesc ? -1 : 1 :
+                                    tableCoinlySortDesc ? 1 : -1;
+
+                            } else {
+                                return parseFloat($.text([a]).replace(/,/g, '')) < parseFloat($
+                                        .text([b]).replace(/,/g, '')) ?
+
+                                    tableCoinlySortDesc ? -1 : 1 :
+                                    tableCoinlySortDesc ? 1 : -1;
+                            }
+                        }, function () {
+                            // parentNode is the element we want to move
+                            return this.parentNode;
+                        });
+
+                        tableCoinlySortDesc = !tableCoinlySortDesc;
+                    });
+
+                });
+
+            $('#tablecoinly_head_profit').click();      // 최초 접근시 수익 기준 정렬
+        }
+
     </script>
 </head>
 
@@ -792,7 +840,7 @@
                         <th class="tableCoinly_head_cell" style="width:37%;">
                             코인명
                         </th>
-                        <th class="tableCoinly_head_cell" style="width:21%;">
+                        <th id="tablecoinly_head_profit" class="tableCoinly_head_cell" style="width:21%;">
                             수익
                         </th>
                         <th class="tableCoinly_head_cell" style="width:21%;">
