@@ -174,8 +174,83 @@
         }
     </style>
     <script>
-        function openModal(modalHtml) {
+        let coinlyDetails = [];
+        coinlyDetails.push({ nameKor: '111', nameEng: 'none', startDate: 'yesdoing', endDate: '', trx: [
+            {callDate: '', type: '', quantity: '', priceUnit: '', priceTotal: '', orderDate: ''},
+            {callDate: '', type: '', quantity: '', priceUnit: '', priceTotal: '', orderDate: ''}
+        ]});
+        function openModal(coinIndex) {
             let body = document.getElementsByTagName('body')[0];
+            let modalHtml = `
+    <div id="modalContainer" class="modalContainer">
+        <div class="modalWrap">
+            <img src="assets/btnClose.png" style="width:24px;
+        position:absolute;
+        z-index:999;
+        top:16px;
+        right:16px;" onclick="closeModal();">
+
+            <div class="modal">
+                <div
+                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
+                    ` + coinlyDetails[coinIndex]["nameKor"] + ` <span class="coin_eng">` + coinlyDetails[coinIndex]["nameEng"] + `</span>
+                </div>
+
+                <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
+                    2021.01.01 - 2022.01.31
+                </div>
+                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
+                <table style="margin-left:auto;margin-right:auto;width:100%;">
+                    <thead>
+                        <tr class="table_head">
+                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                체결시간
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                구분
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래수량<br><span class="coin_eng">(ETH)</span>
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래단가
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:15%;">
+                                거래금액
+                            </th>
+                            <th class="tableCoinlyDetail_head_cell" style="width:20%;">
+                                주문시간
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            for (let i = 0; i < coinlyDetails[coinIndex]["trx"].length; i++) {
+                let mTrxs = coinlyDetails[coinIndex]["trx"];
+                let typeClassName;
+                if (mTrxs["type"] == "매수") { typeClassName = "type_buy" }
+                else if (mTrxs["type"] == "매도") { typeClassName = "type_sell" }
+                else if (mTrxs["type"] == "입금") { typeClassName = "type_input" }
+                else if (mTrxs["type"] == "출금") { typeClassName = "type_output" }
+
+                modalHtml = modalHtml + `
+                        <tr class="tableCoinlyDetail_body">
+                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["callDate"] + `</td>
+                            <td class="tableCoinlyDetail_body_cell"><span class="` + typeClassName +`">` + mTrxs["type"] + `</span></td>
+                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["quantity"] + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["priceUnit"] + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["priceTotal"] + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["orderDate"] + `</td>
+                        </tr>`;
+            }
+            modalHtml = modalHtml + `
+                    </tbody>
+                </table>
+                <!-- <button onclick="openCheck()">확인</button>
+                <button onclick="closeModal()">닫기</button> -->
+            </div>
+        </div>
+    </div>
+        `;
             body.classList.add("not-scroll");
             body.insertAdjacentHTML('afterend', modalHtml);
         }
@@ -376,7 +451,8 @@
         $balanceExpected = [];    # 코인명: {수량: 평균단가:}
         $profitTimely = [];       # 시간별 수익[일자, 코인명, 실현금액]
         $profitCoinly = [];       # 종목별 수익    코인명: 수익
-        $withdraw = [];           # 코인별 입출금(입금은 +, 출금은 -)
+        $withdraw = [];           # 코인별 입출금내역(입금은 +, 출금은 -)
+        $trx = [];                # 코인별 거래내역
         $fee = 0;                 # 수수료
 
         # coin market data
@@ -481,7 +557,9 @@
             $mPriceAvg = filter_var($row[5], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
             $mFee = filter_var($row[7], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
             $mType = trim($row[3]);
-            $mTime = trim($row[0]);
+            $mCallDate = trim($row[0]);
+            $mOrderDate = trim($row[9]);
+            
             #
             # 수량 2, 평단 100원
             # +
@@ -518,7 +596,7 @@
                     // }
 
                     # 일자별 수익
-                    array_push($profitTimely, [$mTime, $mCoin, $mProfit]);
+                    array_push($profitTimely, [$mCallDate, $mCoin, $mProfit]);
 
                     # 종목별 수익
                     if (isset($profitCoinly[$mCoin])) {
@@ -544,6 +622,12 @@
                 } else {
                     $withdraw[$mCoin] = -$mQuantity;
                 }
+            }
+
+            if (isset($trx[$mCoin])) {
+                array_unshift($trx[$mCoin], ["callDate" => $mCallDate, "type" => $mType, "quantity" => $mQuantity, "priceUnit" => $mPriceAvg, "priceTotal" => $mPriceTotal, "orderDate" => $mOrderDate]);
+            } else {
+                $trx[$mCoin] = [["callDate" => $mCallDate, "type" => $mType, "quantity" => $mQuantity, "priceUnit" => $mPriceAvg, "priceTotal" => $mPriceTotal, "orderDate" => $mOrderDate]];
             }
         }   
 
@@ -662,7 +746,7 @@
                 <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
                         class="<?=number_format($sumProfit - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format($sumProfit - $fee)?></span></div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
-                        class="<?=number_format($sumProfit - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format(($sumProfit - $fee) / $withdraw["KRW"] * 100, 2)?>%</span></div>
+                        class="<?=number_format($sumProfit - $fee) > 0 ? 'profit_positive':'profit_negative'?>"><?=number_format($sumBuy == 0 ? "0":($sumProfit - $fee) / $sumBuy * 100, 2)?>%</span></div>
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
@@ -672,8 +756,36 @@
     </div>
 
     <?php
-    
-        # 코인별 수익
+        # 코인별 수익 (modal div)
+        echo "<script>";
+
+        foreach ($profitCoinly as $coin => $coinProfit) {
+            echo "coinlyDetails.push({";
+
+            if (isset($coinInfo[$coin])) {
+                echo "nameKor: '".$coinInfo[$coin]."', nameEng: '".$coin."',";
+            } else {
+                echo "nameKor: '', nameEng: '".$coin."',";
+            }
+
+            echo "trx: [";
+
+            foreach ($trx as $trxs) {
+                echo "{
+                    callDate:   '".$trxs["callDate"]."',
+                    type:       '".$trxs["type"]."',
+                    quantity:   '".$trxs["quantity"]."',
+                    priceUnit:  '".$trxs["priceUnit"]."',
+                    priceTotal: '".$trxs["priceTotal"]."',
+                    orderDate:  '".$trxs["orderDate"]."'
+                },";
+            }
+            
+            echo "]});";
+        }
+        echo "</script>";
+
+        # 코인별 수익 (table)
         echo '
             <div style="text-align:center;">
             <table style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
@@ -694,10 +806,10 @@
                     </tr>
                 </thead>
                 <tbody>';
-
+                $i = 0;
                 foreach ($profitCoinly as $coin => $coinProfit) {
                     echo '
-                    <tr class="tableCoinly_body" onclick="openModal()">
+                    <tr class="tableCoinly_body" onclick="openModal(' . (string)$i . ')">>
                         <td class="tableCoinly_body_cell">';
                     
                     if (isset($coinInfo[$coin])) {
@@ -730,6 +842,8 @@
                             ' . number_format($mTobeAsset) . '
                         </td>
                     </tr>';
+
+                    $i += 1;
                 }
                 echo '
                 
