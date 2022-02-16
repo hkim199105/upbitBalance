@@ -189,7 +189,7 @@
 
             <div class="modal">
                 <div
-                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
+                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">
                     ` + coinlyDetails[coinIndex]["nameKor"] + ` <span class="coin_eng">` + coinlyDetails[coinIndex]["nameEng"] + `</span>
                 </div>
 
@@ -222,7 +222,7 @@
                     </thead>
                     <tbody>`;
             for (let i = 0; i < coinlyDetails[coinIndex]["trx"].length; i++) {
-                let mTrxs = coinlyDetails[coinIndex]["trx"];
+                let mTrxs = coinlyDetails[coinIndex]["trx"][i];
                 let typeClassName;
                 if (mTrxs["type"] == "매수") { typeClassName = "type_buy" }
                 else if (mTrxs["type"] == "매도") { typeClassName = "type_sell" }
@@ -693,6 +693,7 @@
             $sumProfit += $coinProfit;
             $sumBuy += $balanceExpected[$coin]["PriceBuyTotal"] + $balanceExpected[$coin]["FeeBuyTotal"];
         }
+
         # print
         // # 일자별 수익
         // profitTimely = sorted(profitTimely, key = lambda x:x[0])
@@ -737,7 +738,7 @@
     <div
         style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
         <div
-            style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #<?=number_format($sumProfit - $fee) > 0 ? 'EB5374':'5673EB' ?>;">
+            style="background-color: #f8f6ff10;width: 100%;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #<?=number_format($sumProfit - $fee) > 0 ? 'EB5374':'5673EB' ?>;">
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">실현한 수익</div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
