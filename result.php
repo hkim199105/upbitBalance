@@ -9,7 +9,6 @@
     <link rel="stylesheet" media="screen" href="./assets/style.css?<?php echo time();?>">
     <script src="./jquery-3.6.0.min.js"></script>
     <script src="./jquery.sortElements.js"></script>
-    <!--script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script-->
 
     <style>
         .tableCoinly_head_cell {
@@ -173,6 +172,55 @@
         }
     </style>
     <script>
+
+        window.onload = function () {
+
+        var tableCoinlySortDesc = false;
+        var tableCoinlySortThIndex = -1;
+        $('.tableCoinly_head_cell')
+            .wrapInner('<span title="sort this column"/>')
+            .each(function () {
+                var th = $(this),
+                    thIndex = th.index();
+
+                th.click(function () {
+                    if (tableCoinlySortThIndex > -1 && tableCoinlySortThIndex != thIndex) {
+                        tableCoinlySortDesc = false; // 다른 칼럼 누른 경우 초기화. 처음엔 숫자 내림차순, 문자 오름차순
+                    }
+                    tableCoinlySortThIndex = thIndex;
+
+                    $('#tableCoinly').find('td').filter(function () {
+                        return $(this).index() === thIndex;
+
+                    }).sortElements(function (a, b) {
+                        if (isNaN(parseFloat($.text([a]))) || isNaN(parseFloat($.text([
+                            b])))) {
+                            return $.text([a]) > $.text([b]) ?
+
+                                tableCoinlySortDesc ? -1 : 1 :
+                                tableCoinlySortDesc ? 1 : -1;
+
+                        } else {
+                            return parseFloat($.text([a]).replace(/,/g, '')) < parseFloat($
+                                    .text([b]).replace(/,/g, '')) ?
+
+                                tableCoinlySortDesc ? -1 : 1 :
+                                tableCoinlySortDesc ? 1 : -1;
+                        }
+                    }, function () {
+                        // parentNode is the element we want to move
+                        return this.parentNode;
+                    });
+
+                    tableCoinlySortDesc = !tableCoinlySortDesc;
+                });
+
+            });
+
+        $('#tablecoinly_head_profit').click();      // 최초 접근시 수익 기준 정렬
+        }
+
+        
         let coinlyDetails = [];
         
         function openModal(coinIndex) {
@@ -279,55 +327,6 @@
             let check = document.getElementById('check');
             check.remove();
         }
-
-        
-        window.onload = function () {
-
-            var tableCoinlySortDesc = false;
-            var tableCoinlySortThIndex = -1;
-            $('.tableCoinly_head_cell')
-                .wrapInner('<span title="sort this column"/>')
-                .each(function () {
-                    var th = $(this),
-                        thIndex = th.index();
-
-                    th.click(function () {
-                        if (tableCoinlySortThIndex > -1 && tableCoinlySortThIndex != thIndex) {
-                            tableCoinlySortDesc = false; // 다른 칼럼 누른 경우 초기화. 처음엔 숫자 내림차순, 문자 오름차순
-                        }
-                        tableCoinlySortThIndex = thIndex;
-
-                        $('#tableCoinly').find('td').filter(function () {
-                            return $(this).index() === thIndex;
-
-                        }).sortElements(function (a, b) {
-                            if (isNaN(parseFloat($.text([a]))) || isNaN(parseFloat($.text([
-                                b])))) {
-                                return $.text([a]) > $.text([b]) ?
-
-                                    tableCoinlySortDesc ? -1 : 1 :
-                                    tableCoinlySortDesc ? 1 : -1;
-
-                            } else {
-                                return parseFloat($.text([a]).replace(/,/g, '')) < parseFloat($
-                                        .text([b]).replace(/,/g, '')) ?
-
-                                    tableCoinlySortDesc ? -1 : 1 :
-                                    tableCoinlySortDesc ? 1 : -1;
-                            }
-                        }, function () {
-                            // parentNode is the element we want to move
-                            return this.parentNode;
-                        });
-
-                        tableCoinlySortDesc = !tableCoinlySortDesc;
-                    });
-
-                });
-
-            $('#tablecoinly_head_profit').click();      // 최초 접근시 수익 기준 정렬
-        }
-
     </script>
 </head>
 
