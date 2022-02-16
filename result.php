@@ -175,10 +175,7 @@
     </style>
     <script>
         let coinlyDetails = [];
-        coinlyDetails.push({ nameKor: '111', nameEng: 'none', startDate: 'yesdoing', endDate: '', trx: [
-            {callDate: '', type: '', quantity: '', priceUnit: '', priceTotal: '', orderDate: ''},
-            {callDate: '', type: '', quantity: '', priceUnit: '', priceTotal: '', orderDate: ''}
-        ]});
+        
         function openModal(coinIndex) {
             let body = document.getElementsByTagName('body')[0];
             let modalHtml = `
@@ -770,14 +767,14 @@
 
             echo "trx: [";
 
-            foreach ($trx as $trxs) {
+            foreach ($trx[$coin] as $mTrx) {
                 echo "{
-                    callDate:   '".$trxs["callDate"]."',
-                    type:       '".$trxs["type"]."',
-                    quantity:   '".$trxs["quantity"]."',
-                    priceUnit:  '".$trxs["priceUnit"]."',
-                    priceTotal: '".$trxs["priceTotal"]."',
-                    orderDate:  '".$trxs["orderDate"]."'
+                    callDate:   '".$mTrx["callDate"]."',
+                    type:       '".$mTrx["type"]."',
+                    quantity:   '".$mTrx["quantity"]."',
+                    priceUnit:  '".$mTrx["priceUnit"]."',
+                    priceTotal: '".$mTrx["priceTotal"]."',
+                    orderDate:  '".$mTrx["orderDate"]."'
                 },";
             }
             
@@ -809,7 +806,7 @@
                 $i = 0;
                 foreach ($profitCoinly as $coin => $coinProfit) {
                     echo '
-                    <tr class="tableCoinly_body" onclick="openModal(' . (string)$i . ')">>
+                    <tr class="tableCoinly_body" onclick="openModal(' . (string)$i . ')">
                         <td class="tableCoinly_body_cell">';
                     
                     if (isset($coinInfo[$coin])) {
