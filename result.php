@@ -535,26 +535,29 @@
 
         accessLog("parse data: Transfer 2");
         $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
+        $rawDataTransfer2 = [];
         for ($i = 0; $i < sizeof($rawDataTransfer); $i++) {
             if ($i % 1000 == 0) accessLog($i);
             if ($i % 10 == 0 || $i % 10 == 9) {
                 if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
-                    $rawDataTransfer[$i] = $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1];
-                    array_splice($rawDataTransfer, $i + 1, 1);
+                    array_push($rawDataTransfer2, $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
+                    $i += 1;
+                    continue;
                 }
             }
+            array_push($rawDataTransfer2, $rawDataTransfer[$i]);
         }
 
         accessLog("parse data: Transfer 3");
         $dataTransfer = [];
-        for ($i = 0; $i < sizeof($rawDataTransfer) / 10; $i++) {
-            if (sizeof($rawDataTransfer) < $i * 10 + 10) {
+        for ($i = 0; $i < sizeof($rawDataTransfer2) / 10; $i++) {
+            if (sizeof($rawDataTransfer2) < $i * 10 + 10) {
                 break;
             }
 
             $row = [];
             for ($j = 0; $j < 10; $j++) {
-                array_push($row,$rawDataTransfer[$i * 10 + $j]);
+                array_push($row,$rawDataTransfer2[$i * 10 + $j]);
             }
 
             array_push($dataTransfer, $row);
