@@ -339,7 +339,7 @@
 
             $logDir = $logDir . '/log.log';
 
-            $strLogger = '[' . date('YmdHis', time()) . '] ' . $_SERVER['REMOTE_ADDR'] . ', http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
+            $strLogger = '[' . date('Y-m-d H:i:s').substr((string)microtime(), 1, 4) . '] ' . $_SERVER['REMOTE_ADDR'] . ', http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
 
             error_log($strLogger, 3, $logDir);
         }
