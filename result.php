@@ -332,16 +332,22 @@
 
 <body>
         <?php
+        $logginYN = false;
+
         function accessLog($keyword) {
-            $strLogger = '';
-            $logDir = '/var/log/nginx';
-            if (!is_dir($logDir)) mkdir($logDir, 0755);
+            global $logginYN;
 
-            $logDir = $logDir . '/log.log';
+            if ($logginYN == true) {
+                $strLogger = '';
+                $logDir = '/var/log/nginx';
+                if (!is_dir($logDir)) mkdir($logDir, 0755);
 
-            $strLogger = '[' . date('Y-m-d H:i:s').substr((string)microtime(), 1, 4) . '] ' . $_SERVER['REMOTE_ADDR'] . ' ' . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
+                $logDir = $logDir . '/log.log';
 
-            error_log($strLogger, 3, $logDir);
+                $strLogger = '[' . date('Y-m-d H:i:s').substr((string)microtime(), 1, 4) . '] ' . $_SERVER['REMOTE_ADDR'] . ' ' . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
+
+                error_log($strLogger, 3, $logDir);
+            }
         }
 
         function array_insert(&$array, $position, $insert)
@@ -728,6 +734,7 @@
                     accessLog($i . " " .  $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
                     if (sizeof($rawDataTransfer2) % 10 == 9) accessLog("----------------------");
                     array_push($rawDataTransfer2, $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
+                    array_splice($rawDataTransfer, $i + 1, 1);
                     $i += 1;
                     continue;
                 }
