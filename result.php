@@ -536,7 +536,7 @@
         accessLog("parse data: Transfer 2");
         $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
         for ($i = 0; $i < sizeof($rawDataTransfer); $i++) {
-            accessLog($i);
+            if ($i % 1000 == 0) accessLog($i);
             if ($i % 10 == 0 || $i % 10 == 9) {
                 if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
                     $rawDataTransfer[$i] = $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1];
