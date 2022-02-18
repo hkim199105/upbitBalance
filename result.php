@@ -732,7 +732,7 @@
         //     $sort[$key] = $value;
         // }
         // array_multisort($sort, SORT_ASC, $profitCoinly);
-        print("LOG_TEST HKIM")
+        print("LOG_TEST HKIM");
         # 코인별 수익
         $sumProfit = 0;
         $sumBuy = 0;
