@@ -525,7 +525,7 @@
         }
 
         # parse data: Transfer
-        accessLog("parse data: Transfer");
+        accessLog("parse data: Transfer 1");
         $indexTransfer = strpos($rawDataTransfer, $flagTransfer);
         if ($indexTransfer > -1) {
             $rawDataTransfer = substr($rawDataTransfer, $indexTransfer + strlen($flagTransfer) + 2, strlen($rawDataTransfer) - 2 - strlen($flagTransfer) - $indexTransfer);
@@ -533,6 +533,7 @@
             echo "데이터 형식이 틀립니다.(1) ". strval($indexTransfer) . "\n";
         }
 
+        accessLog("parse data: Transfer 2");
         $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
         for ($i = 0; $i < sizeof($rawDataTransfer); $i++) {
             if ($i % 10 == 0 || $i % 10 == 9) {
@@ -543,6 +544,7 @@
             }
         }
 
+        accessLog("parse data: Transfer 3");
         $dataTransfer = [];
         for ($i = 0; $i < sizeof($rawDataTransfer) / 10; $i++) {
             if (sizeof($rawDataTransfer) < $i * 10 + 10) {
