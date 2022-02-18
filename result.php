@@ -332,11 +332,18 @@
 
 <body>
         <?php
-        // def symbolToKor(sym):
-        // if sym in coinInfo:
-        //     return coinInfo[sym]
-        // else:
-        //     return sym
+        function accessLog($keyword) {
+            $strLogger = '';
+            $logDir = '/log/access';
+            if (!is_dir($logDir)) mkdir($logDir, 0755);
+
+            $logDir = $logDir . '/access.log';
+
+            $strLogger = '[' . date('YmdHis', time()) . '] ' . $_SERVER['REMOTE_ADDR'] . ', http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
+
+            error_log($strLogger, 3, $logDir);
+        }
+
         function array_insert(&$array, $position, $insert)
         {
             if (is_int($position)) {
@@ -500,6 +507,7 @@
         $fee = 0;                 # 수수료
 
         # coin market data
+        accessLog("coin market data");
         $urlCoinData ='./coin.json';
         if(file_exists($urlCoinData)) {
             $marketInfo = json_decode(file_get_contents($urlCoinData), true);
@@ -517,6 +525,7 @@
         }
 
         # parse data: Transfer
+        accessLog("parse data: Transfer");
         $indexTransfer = strpos($rawDataTransfer, $flagTransfer);
         if ($indexTransfer > -1) {
             $rawDataTransfer = substr($rawDataTransfer, $indexTransfer + strlen($flagTransfer) + 2, strlen($rawDataTransfer) - 2 - strlen($flagTransfer) - $indexTransfer);
@@ -583,7 +592,7 @@
         //     array_push($dataBalance, $row);
         // }
 
-        # parse transfer data
+        # iterate transfer data
         # 0: 체결일자
         # 1: 코인
         # 2: 마켓
@@ -594,6 +603,7 @@
         # 7: 수수료
         # 8: 정산금액
         # 9: 주문일자
+        accessLog("iterate transfer data");
         foreach ( array_reverse($dataTransfer) as $row ) {
             $mCoin = trim($row[1]);
             $mQuantity = filter_var($row[4], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
@@ -732,8 +742,8 @@
         //     $sort[$key] = $value;
         // }
         // array_multisort($sort, SORT_ASC, $profitCoinly);
-        print("LOG_TEST HKIM");
-        error_log("LOG_TEST HKIM2", 3, "/var/log/nginx/log.log");
+        
+        accessLog("calculate coinly profit");
         # 코인별 수익
         $sumProfit = 0;
         $sumBuy = 0;
@@ -741,6 +751,7 @@
             $sumProfit += $coinProfit;
             $sumBuy += $balanceExpected[$coin]["PriceBuyTotal"] + $balanceExpected[$coin]["FeeBuyTotal"];
         }
+        accessLog("calculate coinly profit finished");
 
         # print
         // # 일자별 수익
@@ -802,6 +813,7 @@
     </div>
 
     <?php
+        accessLog("draw modal div");
         # 코인별 수익 (modal div)
         echo "<script>";
 
@@ -831,6 +843,7 @@
         }
         echo "</script>";
 
+        accessLog("draw table");
         # 코인별 수익 (table)
         echo '
             <div style="text-align:center;">
