@@ -350,7 +350,7 @@
                 );
             }
         }
-
+        
         $rawDataTransfer = "체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간
         2021.12.01 09:32
         BAT
@@ -732,7 +732,7 @@
         //     $sort[$key] = $value;
         // }
         // array_multisort($sort, SORT_ASC, $profitCoinly);
-
+        print("LOG_TEST HKIM")
         # 코인별 수익
         $sumProfit = 0;
         $sumBuy = 0;
