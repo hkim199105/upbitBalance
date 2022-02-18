@@ -339,7 +339,7 @@
 
             $logDir = $logDir . '/log.log';
 
-            $strLogger = '[' . date('Y-m-d H:i:s').substr((string)microtime(), 1, 4) . '] ' . $_SERVER['REMOTE_ADDR'] . ', http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
+            $strLogger = '[' . date('Y-m-d H:i:s').substr((string)microtime(), 1, 4) . '] ' . $_SERVER['REMOTE_ADDR'] . ' ' . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
 
             error_log($strLogger, 3, $logDir);
         }
@@ -536,6 +536,7 @@
         accessLog("parse data: Transfer 2");
         $rawDataTransfer = preg_split('/\s+/', $rawDataTransfer, -1, PREG_SPLIT_NO_EMPTY);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
         for ($i = 0; $i < sizeof($rawDataTransfer); $i++) {
+            accessLog($i);
             if ($i % 10 == 0 || $i % 10 == 9) {
                 if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
                     $rawDataTransfer[$i] = $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1];
