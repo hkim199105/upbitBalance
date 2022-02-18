@@ -546,11 +546,13 @@
             if ($i % 1000 == 0) accessLog($i);
             if ($i % 10 == 0 || $i % 10 == 9) {
                 if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
+                    accessLog( $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
                     array_push($rawDataTransfer2, $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
                     $i += 1;
                     continue;
                 }
             }
+            accessLog($rawDataTransfer[$i]);
             array_push($rawDataTransfer2, $rawDataTransfer[$i]);
         }
 
