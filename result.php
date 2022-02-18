@@ -726,7 +726,7 @@
             if (sizeof($rawDataTransfer2) % 10 == 0 || sizeof($rawDataTransfer2) % 10 == 9) {
                 if (strlen(trim($rawDataTransfer[$i])) > 0 && sizeof($rawDataTransfer) > $i + 1 && trim($rawDataTransfer[$i]) !== "-") {
                     accessLog($i . " " .  $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
-                    if ($i % 10 == 9) accessLog("----------------------");
+                    if (sizeof($rawDataTransfer2) % 10 == 9) accessLog("----------------------");
                     array_push($rawDataTransfer2, $rawDataTransfer[$i] . " " . $rawDataTransfer[$i + 1]);
                     $i += 1;
                     continue;
