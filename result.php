@@ -334,10 +334,10 @@
         <?php
         function accessLog($keyword) {
             $strLogger = '';
-            $logDir = '/log/access';
+            $logDir = '/var/log/nginx';
             if (!is_dir($logDir)) mkdir($logDir, 0755);
 
-            $logDir = $logDir . '/access.log';
+            $logDir = $logDir . '/log.log';
 
             $strLogger = '[' . date('YmdHis', time()) . '] ' . $_SERVER['REMOTE_ADDR'] . ', http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . " " . $keyword . "\n";
 
