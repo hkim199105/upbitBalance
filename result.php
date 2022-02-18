@@ -493,7 +493,9 @@
             return;
         }
 
-        $flagTransfer = "주문시간";
+        $flagTransferStart = "주문시간";
+        $flagTransferEnd = "코인명/심볼검색";
+
         $flagBalance = "평가손익(%)";
 
         $marketInfo = [];         # 코인 시장 정보
@@ -526,11 +528,15 @@
 
         # parse data: Transfer
         accessLog("parse data: Transfer 1");
-        $indexTransfer = strpos($rawDataTransfer, $flagTransfer);
-        if ($indexTransfer > -1) {
-            $rawDataTransfer = substr($rawDataTransfer, $indexTransfer + strlen($flagTransfer) + 2, strlen($rawDataTransfer) - 2 - strlen($flagTransfer) - $indexTransfer);
+        $indexTransfer = strpos($rawDataTransfer, $flagTransferStart);
+        $indexTransferEnd = strpos($rawDataTransfer, $flagTransferEnd);
+        if ($indexTransfer !== false) {
+            $rawDataTransfer = substr($rawDataTransfer, $indexTransfer + strlen($flagTransferStart) + 2, strlen($rawDataTransfer) - 2 - strlen($flagTransferStart) - $indexTransfer);
         } else {
             echo "데이터 형식이 틀립니다.(1) ". strval($indexTransfer) . "\n";
+        }
+        if ($indexTransferEnd !== false) {
+            $rawDataTransfer = substr($rawDataTransfer, 0, $indexTransferEnd);
         }
 
         accessLog("parse data: Transfer 2");
