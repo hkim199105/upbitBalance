@@ -216,6 +216,13 @@
     <script>
         let coinlyDetails = [];
         function addComma(num, fractionDigits = 0) {
+            if (num.substring) {        // 문자인 경우
+                if (!isNaN(num)) {
+                    num = Number(num);
+                } else {        // 숫자로 변환 불가한 문자
+                    return num;
+                }
+            }
             // var regexp = /\B(?=(\d{3})+(?!\d))/g;
             return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
         }
