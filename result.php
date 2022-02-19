@@ -233,6 +233,11 @@
             let modalHtml = `
     <div id="modalContainer" class="modalContainer" onclick="closeModal();">
         <div class="modalWrap">
+            <img src="assets/btnClose.png" style="width:24px;
+                position:absolute;
+                z-index:999;
+                top:16px;
+                right:16px;" onclick="closeModal();">
             <div class="modal">
                 <div
                     style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">`;
@@ -246,7 +251,6 @@
                 <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
                     
                 </div>
-                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
                 <table style="margin-left:auto;margin-right:auto;width:100%;">
                     <thead>
                         <tr class="table_head">
