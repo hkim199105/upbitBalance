@@ -425,10 +425,10 @@
         <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;">
-                    <span id="title_sumProfit_lbl" class="title_small">실현한 수익</span>
+                    <span id="title_sumProfit_lbl" class="title_small"> </span>
                 </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span id="title_sumProfit">-</span>
+                    <span id="title_sumProfit"> </span>
                 </div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;">
                     <span id="title_sumProfitPercent"></span>
@@ -436,10 +436,10 @@
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    <span id="title_sumProfit_lbl" class="title_small">입금한 원화</span>
+                    <span id="title_sumProfit_lbl" class="title_small"> </span>
                  </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span id="title_sumWon">-</span>
+                    <span id="title_sumWon"> </span>
                 </div>
             </div>
         </div>
