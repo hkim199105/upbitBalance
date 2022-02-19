@@ -9,7 +9,11 @@
     <link rel="stylesheet" media="screen" href="./assets/style.css?<?php echo time();?>">
     <script src="./jquery-3.6.0.min.js"></script>
     <script src="./jquery.sortElements.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <style>
         :root {
             --background-color: ;
@@ -430,6 +434,80 @@
                     $("#tableCoinly>tbody").append(mTr);
                 }
 
+                $('#tablecoinly_head_profit').click();      // 최초 데이터 노출시 수익 기준 정렬
+
+                // graphDaily 출력
+                // data.profitCoinly: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
+                var profitDaily;
+                for (var mProfit in data.profitCoinly) {
+                    
+                    const mDate = new Date(mProfit[0]);
+                    const mYear = String(mDate.getFullYear()).padStart(4,'0');
+                    const mMonth = String(mDate.getMonth() + 1).padStart(2,'0')
+                    const mDay = String(mDate.getDate()).padStart(2,'0');
+                    const YYYYMMDD = mYear + '-' + mMonth + '-' + mDay
+                    if (YYYYMMDD in profitDaily) {
+                        profitDaily[YYYYMMDD] += mProfit[2];
+                    } else {
+                        profitDaily[YYYYMMDD] = [[YYYYMMDD, mProfit[2]]];
+                    }
+                }
+
+                let dates;
+                let profits;
+                for (var mDate in profitDaily) {
+                    dates.push(mDate);
+                    profits.push(profitDaily[mDate]);
+                }
+                var options = {
+                    series: [{
+                        name: 'Daily Profit',
+                        data: profits
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 500
+                    },
+                    plotOptions: {
+                        bar: {
+                            colors: {
+                                ranges: [{
+                                    from: -100,
+                                    to: -46,
+                                    color: '#F15B46'
+                                }, {
+                                    from: -45,
+                                    to: 0,
+                                    color: '#FEB019'
+                                }]
+                            },
+                            columnWidth: '80%',
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    yaxis: {
+                        title: {
+                            text: '수익',
+                        },
+                        labels: {
+                            formatter: function (y) {
+                                return y.toFixed(0);
+                            }
+                        }
+                    },
+                    xaxis: {
+                        type: 'datetime',
+                        categories: dates,
+                        labels: {
+                            rotate: -90
+                        }
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
             });
 
             // tableCoinly 정렬기능
@@ -474,8 +552,6 @@
                     });
 
                 });
-
-            $('#tablecoinly_head_profit').click();      // 최초 접근시 수익 기준 정렬
         }
 
     </script>
@@ -529,6 +605,8 @@
             </tbody>
         </table>
     </div>
+    
+    <div id="chart"></div>
 </body>
 
 </html>
