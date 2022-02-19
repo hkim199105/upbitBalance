@@ -657,6 +657,7 @@
     $result["balanceExpected"] = $balanceExpected;
     $result["trx"] = $trx;
     $result["withdraw"] = $withdraw;
+    $result["profitCoinly"] = $profitCoinly;
     
     echo(json_encode($result));
 ?>
