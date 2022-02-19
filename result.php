@@ -468,7 +468,9 @@
                     profits.push(profitDaily[mDate].totalProfit);
                 }
                 
-                var options = {
+                let mPositiveColor = getComputedStyle(document.body).getPropertyValue("--positive-color");
+                let mNegativeColor = getComputedStyle(document.body).getPropertyValue("--negative-color")
+                let options = {
                     series: [{
                         name: '수익',
                         data: profits
@@ -489,9 +491,9 @@
                     },
                     colors: [function({ value, seriesIndex, w }) {
                         if (value < 0) {
-                            return getComputedStyle(document.body).getPropertyValue("--negative-color")
+                            return mNegativeColor;
                         } else {
-                            return getComputedStyle(document.body).getPropertyValue("--positive-color")
+                            return mPositiveColor;
                         }
                     }],
                     dataLabels: {
@@ -515,12 +517,13 @@
                             let mTotalProfit = series[seriesIndex][dataPointIndex];
                             let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
                                 '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>';
+
                             if (mTotalProfit > 0) {
-                                '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                divTooltip += '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             } else if (mTotalProfit < 0) {
-                                '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                divTooltip += '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             } else {
-                                '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                divTooltip += '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             }
                             
                             let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
