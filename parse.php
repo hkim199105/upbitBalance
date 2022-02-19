@@ -658,6 +658,6 @@
     $result["trx"] = $trx;
     $result["withdraw"] = $withdraw;
     $result["profitCoinly"] = $profitCoinly;
-    sleep(10);
+    sleep(3);
     echo(json_encode($result));
 ?>
