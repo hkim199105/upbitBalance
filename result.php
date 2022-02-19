@@ -11,6 +11,18 @@
     <script src="./jquery.sortElements.js"></script>
     
     <style>
+        .gradient {
+            animation-duration: 1.8s;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+            animation-name: placeHolderShimmer;
+            animation-timing-function: linear;
+            background: #f6f7f8;
+            background: linear-gradient(to right, #fafafa 8%, #f4f4f4 38%, #fafafa 54%);
+            background-size: 1000px 640px;
+            position: relative;
+        }
+
         .tableCoinly_head_cell {
             text-align: left;
             font-size: 14px;
@@ -170,6 +182,24 @@
         .level {
             z-index: 2;
         }
+
+        @keyframes placeHolderShimmer{
+            0%{
+                background-position: -500px 0
+            }
+            100%{
+                background-position: 500px 0
+            }
+        }
+        .gradient {
+            animation-duration: 1.8s;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+            animation-name: placeHolderShimmer;
+            animation-timing-function: linear;
+            background: linear-gradient(0.25turn, #f8f6ff10 20%, #f8f6ff30, #f8f6ff10 80%);
+            background-size: 1000px 640px;
+        }
     </style>
     <script>
         let coinlyDetails = [];
@@ -309,7 +339,10 @@
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
                 }
-                $('#sumProfit').text(addComma(sumProfit));
+                $('#title_div').removeClass('gradient');
+                $('#title_sumProfit_lbl').text('실현한 수익');
+                $('#title_sumProfit').text(addComma(sumProfit));
+                $('#title_sumProfit_lbl').text('입금한 원화');
             });
 
             var tableCoinlySortDesc = false;
@@ -362,24 +395,24 @@
 
 <body>
     <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
-        <div style="background-color: #f8f6ff10;width: 100%;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #EB5374;">
+        <div id="title_div" class="gradient" style="background-color: #f8f6ff10;width: 100%;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #EB5374;" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    실현한 수익
+                    <span class="profit_positive" id="title_sumProfit_lbl"></span>
                 </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span class="profit_positive" id="sumProfit"></span>
+                    <span class="profit_positive" id="title_sumProfit"></span>
                 </div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;">
-                    <span class="profit_positive" id="sumProfitPercent"></span>
+                    <span class="profit_positive" id="title_sumProfitPercent"></span>
                 </div>
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    입금한 원화
+                    <span id="title_sumProfit_lbl"></span>
                  </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span id="sumWon"></span>
+                    <span id="title_sumWon"></span>
                 </div>
             </div>
         </div>
