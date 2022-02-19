@@ -456,7 +456,7 @@
                         if (mProfit[1] in profitDaily[YYYYMMDD].coinlyProfit) {
                             profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] += mProfit[2];
                         } else {
-                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] == mProfit[2];
+                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] = mProfit[2];
                         }
                     } else {
                         profitDaily[YYYYMMDD] = {totalProfit: mProfit[2], coinlyProfit: {}};
@@ -520,7 +520,7 @@
                                 '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>';
                             
                             let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
-                            if (profitDaily[YYYYMMDD].coinlyProfit.length > 0) {
+                            if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
                                 divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
 
                                 profitDaily[YYYYMMDD].coinlyProfit.forEach(function(coin){
