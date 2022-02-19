@@ -234,9 +234,13 @@
 
             <div class="modal">
                 <div
-                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">
-                    ` + data.coinInfo[coin] + ` <span class="coin_eng">` + coin + `</span>
-                </div>
+                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">`;
+                if (coin in data.coinInfo) {
+                    modalHtml += data.coinInfo[coin] + ` <span class="coin_eng">` + coin + `</span>`;
+                } else {
+                    modalHtml += coin;
+                }
+                modalHtml += `</div>
 
                 <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
                     2021.01.01 - 2022.01.31
