@@ -17,9 +17,9 @@
     <style>
         :root {
             --background-color: ;
-            --positive-color: #EB5374;
-            --negative-color: #5673EB;
-            --neutral-color: #444444;
+            --positive-color:#EB5374;
+            --negative-color:#5673EB;
+            --neutral-color:#444444;
         }
         
         .title_small {
@@ -515,16 +515,17 @@
                         // followCursor: true,
                         custom: function({series, seriesIndex, dataPointIndex, w}) {
                             let mTotalProfit = series[seriesIndex][dataPointIndex];
-                            let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
-                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>';
-
+                            let mClass;
                             if (mTotalProfit > 0) {
-                                divTooltip += '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                mClass = "profit_positive";
                             } else if (mTotalProfit < 0) {
-                                divTooltip += '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                mClass = "profit_negative";
                             } else {
-                                divTooltip += '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                                mClass = "profit_neutral";
                             }
+                            let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
+                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
+                                '<div class="' + mClass + '" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             
                             let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
                             if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
@@ -532,20 +533,24 @@
                                 
                                 for (var coin in profitDaily[YYYYMMDD].coinlyProfit) {
                                     let mCoinlyProfit = profitDaily[YYYYMMDD].coinlyProfit[coin];
+                                    let mClass;
+                                    let mCoinName;
+                                    if (mCoinlyProfit > 0) {
+                                        mClass = "profit_positive";
+                                    } else if (mCoinlyProfit < 0) {
+                                        mClass = "profit_negative";
+                                    } else {
+                                        mClass = "profit_neutral";
+                                    }
 
                                     if (coin in data.coinInfo) {
-                                        divTooltip += '<div style="display:flex;"><div>' + data.coinInfo[coin] + '</div>';
+                                        mCoinName = data.coinInfo[coin];
                                     } else {
-                                        divTooltip += '<div style="display:flex;"><div>' + coin + '</div>';
+                                        mCoinName = coin;
                                     }
 
-                                    if (mCoinlyProfit > 0) {
-                                        divTooltip += '<div class="profit_positive" tyle="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
-                                    } else if (mCoinlyProfit < 0) {
-                                        divTooltip += '<div class="profit_negative" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
-                                    } else {
-                                        divTooltip += '<div class="profit_neutral" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
-                                    }
+                                    divTooltip += '<div style="display:flex;"><div>' + mCoinName + '</div>' +
+                                        '<div class="' + mClass + '" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
                                 }
                                 divTooltip += '</div>';
                             }
