@@ -438,7 +438,7 @@
 
                 // graphDaily 출력
                 // data.profitTimely: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
-                var profitDaily;
+                var profitDaily = [];
                 data.profitTimely.forEach(function(mProfit){
                     
                     const mDate = new Date(mProfit[0]);
@@ -453,8 +453,8 @@
                     }
                 });
 
-                let dates;
-                let profits;
+                let dates = [];
+                let profits = [];
                 for (var mDate in profitDaily) {
                     dates.push(mDate);
                     profits.push(profitDaily[mDate]);
