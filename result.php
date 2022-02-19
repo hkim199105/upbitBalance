@@ -215,9 +215,9 @@
     </style>
     <script>
         let coinlyDetails = [];
-        function addComma(num) {
-            var regexp = /\B(?=(\d{3})+(?!\d))/g;
-            return num.toString().replace(regexp, ',');
+        function addComma(num, fractionDigits = 0) {
+            // var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
         }
 
         function openModal(coin) {
@@ -282,9 +282,9 @@
                         <tr class="tableCoinlyDetail_body">
                             <td class="tableCoinlyDetail_body_cell">` + mTrxs["callDate"] + `</td>
                             <td class="tableCoinlyDetail_body_cell"><span class="` + typeClassName +`">` + mTrxs["type"] + `</span></td>
-                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["quantity"] + `</td>
-                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["priceUnit"] + `</td>
-                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["priceTotal"] + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["quantity"], 8) + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["priceUnit"]) + `</td>
+                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["priceTotal"]) + `</td>
                             <td class="tableCoinlyDetail_body_cell">` + mTrxs["orderDate"] + `</td>
                         </tr>`;
             }
@@ -379,10 +379,10 @@
 
                 $('#title_div').removeClass('gradient');
                 $('#title_sumProfit_lbl').text('실현한 수익');
-                $('#title_sumProfit').text(sumProfit.toLocaleString("ko-KR", {maximumFractionDigits: 2}));
-                $('#title_sumProfitPercent').text(((sumProfit + data.withdraw.KRW) / data.withdraw.KRW * 100).toLocaleString("ko-KR", {maximumFractionDigits: 2}) + "%");
+                $('#title_sumProfit').text(addComma(sumProfit));
+                $('#title_sumProfitPercent').text(addComma((sumProfit + data.withdraw.KRW) / data.withdraw.KRW * 100, 2) + "%");
                 $('#title_sumWon_lbl').text('입금한 원화');
-                $('#title_sumWon').text(data.withdraw.KRW.toLocaleString("ko-KR", {maximumFractionDigits: 2}));
+                $('#title_sumWon').text(addComma(data.withdraw.KRW));
 
                 // tableCoinly 출력
                 for (var coin in data.profitCoinly) {
@@ -406,19 +406,19 @@
                     var mProfitRate = (mTobeAsset - mAsisAsset) / mAsisAsset * 100;
 
                     if (mProfit > 0) {
-                        mTr += '<span class="profit_positive">+' + mProfit + ' <span class="profit_percentage">' + mProfitRate + '%</span></span>';
+                        mTr += '<span class="profit_positive">+' + addComma(mProfit) + ' <span class="profit_percentage">' + addComma(mProfitRate, 2) + '%</span></span>';
                     } else if (mProfit < 0) {
-                        mTr += '<span class="profit_negative">' + mProfit + ' <span class="profit_percentage">' + mProfitRate + '%</span></span>';
+                        mTr += '<span class="profit_negative">' + addComma(mProfit) + ' <span class="profit_percentage">' + addComma(mProfitRate, 2) + '%</span></span>';
                     } else {
                         mTr += '<span class="profit_zero">-</span>';
                     }
                     
                     mTr += '</td>' + 
                         '<td class="tableCoinly_body_cell">' +
-                            mAsisAsset +
+                        addComma(mAsisAsset) +
                         '</td>' +
                         '<td class="tableCoinly_body_cell">' +
-                            mTobeAsset +
+                        addComma(mTobeAsset) +
                         '</td>' +
                     '</tr>';
 
