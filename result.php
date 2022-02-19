@@ -447,9 +447,15 @@
                     const mDay = String(mDate.getDate()).padStart(2,'0');
                     const YYYYMMDD = mYear + '-' + mMonth + '-' + mDay
                     if (YYYYMMDD in profitDaily) {
-                        profitDaily[YYYYMMDD] += mProfit[2];
+                        profitDaily[YYYYMMDD].totalProfit += mProfit[2];
+                        if (mProfit[1] in profitDaily[YYYYMMDD].coinlyProfit) {
+                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] += mProfit[2];
+                        } else {
+                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] == mProfit[2];
+                        }
                     } else {
-                        profitDaily[YYYYMMDD] = mProfit[2];
+                        profitDaily[YYYYMMDD] = {totalProfit: mProfit[2], coinlyProfit: {}};
+                        profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] = mProfit[2];
                     }
                 });
 
@@ -459,55 +465,111 @@
                     dates.push(mDate);
                     profits.push(profitDaily[mDate]);
                 }
+                
                 var options = {
                     series: [{
-                        name: 'Daily Profit',
+                        name: '수익',
                         data: profits
                     }],
                     chart: {
                         type: 'bar',
-                        height: 500
+                        height: 500,
+                        background: '#0F1421',
+                        sparkline: {
+                            enabled: false,
+                        },
+                        defaultLocale: 'en'
                     },
                     plotOptions: {
                         bar: {
-                            colors: {
-                                ranges: [{
-                                    from: -100,
-                                    to: -46,
-                                    color: '#F15B46'
-                                }, {
-                                    from: -45,
-                                    to: 0,
-                                    color: '#FEB019'
-                                }]
-                            },
-                            columnWidth: '80%',
+                            columnWidth: '90%',
                         }
                     },
+                    colors: [function({ value, seriesIndex, w }) {
+                        if (value < 0) {
+                            return '#FEB019'
+                        } else {
+                            return '#ffffff'
+                        }
+                    }],
                     dataLabels: {
                         enabled: false,
                     },
                     yaxis: {
-                        title: {
-                            text: '수익',
-                        },
+                        show: true,
+                        floating: false,
                         labels: {
                             formatter: function (y) {
-                                return y.toFixed(0);
+                                return addComma(y.toFixed(0));
                             }
                         }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        shared: false, 
+                        intersect: false,
+                        // followCursor: true,
+                        custom: function({series, seriesIndex, dataPointIndex, w}) {
+                            let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
+                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
+                                '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>';
+                            
+                            let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
+                            if (profitDaily[YYYYMMDD].coinlyProfit.length > 0) {
+                                divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
+
+                                profitDaily[YYYYMMDD].coinlyProfit.forEach(function(coin){
+                                    if (coin in data.coinInfo) {
+                                        divTooltip += '<div style="display:flex;"><div>' + data.coinInfo.coin + '</div>';
+                                    } else {
+                                        divTooltip += '<div style="display:flex;"><div>' + coin + '</div>';
+                                    }
+                                    divTooltip += '<div style="margin-left:10px;text-align:right;flex:1;">' + addComma(profitDaily[YYYYMMDD].coinlyProfit[coin]) + '원</div></div>';
+                                });
+                                divTooltip += '</div>';
+                            }
+                            divTooltip += '</div>';
+
+                            return divTooltip;
+                        },
+                    },
+                    theme: {
+                        mode: 'dark'
+                    },
+                    grid: {
+                        show: true,
+                        borderColor: '#ffffff11',
+                        strokeDashArray: 0
                     },
                     xaxis: {
                         type: 'datetime',
                         categories: dates,
                         labels: {
                             rotate: -90
-                        }
+                        },
+                        crosshairs: {
+                            show: true,
+                            width: 1,
+                            stroke: {
+                                color: '#ffffff33',
+                                width: 1,
+                                dashArray: 2,
+                            },
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        axisBorder: {
+                            show: false,
+                        },
                     }
                 };
 
                 var chart = new ApexCharts(document.querySelector("#chart"), options);
                 chart.render();
+
+
+
             });
 
             // tableCoinly 정렬기능

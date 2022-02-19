@@ -846,74 +846,131 @@
         '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
       )
   </script>
+    <style>
 
-  
-<style>
-      
-    #chart {
-  max-width: 650px;
-  margin: 35px auto;
-}
-  
-</style>
+        
+        #chart {
+            min-width: 500px;
+            max-width: 1000px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <div id="chart"></div>
 
 <script>
+    
+    function addComma(num, fractionDigits = 0) {
+            if (num.substring) {        // 문자인 경우
+                if (!isNaN(num)) {
+                    num = Number(num);
+                } else {        // 숫자로 변환 불가한 문자
+                    return num;
+                }
+            }
+            // var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
+        }
     var options = {
         series: [{
-            name: 'Daily Profit',
-            data: [1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -18.2, -14.16, -11.1, -6.09, 0.34, 3.88, 13.07,
-                5.8, 2, 7.37, 8.1, 13.57, 15.75, 17.1, 19.8, -27.03, -54.4, -47.2, -43.3, -18.6, -
-                48.6, -41.1, -39.6, -37.6, -29.4, -21.4, -2.4
-            ]
+            name: '수익',
+            data: [18114, 41792, -98865, 63516, 92353, 187162, 660468, 3373, 176506, 1093567, 8372, 309781, 1015487, 361491, 284348, -413605, -26505, -113686, 804896, -135834, 122366, -343169, 46839, 551077, 253528, 1010671, 45008, -16056, 1337045, 1176079, 557655, -407333, 36486, -48416, 442314, -64094, -134161, 51507, -34462, 170165, 958659, 767456, -7083, -229569, 145271, 1064730, -551553, -41335, 166367, 1155859, 1059432, 1030113, 132892, 63603, -25382, -1837418, -1371, -143633, -225338, -437281, -1535014, -23657, -33972, 431206, 33310, 2628693, 2971580, 180580, 94962, -501482, -104347, -34737, -24830, 4008951, 1077347, 565439, 79058, 995965, 416430]
         }],
         chart: {
             type: 'bar',
-            height: 500
+            height: 500,
+            background: '#0F1421',
+            sparkline: {
+                enabled: false,
+            },
+            defaultLocale: 'en'
         },
         plotOptions: {
             bar: {
-                colors: {
-                    ranges: [{
-                        from: -100,
-                        to: -46,
-                        color: '#F15B46'
-                    }, {
-                        from: -45,
-                        to: 0,
-                        color: '#FEB019'
-                    }]
-                },
-                columnWidth: '80%',
+                columnWidth: '90%',
             }
         },
+        colors: [function({ value, seriesIndex, w }) {
+            if (value < 0) {
+                return '#FEB019'
+            } else {
+                return '#ffffff'
+            }
+        }],
         dataLabels: {
             enabled: false,
         },
         yaxis: {
-            title: {
-                text: 'Growth',
-            },
+            show: true,
+            floating: false,
             labels: {
                 formatter: function (y) {
-                    return y.toFixed(0) + "%";
+                    return addComma(y.toFixed(0));
                 }
             }
         },
+        tooltip: {
+            enabled: true,
+            shared: false, 
+            intersect: false,
+            // followCursor: true,
+            custom: function({series, seriesIndex, dataPointIndex, w}) {
+                console.log({series, seriesIndex, dataPointIndex, w})
+                return '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
+                
+                    '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
+                    '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>' +
+                    '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움234324234234</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                    '</div>'+
+                '</div>'
+                
+            },
+        },
+        theme: {
+            mode: 'dark'
+        },
+        grid: {
+            show: true,
+            borderColor: '#ffffff11',
+            strokeDashArray: 0
+        },
         xaxis: {
             type: 'datetime',
-            categories: [
-                '2011-01-01', '2011-02-01', '2011-03-01', '2011-04-01', '2011-05-01', '2011-06-01',
-                '2011-07-01', '2011-08-01', '2011-09-01', '2011-10-01', '2011-11-01', '2011-12-01',
-                '2012-01-01', '2012-02-01', '2012-03-01', '2012-04-01', '2012-05-01', '2012-06-01',
-                '2012-07-01', '2012-08-01', '2012-09-01', '2012-10-01', '2012-11-01', '2012-12-01',
-                '2013-01-01', '2013-02-01', '2013-03-01', '2013-04-01', '2013-05-01', '2013-06-01',
-                '2013-07-01', '2013-08-01', '2013-09-01'
-            ],
+            categories: ['2021-01-08', '2021-01-10', '2021-01-20', '2021-02-06', '2021-02-09', '2021-02-10', '2021-02-11', '2021-02-12', '2021-02-13', '2021-02-14', '2021-02-15', '2021-02-16', '2021-02-17', '2021-02-18', '2021-02-19', '2021-02-20', '2021-02-27', '2021-03-03', '2021-03-04', '2021-03-06', '2021-03-08', '2021-03-09', '2021-03-11', '2021-03-13', '2021-03-14', '2021-03-15', '2021-03-16', '2021-03-17', '2021-03-18', '2021-03-19', '2021-03-20', '2021-03-21', '2021-03-22', '2021-03-23', '2021-03-24', '2021-03-25', '2021-03-26', '2021-03-27', '2021-03-28', '2021-03-29', '2021-03-30', '2021-03-31', '2021-04-01', '2021-04-03', '2021-04-04', '2021-04-05', '2021-04-06', '2021-04-08', '2021-04-09', '2021-04-11', '2021-04-13', '2021-04-14', '2021-04-15', '2021-04-16', '2021-04-21', '2021-04-27', '2021-05-05', '2021-05-20', '2021-05-24', '2021-05-25', '2021-06-23', '2021-08-06', '2021-08-13', '2021-08-16', '2021-08-20', '2021-08-24', '2021-09-05', '2021-09-19', '2021-09-20', '2021-09-24', '2021-10-22', '2021-10-29', '2021-11-16', '2021-11-24', '2021-11-25', '2021-11-26', '2021-11-29', '2021-12-01', '2021-12-02'],
             labels: {
                 rotate: -90
-            }
+            },
+            crosshairs: {
+                show: true,
+                width: 1,
+                stroke: {
+                    color: '#ffffff33',
+                    width: 1,
+                    dashArray: 2,
+                },
+            },
+            axisTicks: {
+                show: false,
+            },
+            axisBorder: {
+                show: false,
+            },
         }
     };
 
