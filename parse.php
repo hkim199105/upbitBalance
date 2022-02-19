@@ -554,8 +554,6 @@
         }
     }   
 
-
-    
     // # parse balance data
     // # 0: 코인명(한글)
     // # 1: 코인명(영어)
@@ -606,12 +604,6 @@
     //     }
     // }
 
-    // # sort
-    // foreach ((array) $profitCoinly as $key => $value) {
-    //     $sort[$key] = $value;
-    // }
-    // array_multisort($sort, SORT_ASC, $profitCoinly);
-    
     # print
     // # 일자별 수익
     // profitTimely = sorted(profitTimely, key = lambda x:x[0])
@@ -632,32 +624,14 @@
     //     for coin in profitTimelyFormated[day]:
     //         print("\t" + symbolToKor(coin) + ": " + decimalToPriceString(profitTimelyFormated[day][coin]) + "원")
 
-    # 요약
-    // if (isset($withdraw["KRW"])) {
-    //     echo "<br>";
-    //     echo "투자금액\t\t" . number_format($withdraw["KRW"]) . "원";
-    //     echo "<br>";
-    //     echo "총수익\t\t" . number_format($sum) . "원(" . number_format($sum / $withdraw["KRW"] * 100, 2) . "%)";
-    //     echo "<br>";
-    //     echo "총수수료:\t" . number_format($fee) . "원";
-    //     echo "<br>";
-    //     echo "총수익\t\t" . number_format($sum - $fee) . "원(" . number_format(($sum - $fee) / $withdraw["KRW"] * 100, 2) . "%)";
-    // } else {
-    //     echo "<br>";
-    //     echo "총수익\t\t" . number_format($sum) . "원";
-    //     echo "<br>";
-    //     echo "총수수료:\t" . number_format($fee) . "원";
-    //     echo "<br>";
-    //     echo "총수익\t\t" . number_format($sum - $fee) . "원";
-    // }
-    
-
     $result = [];
     $result["coinInfo"] = $coinInfo;
     $result["balanceExpected"] = $balanceExpected;
     $result["trx"] = $trx;
     $result["withdraw"] = $withdraw;
     $result["profitCoinly"] = $profitCoinly;
-    sleep(3);
+    $result["profitTimely"] = $profitTimely;
+
+    sleep(2);
     echo(json_encode($result));
 ?>
