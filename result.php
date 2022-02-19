@@ -220,6 +220,10 @@
     <script>
         let coinlyDetails = [];
         function addComma(num, fractionDigits = 0) {
+            if (isNaN(num)) {           // NaN인 경우
+                return "";
+            }
+
             if (num.substring) {        // 문자인 경우
                 if (!isNaN(num)) {
                     num = Number(num);
@@ -440,14 +444,15 @@
                 // data.profitTimely: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
                 var profitDaily = [];
                 data.profitTimely.forEach(function(mProfit){
-                    
                     const mDate = new Date(mProfit[0]);
                     const mYear = String(mDate.getFullYear()).padStart(4,'0');
                     const mMonth = String(mDate.getMonth() + 1).padStart(2,'0')
                     const mDay = String(mDate.getDate()).padStart(2,'0');
                     const YYYYMMDD = mYear + '-' + mMonth + '-' + mDay
+
                     if (YYYYMMDD in profitDaily) {
                         profitDaily[YYYYMMDD].totalProfit += mProfit[2];
+
                         if (mProfit[1] in profitDaily[YYYYMMDD].coinlyProfit) {
                             profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] += mProfit[2];
                         } else {
@@ -463,7 +468,7 @@
                 let profits = [];
                 for (var mDate in profitDaily) {
                     dates.push(mDate);
-                    profits.push(profitDaily[mDate]);
+                    profits.push(profitDaily[mDate].totalProfit);
                 }
                 
                 var options = {
