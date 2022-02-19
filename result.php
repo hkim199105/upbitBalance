@@ -308,7 +308,7 @@
                 var sumProfit = 0;
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
-                }                
+                }
                 $('#sumProfit').text(addComma(sumProfit));
             });
 
