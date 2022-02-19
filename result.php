@@ -337,6 +337,7 @@
                 }
             }).done(function(data) {
                 data = JSON.parse(data);
+                console.log(data);
 
                 //   "balanceExpected": {
                 //     "BTC": {
@@ -351,6 +352,7 @@
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
                 }
+                
 
                 // titleDiv 출력
                 if (sumProfit > 0) {
@@ -372,6 +374,7 @@
                 $('#title_sumProfit_lbl').text('실현한 수익');
                 $('#title_sumProfit').text(addComma(sumProfit));
                 $('#title_sumWon_lbl').text('입금한 원화');
+                $('#title_sumWon').text(addComma(sumProfit));
             });
 
             var tableCoinlySortDesc = false;
