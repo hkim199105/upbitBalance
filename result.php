@@ -17,6 +17,11 @@
             --negative-color: #5673EB;
             --neutral-color: #444444;
         }
+        
+        .title_small {
+            font-size: 14px;
+            font-weight: lighter;
+        }
 
         .tableCoinly_head_cell {
             text-align: left;
@@ -352,14 +357,15 @@
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
 .getPropertyValue("--positive-color")); 
                     $('#title_sumProfit').addClass('profit_positive');
+                    $('#title_sumProfit_lbl').addClass('profit_positive');
                 } else if (sumProfit < 0) {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
 .getPropertyValue("--negative-color")); 
                     $('#title_sumProfit').addClass('profit_negative');
+                    $('#title_sumProfit_lbl').addClass('profit_negative');
                 } else {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.getPropertyValue("--neutral-color")); 
-                    $('#title_sumProfit').addClass('profit_neutral');
+.getPropertyValue("--neutral-color"));
                 }
 
                 $('#title_div').removeClass('gradient');
@@ -418,19 +424,19 @@
     <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
         <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
-                <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    <span class="profit_positive" id="title_sumProfit_lbl">입금한 원화</span>
+                <div style="text-align: center;">
+                    <span id="title_sumProfit_lbl" class="title_small">실현한 수익</span>
                 </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span class="profit_positive" id="title_sumProfit">-</span>
+                    <span id="title_sumProfit">-</span>
                 </div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;">
-                    <span class="profit_positive" id="title_sumProfitPercent"></span>
+                    <span id="title_sumProfitPercent"></span>
                 </div>
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    <span id="title_sumProfit_lbl">실현한 수익</span>
+                    <span id="title_sumProfit_lbl" class="title_small">입금한 원화</span>
                  </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
                     <span id="title_sumWon">-</span>
