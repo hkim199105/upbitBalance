@@ -28,6 +28,13 @@
             width: 80%;
             margin-left: auto;
             margin-right: auto;
+            margin-top:30px;
+            margin-bottom:30px;
+            height:300px;
+            position:sticky;
+            bottom:-15px;
+            background-color: #0F1421;
+            box-shadow : 0px -10px 20px 10px #0F1421;
         }
 
         .title_small {
@@ -680,7 +687,7 @@
     </div>
     
     <div style="text-align:center;">
-        <table id="tableCoinly" style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+        <table id="tableCoinly" style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
             <thead>
                 <tr class="tableCoinly_head">
                     <th class="tableCoinly_head_cell" style="width:37%;">

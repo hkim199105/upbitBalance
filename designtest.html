@@ -411,7 +411,7 @@
     <span style="display:none;">sdfkjlasdlfkj</span>
     <div style="text-align:center;">
         <table id="tableCoinly"
-            style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+            style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
             
             <thead>
             <tr class="tableCoinly_head">
@@ -719,6 +719,25 @@
             </tbody>
         </table>
     </div>
+    <style>
+
+        
+        #chart {
+            min-width: 500px;
+            max-width: 1000px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top:30px;
+            margin-bottom:30px;
+            height:300px;
+            position:sticky;
+            bottom:-15px;
+            background-color: #0F1421;
+            box-shadow : 0px -10px 20px 10px #0F1421;
+        }
+    </style>
+<div id="chart"></div>
 
 
 
@@ -846,20 +865,7 @@
         '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
       )
   </script>
-    <style>
-
-        
-        #chart {
-            min-width: 500px;
-            max-width: 1000px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<div id="chart"></div>
-
 <script>
     
     function addComma(num, fractionDigits = 0) {
@@ -880,7 +886,7 @@
         }],
         chart: {
             type: 'bar',
-            height: 500,
+            height:300,
             background: '#0F1421',
             sparkline: {
                 enabled: false,
