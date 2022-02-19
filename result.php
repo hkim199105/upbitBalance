@@ -222,7 +222,7 @@
 
         function openModal(coin) {
             let body = document.getElementsByTagName('body')[0];
-            let data = JSON.parse(document.getElementById('originalData').text);
+            let data = JSON.parse(document.getElementById('originalData').innerText);
             let modalHtml = `
     <div id="modalContainer" class="modalContainer" onclick="closeModal();">
         <div class="modalWrap">
@@ -382,7 +382,7 @@
 
                 // tableCoinly 출력
                 for (var coin in data.profitCoinly) {
-                    var mTr = '<tr class="tableCoinly_body" onclick="openModal(' + coin + ')">' + 
+                    var mTr = '<tr class="tableCoinly_body" onclick="openModal(`' + coin + '`)">' + 
                         '<td class="tableCoinly_body_cell">';
                     
                     if (coin in data.coinInfo) {
