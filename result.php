@@ -302,8 +302,8 @@
                 //       "FeeSellTotal": 13573.02
                 //     },
                 var sumProfit = 0;
-                for (var mProfit in data.profitCoinly) {
-                    sumProfit += mProfit;
+                for (var coin in data.profitCoinly) {
+                    sumProfit += data.profitCoinly[coin];
                 }                
                 $('#sumProfit').text(sumProfit);
             });
