@@ -523,14 +523,14 @@
                             if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
                                 divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
 
-                                for (var coin in profitDaily[YYYYMMDD].coinlyProfit) 
+                                for (var coin in profitDaily[YYYYMMDD].coinlyProfit) {
                                     if (coin in data.coinInfo) {
                                         divTooltip += '<div style="display:flex;"><div>' + data.coinInfo[coin] + '</div>';
                                     } else {
                                         divTooltip += '<div style="display:flex;"><div>' + coin + '</div>';
                                     }
                                     divTooltip += '<div style="margin-left:10px;text-align:right;flex:1;">' + addComma(profitDaily[YYYYMMDD].coinlyProfit[coin]) + '원</div></div>';
-                                });
+                                }
                                 divTooltip += '</div>';
                             }
                             divTooltip += '</div>';
