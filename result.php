@@ -286,8 +286,8 @@
                 url: "parse.php",
                 type: "post",
                 data: {
-                    transaction: <?=$_POST["transaction"]?>,
-                    balance: <?=$_POST["balance"]?>
+                    transaction: '<?=$_POST["transaction"]?>',
+                    balance: '<?=$_POST["balance"]?>'
                 }
             }).done(function(data) {
                 console.log(data);
