@@ -374,20 +374,17 @@
 
                 // titleDiv 출력
                 if (sumProfit > 0) {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.getPropertyValue("--positive-color")); 
+			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--positive-color")); 
                     $('#title_sumProfit_lbl').addClass('profit_positive');
                     $('#title_sumProfit').addClass('profit_positive');
                     $('#title_sumProfitPercent').addClass('profit_positive');
                 } else if (sumProfit < 0) {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.getPropertyValue("--negative-color")); 
+			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--negative-color")); 
                     $('#title_sumProfit_lbl').addClass('profit_negative');
                     $('#title_sumProfit').addClass('profit_negative');
                     $('#title_sumProfitPercent').addClass('profit_negative');
                 } else {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.getPropertyValue("--neutral-color"));
+			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--neutral-color"));
                 }
 
                 $('#title_div').removeClass('gradient');
@@ -492,9 +489,9 @@
                     },
                     colors: [function({ value, seriesIndex, w }) {
                         if (value < 0) {
-                            return '#FEB019'
+                            return getComputedStyle(document.body).getPropertyValue("--negative-color")
                         } else {
-                            return '#ffffff'
+                            return getComputedStyle(document.body).getPropertyValue("--positive-color")
                         }
                     }],
                     dataLabels: {
@@ -515,9 +512,16 @@
                         intersect: false,
                         // followCursor: true,
                         custom: function({series, seriesIndex, dataPointIndex, w}) {
+                            let profit = series[seriesIndex][dataPointIndex];
                             let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
-                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
-                                '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>';
+                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>';
+                            if (profit > 0) {
+                                '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
+                            } else if (profit < 0) {
+                                '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
+                            } else {
+                                '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
+                            }
                             
                             let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
                             if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
