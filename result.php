@@ -340,9 +340,9 @@
                     sumProfit += data.profitCoinly[coin];
                 }
                 $('#title_div').removeClass('gradient');
-                $('#title_sumProfit_lbl').text('실현한 수익');
+                // $('#title_sumProfit_lbl').text('실현한 수익');
                 $('#title_sumProfit').text(addComma(sumProfit));
-                $('#title_sumProfit_lbl').text('입금한 원화');
+                // $('#title_sumProfit_lbl').text('입금한 원화');
             });
 
             var tableCoinlySortDesc = false;
@@ -398,10 +398,10 @@
         <div id="title_div" class="gradient" style="background-color: #f8f6ff10;width: 100%;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #EB5374;" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    <span class="profit_positive" id="title_sumProfit_lbl"></span>
+                    <span class="profit_positive" id="title_sumProfit_lbl">입금한 원화</span>
                 </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span class="profit_positive" id="title_sumProfit"></span>
+                    <span class="profit_positive" id="title_sumProfit">-</span>
                 </div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;">
                     <span class="profit_positive" id="title_sumProfitPercent"></span>
@@ -409,10 +409,10 @@
             </div>
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                    <span id="title_sumProfit_lbl"></span>
+                    <span id="title_sumProfit_lbl">실현한 수익</span>
                  </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span id="title_sumWon"></span>
+                    <span id="title_sumWon">-</span>
                 </div>
             </div>
         </div>
