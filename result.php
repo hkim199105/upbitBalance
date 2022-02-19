@@ -373,7 +373,7 @@
                 $('#title_div').removeClass('gradient');
                 $('#title_sumProfit_lbl').text('실현한 수익');
                 $('#title_sumProfit').text(sumProfit.toLocaleString("ko-KR", {maximumFractionDigits: 2}));
-                $('#title_sumProfitPercent').text(((sumProfit + data.withdraw.KRW) / data.withdraw.KRW * 100).toLocaleString("ko-KR", {maximumFractionDigits: 2}));
+                $('#title_sumProfitPercent').text(((sumProfit + data.withdraw.KRW) / data.withdraw.KRW * 100).toLocaleString("ko-KR", {maximumFractionDigits: 2}) + "%");
                 $('#title_sumWon_lbl').text('입금한 원화');
                 $('#title_sumWon').text(data.withdraw.KRW.toLocaleString("ko-KR", {maximumFractionDigits: 2}));
             });
