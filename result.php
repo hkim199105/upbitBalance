@@ -173,7 +173,11 @@
     </style>
     <script>
         let coinlyDetails = [];
-        
+        function addComma(num) {
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toString().replace(regexp, ',');
+        }
+
         function openModal(coinIndex) {
             let body = document.getElementsByTagName('body')[0];
             let modalHtml = `
@@ -305,7 +309,7 @@
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
                 }                
-                $('#sumProfit').text(parseFloat(sumProfit).replace(/,/g, ''));
+                $('#sumProfit').text(addComma(sumProfit));
             });
 
             var tableCoinlySortDesc = false;
