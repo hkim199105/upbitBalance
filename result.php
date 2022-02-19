@@ -439,7 +439,7 @@
                 // graphDaily 출력
                 // data.profitTimely: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
                 var profitDaily;
-                for (var mProfit in data.profitTimely) {
+                data.profitTimely.forEach(function(mProfit){
                     
                     const mDate = new Date(mProfit[0]);
                     const mYear = String(mDate.getFullYear()).padStart(4,'0');
@@ -451,7 +451,7 @@
                     } else {
                         profitDaily[YYYYMMDD] = [[YYYYMMDD, mProfit[2]]];
                     }
-                }
+                });
 
                 let dates;
                 let profits;
