@@ -30,6 +30,7 @@
     <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
     <style>
         :root {
@@ -376,9 +377,12 @@
         }
 
         function sendLink() {
-            Kakao.Link.sendScrap({
-            requestUrl: 'https://developers.kakao.com',
-            })
+            Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
+            if (Kakao.isInitialized() == true) {
+                Kakao.Link.sendScrap({
+                requestUrl: 'https://developers.kakao.com',
+                })
+            }
         }
 
         window.onload = function () {
