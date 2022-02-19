@@ -305,11 +305,10 @@ data='{"coinInfo":{"BTC":"\ube44\ud2b8\ucf54\uc778","ETH":"\uc774\ub354\ub9ac\uc
                 //       "FeeSellTotal": 13573.02
                 //     },
                 var sumProfit = 0;
-                for (var coin in data.balanceExpected) {
-                    var coinData = data.balanceExpected[coin];
-                    // coinData['PriceSellTota']
+                for (var mProfit in data.profitCoinly) {
+                    sumProfit += mProfit;
                 }                
-                $('#sumProfit').text(data);
+                $('#sumProfit').text(sumProfit);
             });
 
             var tableCoinlySortDesc = false;
