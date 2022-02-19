@@ -918,7 +918,7 @@
             // followCursor: true,
             custom: function({series, seriesIndex, dataPointIndex, w}) {
                 console.log({series, seriesIndex, dataPointIndex, w})
-                return '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
+                return '<div class="arrow_box" style="padding:8px;background:#ffffff11;border-radius:10px;">' +
                 
                     '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
                     '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>' +

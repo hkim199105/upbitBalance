@@ -22,6 +22,14 @@
             --neutral-color:#444444;
         }
         
+        #chart {
+            min-width: 500px;
+            max-width: 1000px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .title_small {
             font-size: 14px;
             font-weight: lighter;
@@ -523,7 +531,7 @@
                             } else {
                                 mClass = "profit_neutral";
                             }
-                            let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
+                            let divTooltip = '<div style="padding:8px;background:#ffffff11;border-radius:10px;">' +
                                 '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
                                 '<div class="' + mClass + '" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             
