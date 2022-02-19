@@ -523,9 +523,9 @@
                             if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
                                 divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
 
-                                profitDaily[YYYYMMDD].coinlyProfit.forEach(function(coin){
+                                for (var coin in profitDaily[YYYYMMDD].coinlyProfit) 
                                     if (coin in data.coinInfo) {
-                                        divTooltip += '<div style="display:flex;"><div>' + data.coinInfo.coin + '</div>';
+                                        divTooltip += '<div style="display:flex;"><div>' + data.coinInfo[coin] + '</div>';
                                     } else {
                                         divTooltip += '<div style="display:flex;"><div>' + coin + '</div>';
                                     }
