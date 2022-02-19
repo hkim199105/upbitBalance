@@ -427,10 +427,10 @@
         <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;">
-                    <span id="title_sumProfit_lbl" class="title_small"> </span>
+                    <span id="title_sumProfit_lbl" class="title_small">&nbsp;</span>
                 </div>
                 <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                    <span id="title_sumProfit">-</span>
+                    <span id="title_sumProfit"></span>
                 </div>
                 <div style="text-align: center;font-size: 20px;font-weight: lighter;">
                     <span id="title_sumProfitPercent"></span>
