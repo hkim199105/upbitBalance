@@ -358,13 +358,15 @@
                 if (sumProfit > 0) {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
 .getPropertyValue("--positive-color")); 
-                    $('#title_sumProfit').addClass('profit_positive');
                     $('#title_sumProfit_lbl').addClass('profit_positive');
+                    $('#title_sumProfit').addClass('profit_positive');
+                    $('#title_sumProfitPercent').addClass('profit_positive');
                 } else if (sumProfit < 0) {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
 .getPropertyValue("--negative-color")); 
-                    $('#title_sumProfit').addClass('profit_negative');
                     $('#title_sumProfit_lbl').addClass('profit_negative');
+                    $('#title_sumProfit').addClass('profit_negative');
+                    $('#title_sumProfitPercent').addClass('profit_negative');
                 } else {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
 .getPropertyValue("--neutral-color"));
