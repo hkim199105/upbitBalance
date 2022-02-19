@@ -437,9 +437,9 @@
                 $('#tablecoinly_head_profit').click();      // 최초 데이터 노출시 수익 기준 정렬
 
                 // graphDaily 출력
-                // data.profitCoinly: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
+                // data.profitTimely: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
                 var profitDaily;
-                for (var mProfit in data.profitCoinly) {
+                for (var mProfit in data.profitTimely) {
                     
                     const mDate = new Date(mProfit[0]);
                     const mYear = String(mDate.getFullYear()).padStart(4,'0');
