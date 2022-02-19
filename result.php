@@ -305,7 +305,7 @@
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
                 }                
-                $('#sumProfit').text(sumProfit);
+                $('#sumProfit').text(parseFloat(sumProfit).replace(/,/g, ''));
             });
 
             var tableCoinlySortDesc = false;
