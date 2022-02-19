@@ -512,28 +512,37 @@
                         intersect: false,
                         // followCursor: true,
                         custom: function({series, seriesIndex, dataPointIndex, w}) {
-                            let profit = series[seriesIndex][dataPointIndex];
+                            let mTotalProfit = series[seriesIndex][dataPointIndex];
                             let divTooltip = '<div class="arrow_box" style="padding:8px;background:#ffffff11">' +
                                 '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>';
-                            if (profit > 0) {
-                                '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
-                            } else if (profit < 0) {
-                                '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
+                            if (mTotalProfit > 0) {
+                                '<div class="profit_positive" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
+                            } else if (mTotalProfit < 0) {
+                                '<div class="profit_negative" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             } else {
-                                '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(profit) + '원</div>';
+                                '<div class="profit_neutral" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
                             }
                             
                             let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
                             if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
                                 divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
-
+                                
                                 for (var coin in profitDaily[YYYYMMDD].coinlyProfit) {
+                                    let mCoinlyProfit = profitDaily[YYYYMMDD].coinlyProfit[coin];
+
                                     if (coin in data.coinInfo) {
                                         divTooltip += '<div style="display:flex;"><div>' + data.coinInfo[coin] + '</div>';
                                     } else {
                                         divTooltip += '<div style="display:flex;"><div>' + coin + '</div>';
                                     }
-                                    divTooltip += '<div style="margin-left:10px;text-align:right;flex:1;">' + addComma(profitDaily[YYYYMMDD].coinlyProfit[coin]) + '원</div></div>';
+
+                                    if (mCoinlyProfit > 0) {
+                                        divTooltip += '<div class="profit_positive" tyle="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
+                                    } else if (mCoinlyProfit < 0) {
+                                        divTooltip += '<div class="profit_negative" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
+                                    } else {
+                                        divTooltip += '<div class="profit_neutral" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
+                                    }
                                 }
                                 divTooltip += '</div>';
                             }
