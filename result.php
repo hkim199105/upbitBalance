@@ -11,16 +11,11 @@
     <script src="./jquery.sortElements.js"></script>
     
     <style>
-        .gradient {
-            animation-duration: 1.8s;
-            animation-fill-mode: forwards;
-            animation-iteration-count: infinite;
-            animation-name: placeHolderShimmer;
-            animation-timing-function: linear;
-            background: #f6f7f8;
-            background: linear-gradient(to right, #fafafa 8%, #f4f4f4 38%, #fafafa 54%);
-            background-size: 1000px 640px;
-            position: relative;
+        :root {
+            --background-color: ;
+            --positive-color: #EB5374;
+            --negative-color: #5673EB;
+            --neutral-color: #444444;
         }
 
         .tableCoinly_head_cell {
@@ -89,19 +84,22 @@
         }
 
         .type_sell {
-            color: #5673EB
+            color: var(--negative-color)
         }
 
         .type_buy {
-            color: #EB5374
+            color: var(--positive-color)
         }
 
         .profit_positive {
-            color: #EB5374
+            color: var(--positive-color)
         }
 
         .profit_negative {
-            color: #5673EB
+            color: var(--negative-color)
+        }
+        .profit_neutral {
+            color: var(--neutral-color)
         }
 
         .profit_zero {
@@ -199,6 +197,15 @@
             animation-timing-function: linear;
             background: linear-gradient(0.25turn, #f8f6ff10 20%, #f8f6ff30, #f8f6ff10 80%);
             background-size: 1000px 640px;
+        }
+
+        #title_div {
+            background-color: #f8f6ff10;
+            width: 100%;
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            border: 0.1px solid var(--neutral-color);
         }
     </style>
     <script>
@@ -339,10 +346,21 @@
                 for (var coin in data.profitCoinly) {
                     sumProfit += data.profitCoinly[coin];
                 }
+
+                // titleDiv 출력
+                if (sumProfit > 0) {
+			        $("#title_div").css("border","0.1px solid " + element.style.getPropertyValue("--positive-color")); 
+                    $('#title_sumProfit').addClass('profit_positive');
+                } else if (sumProfit < 0) {
+			        $("#title_div").css("border","0.1px solid " + element.style.getPropertyValue("--negative-color")); 
+                    $('#title_sumProfit').addClass('profit_negative');
+                } else {
+			        $("#title_div").css("border","0.1px solid " + element.style.getPropertyValue("--neutral-color")); 
+                    $('#title_sumProfit').addClass('profit_neutral');
+                }
+
                 $('#title_div').removeClass('gradient');
-                // $('#title_sumProfit_lbl').text('실현한 수익');
                 $('#title_sumProfit').text(addComma(sumProfit));
-                // $('#title_sumProfit_lbl').text('입금한 원화');
             });
 
             var tableCoinlySortDesc = false;
@@ -395,7 +413,7 @@
 
 <body>
     <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
-        <div id="title_div" class="gradient" style="background-color: #f8f6ff10;width: 100%;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #EB5374;" >
+        <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;font-size:14px;font-weight: lighter;">
                     <span class="profit_positive" id="title_sumProfit_lbl">입금한 원화</span>
