@@ -350,15 +350,15 @@
                 // titleDiv 출력
                 if (sumProfit > 0) {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.style.getPropertyValue("--positive-color")); 
+.getPropertyValue("--positive-color")); 
                     $('#title_sumProfit').addClass('profit_positive');
                 } else if (sumProfit < 0) {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.style.getPropertyValue("--negative-color")); 
+.getPropertyValue("--negative-color")); 
                     $('#title_sumProfit').addClass('profit_negative');
                 } else {
 			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body)
-.style.getPropertyValue("--neutral-color")); 
+.getPropertyValue("--neutral-color")); 
                     $('#title_sumProfit').addClass('profit_neutral');
                 }
 
