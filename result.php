@@ -375,7 +375,12 @@
             check.remove();
         }
 
-        
+        function sendLink() {
+            Kakao.Link.sendScrap({
+            requestUrl: 'https://developers.kakao.com',
+            })
+        }
+
         window.onload = function () {
             $.ajax({
                 url: "parse.php",
@@ -727,6 +732,11 @@
     </div>
     
     <div id="chart"></div>
+    <div>
+        <a id="kakao-link-btn" href="javascript:sendLink()">
+            <img src="assets/btnKakao.png" />
+        </a>
+    </div>
 </body>
 
 </html>
