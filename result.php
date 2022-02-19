@@ -449,7 +449,7 @@
                     if (YYYYMMDD in profitDaily) {
                         profitDaily[YYYYMMDD] += mProfit[2];
                     } else {
-                        profitDaily[YYYYMMDD] = [[YYYYMMDD, mProfit[2]]];
+                        profitDaily[YYYYMMDD] = mProfit[2];
                     }
                 });
 
