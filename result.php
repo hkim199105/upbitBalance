@@ -220,8 +220,9 @@
             return num.toString().replace(regexp, ',');
         }
 
-        function openModal(coinIndex) {
+        function openModal(coin) {
             let body = document.getElementsByTagName('body')[0];
+            let data = JSON.parse(document.getElementById('originalData').text);
             let modalHtml = `
     <div id="modalContainer" class="modalContainer" onclick="closeModal();">
         <div class="modalWrap">
@@ -234,7 +235,7 @@
             <div class="modal">
                 <div
                     style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">
-                    ` + coinlyDetails[coinIndex]["nameKor"] + ` <span class="coin_eng">` + coinlyDetails[coinIndex]["nameEng"] + `</span>
+                    ` + data.coinInfo[coin] + ` <span class="coin_eng">` + coin + `</span>
                 </div>
 
                 <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
@@ -265,8 +266,8 @@
                         </tr>
                     </thead>
                     <tbody>`;
-            for (let i = 0; i < coinlyDetails[coinIndex]["trx"].length; i++) {
-                let mTrxs = coinlyDetails[coinIndex]["trx"][i];
+            for (let i = 0; i < data.trx[coin].length; i++) {
+                let mTrxs = data.trx[coin][i];
                 let typeClassName;
                 if (mTrxs["type"] == "매수") { typeClassName = "type_buy" }
                 else if (mTrxs["type"] == "매도") { typeClassName = "type_sell" }
@@ -327,7 +328,6 @@
 
         
         window.onload = function () {
-
             $.ajax({
                 url: "parse.php",
                 type: "post",
@@ -336,6 +336,7 @@
                     balance: '<?=$_POST["balance"]?>'
                 }
             }).done(function(data) {
+                $('#originalData').text(data);
                 data = JSON.parse(data);
                 console.log(data);
 
@@ -422,6 +423,7 @@
 
             });
 
+            // tableCoinly 정렬기능
             var tableCoinlySortDesc = false;
             var tableCoinlySortThIndex = -1;
             $('.tableCoinly_head_cell')
@@ -471,6 +473,7 @@
 </head>
 
 <body>
+    <span id="originalData" style="display:none;"></span>
     <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
         <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
@@ -517,103 +520,6 @@
             </tbody>
         </table>
     </div>
-    <?php
-        # 코인별 수익 (modal div)
-        echo "<script>";
-
-        foreach ($profitCoinly as $coin => $coinProfit) {
-            echo "coinlyDetails.push({";
-
-            if (isset($coinInfo[$coin])) {
-                echo "nameKor: '".$coinInfo[$coin]."', nameEng: '".$coin."',";
-            } else {
-                echo "nameKor: '', nameEng: '".$coin."',";
-            }
-
-            echo "trx: [";
-
-            foreach ($trx[$coin] as $mTrx) {
-                echo "{
-                    callDate:   '".$mTrx["callDate"]."',
-                    type:       '".$mTrx["type"]."',
-                    quantity:   '".$mTrx["quantity"]."',
-                    priceUnit:  '".$mTrx["priceUnit"]."',
-                    priceTotal: '".$mTrx["priceTotal"]."',
-                    orderDate:  '".$mTrx["orderDate"]."'
-                },";
-            }
-            
-            echo "]});";
-        }
-        echo "</script>";
-
-        # 코인별 수익 (table)
-        echo '
-            <div style="text-align:center;">
-            <table id="tableCoinly" style="width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
-                <thead>
-                    <tr class="tableCoinly_head">
-                        <th class="tableCoinly_head_cell" style="width:37%;">
-                            코인명
-                        </th>
-                        <th id="tablecoinly_head_profit" class="tableCoinly_head_cell" style="width:21%;">
-                            수익
-                        </th>
-                        <th class="tableCoinly_head_cell" style="width:21%;">
-                            투자금액
-                        </th>
-                        <th class="tableCoinly_head_cell" style="width:21%;">
-                            매도금액
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>';
-                $i = 0;
-                foreach ($profitCoinly as $coin => $coinProfit) {
-                    echo '
-                    <tr class="tableCoinly_body" onclick="openModal(' . (string)$i . ')">
-                        <td class="tableCoinly_body_cell">';
-                    
-                    if (isset($coinInfo[$coin])) {
-                        echo $coinInfo[$coin].' <span class="coin_eng">'.$coin.'</span>';
-                    } else {
-                        echo $coin;
-                    }
-                    echo '
-                        </td>
-                        <td class="tableCoinly_body_cell">';
-
-                    $mProfit = number_format($coinProfit);
-                    $mAsisAsset = $balanceExpected[$coin]["PriceBuyTotal"] + $balanceExpected[$coin]["FeeBuyTotal"];
-                    $mTobeAsset = $balanceExpected[$coin]["PriceSellTotal"] - $balanceExpected[$coin]["FeeSellTotal"];
-                    $mProfitRate = number_format(($mTobeAsset - $mAsisAsset) / $mAsisAsset * 100, 2);
-
-                    if ($mProfit > 0) {
-                        echo '<span class="profit_positive">+'.$mProfit.' <span class="profit_percentage">'.$mProfitRate.'%</span></span>';
-                    } elseif ($mProfit < 0) {
-                        echo '<span class="profit_negative">'.$mProfit.' <span class="profit_percentage">'.$mProfitRate.'%</span></span>';
-                    } else {
-                        echo '<span class="profit_zero">-</span>';
-                    }
-                    echo '
-                        </td>
-                        <td class="tableCoinly_body_cell">
-                            ' . number_format($mAsisAsset) . '
-                        </td>
-                        <td class="tableCoinly_body_cell">
-                            ' . number_format($mTobeAsset) . '
-                        </td>
-                    </tr>';
-
-                    $i += 1;
-                }
-                echo '
-                
-                </tbody>
-            </table>
-        </div>';
-
-    ?> 
 </body>
 
 </html>
