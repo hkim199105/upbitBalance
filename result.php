@@ -39,7 +39,10 @@
             --negative-color:#5673EB;
             --neutral-color:#444444;
         }
-        
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
         #chart {
             min-width: 500px;
             max-width: 1000px;
@@ -292,7 +295,7 @@
                 <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
                     
                 </div>
-                <table style="margin-left:auto;margin-right:auto;width:100%;">
+                <table class='center' style="width:100%;">
                     <thead>
                         <tr class="table_head">
                             <th class="tableCoinlyDetail_head_cell" style="width:20%;">
@@ -379,7 +382,7 @@
         function sendLink() {
             if (Kakao.isInitialized() == true) {
                 Kakao.Link.sendScrap({
-                requestUrl: 'https://developers.kakao.com',
+                    requestUrl: 'http://129.154.198.214:8089/upbitBalance',
                 })
             }
         }
@@ -688,7 +691,7 @@
 
 <body>
     <span id="originalData" style="display:none;"></span>
-    <div style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
+    <div class="center" style="min-width:500px;max-width:1000px;width:80%;display:flex;margin-bottom:32px;margin-top:32px;">
         <div id="title_div" class="gradient" >
             <div style="margin:10px;width:50%;flex-direction: column;">
                 <div style="text-align: center;">
@@ -713,7 +716,7 @@
     </div>
     
     <div style="text-align:center;">
-        <table id="tableCoinly" style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+        <table id="tableCoinly" class="center" style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;">
             <thead>
                 <tr class="tableCoinly_head">
                     <th class="tableCoinly_head_cell" style="width:37%;">
@@ -736,8 +739,8 @@
     </div>
     
     <div id="chart"></div>
-    <div>
-        <a id="kakao-link-btn" href="javascript:sendLink()">
+    <div class="center">
+        <a id="btnKakao" href="javascript:sendLink()">
             <img src="assets/btnKakao.png" />
         </a>
     </div>

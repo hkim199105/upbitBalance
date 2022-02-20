@@ -382,8 +382,13 @@
             z-index: 2;
         }
     </style>
+    
+    <div style="flex-direction:row; display:flex;">
+    <div style="box-sizing: border-box;position:relative;margin-left:auto;margin-right:auto;" class="center">
+
+
     <div
-        style="min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
+        style="display:flex;min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
         <div
             class="gradient"
             style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #5673EB;">
@@ -408,8 +413,7 @@
         </div>
     </div> -->
 
-    <span style="display:none;">sdfkjlasdlfkj</span>
-    <div style="text-align:center;">
+    <div style="text-align:center;    display:flex;">
         <table id="tableCoinly"
             style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
             
@@ -735,6 +739,7 @@
             bottom:-15px;
             background-color: #0F1421;
             box-shadow : 0px -10px 20px 10px #0F1421;
+            display:flex;
         }
     </style>
 <div id="chart"></div>
@@ -994,11 +999,7 @@
 
       // SDK 초기화 여부를 판단합니다.
       console.log(Kakao.isInitialized());
-  </script><a id="kakao-link-btn" href="javascript:sendLink()">
-  <img
-    src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-  />
-</a>
+  </script>
 <script type="text/javascript">
   function sendLink() {
     Kakao.Link.sendScrap({
@@ -1006,6 +1007,13 @@
     })
   }
 </script>
+</div>
+<div style="position:sticky;display:flex;top:40px;margin:0px;"><a id="kakao-link-btn" href="javascript:sendLink()">
+    <img
+      src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+    />
+  </a></div>
+</div>
 </body>
 
 </html>
