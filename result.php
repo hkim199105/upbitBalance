@@ -730,7 +730,7 @@
 
 <body>
     <span id="originalData" style="display:none;"></span>
-    <div style="flex-direction:row; display:flex; justify-content: center;;">
+    <div style="flex-direction:row;display:flex;justify-content:center;;">
         <div>
             <div class="center" style="min-width:500px;max-width:1000px;width:100%;display:flex;margin-bottom:32px;margin-top:32px;">
                 <div id="title_div" class="gradient" >
