@@ -560,7 +560,7 @@
                     }],
                     chart: {
                         type: 'bar',
-                        height: 500,
+                        height: 300,
                         background: '#0F1421',
                         sparkline: {
                             enabled: false,
