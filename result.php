@@ -422,7 +422,7 @@
             if (Kakao.isInitialized() == false) {
                 Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
             }
-            
+
             if (Kakao.isInitialized() == true) {
                 Kakao.Link.sendScrap({
                     requestUrl: 'http://129.154.198.214:8089/upbitBalance',
@@ -555,7 +555,8 @@
                 }
                 
                 let mPositiveColor = getComputedStyle(document.body).getPropertyValue("--positive-color");
-                let mNegativeColor = getComputedStyle(document.body).getPropertyValue("--negative-color")
+                let mNegativeColor = getComputedStyle(document.body).getPropertyValue("--negative-color");
+                let mBackgroundColor = getComputedStyle(document.body).getPropertyValue("--background-color");
                 let options = {
                     series: [{
                         name: '수익',
@@ -564,7 +565,7 @@
                     chart: {
                         type: 'bar',
                         height: 300,
-                        background: '#0F1421',
+                        background: mBackgroundColor,
                         sparkline: {
                             enabled: false,
                         },

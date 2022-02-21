@@ -1,13 +1,13 @@
-body {
-    background-color: #1b202c;
-    color: white;
-}
-
 :root {
-    --background-color: ;
+    --background-color: #1b202c;
     --positive-color: #EB5374;
     --negative-color: #5673EB;
     --neutral-color: #444444;
+}
+
+body {
+    background-color: var(--background-color);
+    color: white;
 }
 
 .center {
@@ -26,8 +26,8 @@ body {
     height: 300px;
     position: sticky;
     bottom: -15px;
-    background-color: #1b202c;
-    box-shadow: 0px -10px 20px 10px #1b202c;
+    background-color: var(--background-color);
+    box-shadow: 0px -10px 20px 10px var(--background-color);
 }
 
 .title_small {
