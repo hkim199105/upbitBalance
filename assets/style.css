@@ -1,8 +1,8 @@
 :root {
-    --background-color: #1b202c;
-    --positive-color: #EB5374;
-    --negative-color: #5673EB;
-    --neutral-color: #444444;
+    --background-color:#1b202c;
+    --positive-color:#EB5374;
+    --negative-color:#5673EB;
+    --neutral-color:#444444;
 }
 
 body {
