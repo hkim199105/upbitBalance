@@ -294,7 +294,7 @@ html {
     position: absolute;
     width: 100%;
     height: 2px;
-    background-color: #008d62;
+    background-color: #6729ff;
 }
 
 #edtTransaction:focus+#underlineTransaction {
@@ -305,9 +305,24 @@ html {
     font-size: 20px;
     padding: 8px 32px;
     border-radius: 16px;
-    border: 1px solid #444444;
     font-size: 16px;
     cursor: pointer;
-    background-color: #ffffff22;
-    color:white;
+    border: none;
+    color: white;
+}
+
+.btn_main {
+    background-color: #6729ff;
+}
+
+.btn_main:hover {
+    background-color: #5220cc;
+}
+
+.btn_sub {
+    background-color: #ffffff88;
+}
+
+.btn_sub:hover {
+    background-color: #ffffff66;
 }

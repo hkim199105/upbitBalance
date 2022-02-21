@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" media="screen" href="./assets/style.css?3">
+    <link rel="stylesheet" media="screen" href="./assets/style.css?5">
     <style>
     </style>
     <script>
@@ -25,6 +25,18 @@
             var win = window.open(urlUpbitTransaction, '_blank');
             win.focus();
         }
+
+        function sendLink() {
+            if (Kakao.isInitialized() == false) {
+                Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
+            }
+            
+            if (Kakao.isInitialized() == true) {
+                Kakao.Link.sendScrap({
+                    requestUrl: 'http://129.154.198.214:8089/upbitBalance',
+                })
+            }
+        }
     </script>
 </head>
 
@@ -33,7 +45,7 @@
         <div>
             <div style="text-align:center;margin-top:32px;">
                 <p style="font-weight: bold;font-size:x-large;">
-                    UPBIT에서 실현한 수익을 알아보세요.
+                    업비트에서 지금까지 얻은 수익을 알아보세요.
                 </p>
             </div>
 
@@ -43,12 +55,12 @@
                     <form action="./result.php" method="post" style="width:100%;">
                         <div class="input-name">
                             <input type="textarea" id="edtTransaction" style=""
-                                placeholder="UPBIT의 거래내역을 여기에 붙여넣기 하세요." name="transaction" autocomplete="off" autofocus="on"/>
+                                placeholder="업비트의 거래내역을 여기에 붙여넣기 하세요." name="transaction" autocomplete="off" autofocus="on"/>
                             <span id="underlineTransaction"></span>
                           </div>
                         <div style="text-align:center;margin-top:32px;">
-                            <button class="btn" type="button"onclick="goUpbit();">거래내역 가져오기</button>
-                            <button class="btn" type="submit" value="Submit">수익 확인하기</button>
+                            <button class="btn btn_sub" type="button"onclick="goUpbit();">거래내역 가져오기</button>
+                            <button class="btn btn_main" type="submit" value="Submit">수익 확인하기</button>
                         </div>
                     </form>
                 </div>

@@ -419,6 +419,10 @@
         }
 
         function sendLink() {
+            if (Kakao.isInitialized() == false) {
+                Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
+            }
+            
             if (Kakao.isInitialized() == true) {
                 Kakao.Link.sendScrap({
                     requestUrl: 'http://129.154.198.214:8089/upbitBalance',
@@ -427,7 +431,6 @@
         }
 
         window.onload = function () {
-            Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
             $.ajax({
                 url: "parse.php",
                 type: "post",
