@@ -207,7 +207,7 @@
         }
 
         if (isset($trx[$mCoin])) {
-            array_unshift($trx[$mCoin], ["callDate" => $mCallDate, "type" => $mType, "quantity" => $mQuantity, "priceUnit" => $mPriceAvg, "priceTotal" => $mPriceTotal, "orderDate" => $mOrderDate]);
+            array_push($trx[$mCoin], ["callDate" => $mCallDate, "type" => $mType, "quantity" => $mQuantity, "priceUnit" => $mPriceAvg, "priceTotal" => $mPriceTotal, "orderDate" => $mOrderDate]);
         } else {
             $trx[$mCoin] = [["callDate" => $mCallDate, "type" => $mType, "quantity" => $mQuantity, "priceUnit" => $mPriceAvg, "priceTotal" => $mPriceTotal, "orderDate" => $mOrderDate]];
         }
