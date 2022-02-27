@@ -16,8 +16,140 @@
     <style>
     </style>
     <script>
+        function addComma(num, fractionDigits = 0) {
+            if (isNaN(num)) {           // NaN인 경우
+                return "";
+            }
+
+            if (num.substring) {        // 문자인 경우
+                if (!isNaN(num)) {
+                    num = Number(num);
+                } else {        // 숫자로 변환 불가한 문자
+                    return num;
+                }
+            }
+            // var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
+        }
+        
         window.onload = function () {
-            // document.getElementById("edtTransaction").focus();
+            $( "#edtTransaction" ).keypress(function(evt) {
+                // Note this could be a bit of overkill but I found some
+                // problems in Firefox and decided to go the distance
+                // including old windows keyboard short cut keys.
+                // Enumerate all supported clipboard, undo and redo keys
+                var clipboardKeys = {
+                    winInsert : 45,
+                    winDelete : 46,
+                    SelectAll : 97,
+                    macCopy : 99,
+                    macPaste : 118,
+                    macCut : 120,
+                    redo : 121,	
+                    undo : 122
+                }
+                // Simulate readonly but allow all clipboard, undo and redo action keys
+                var charCode = evt.which;
+
+                // Accept ctrl+v, ctrl+c, ctrl+z, ctrl+insert, shift+insert, shift+del and ctrl+a
+                if (
+                    evt.ctrlKey && charCode == clipboardKeys.redo ||		/* ctrl+y redo			*/
+                    evt.ctrlKey && charCode == clipboardKeys.undo ||		/* ctrl+z undo			*/
+                    evt.ctrlKey && charCode == clipboardKeys.macCut ||		/* ctrl+x mac cut		*/
+                    evt.ctrlKey && charCode == clipboardKeys.macPaste ||		/* ctrl+v mac paste		*/
+                    evt.ctrlKey && charCode == clipboardKeys.macCopy ||		/* ctrl+c mac copy		*/ 
+                    evt.shiftKey && evt.keyCode == clipboardKeys.winInsert ||	/* shift+ins windows paste	*/ 
+                    evt.shiftKey && evt.keyCode == clipboardKeys.winDelete ||	/* shift+del windows cut	*/ 
+                    evt.ctrlKey && evt.keyCode == clipboardKeys.winInsert  ||	/* ctrl+ins windows copy	*/ 
+                    evt.ctrlKey && charCode == clipboardKeys.SelectAll		/* ctrl+a select all		*/
+                    ){
+                        document.getElementById('errorTransaction').style.display = "none";
+                        document.getElementById('underlineTransaction').style.backgroundColor = "#6729ff";
+                        return 0;
+                    } else {
+                        document.getElementById('errorTransaction').innerText = "직접 쓸수는 없고 붙여넣기만 가능합니다. 아래 그림을 보고 복붙해보세요.";
+                        document.getElementById('errorTransaction').style.display = "block";
+                        document.getElementById('underlineTransaction').style.backgroundColor = "#EB5374";
+                    }
+                // Shun all remaining keys simulating readonly textbox
+                var theEvent = evt || window.event;
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+                var regex = /[]|\./;
+                if(!regex.test(key)) {
+                    theEvent.returnValue = false;
+                    theEvent.preventDefault();
+                }
+            });
+
+            document.getElementById('edtTransaction').onpaste = function(event) {
+                let rawDataTransfer = event.clipboardData.getData('text/plain');
+                const flagTransferStart = "주문시간";
+                const flagTransferEnd = "코인명/심볼검색";
+                const indexTransfer = rawDataTransfer.indexOf(flagTransferStart);
+                let firstDate = "";
+                let lastDate = "";
+                if (indexTransfer < 0) {
+                    document.getElementById('errorTransaction').innerText = "잘못된 형식입니다. 아래 그림을 보고 다시 복붙해보세요.";
+                    document.getElementById('errorTransaction').style.display = "block";
+                    document.getElementById('underlineTransaction').style.backgroundColor = "#EB5374";
+                    
+                    // return false;
+                } else {
+                    document.getElementById('errorTransaction').style.display = "none";
+                    document.getElementById('underlineTransaction').style.backgroundColor = "#6729ff";
+                }
+                
+                rawDataTransfer = rawDataTransfer.substr(indexTransfer + flagTransferStart.length, rawDataTransfer.length - flagTransferStart.length - indexTransfer);
+
+                rawDataTransfer = rawDataTransfer.split(flagTransferEnd)[0].trim();
+
+                rawDataTransfer = rawDataTransfer.split(/\s+/);      // 2, 9 번째 값이 -일수 있음, 0, 9번째 값이 날짜
+                let rawDataTransfer2 = [];
+                for (i = 0; i < rawDataTransfer.length; i++) {
+                    if (rawDataTransfer2.length % 10 == 0 || rawDataTransfer2.length % 10 == 9) {
+                        if (rawDataTransfer[i].trim().length > 0 && rawDataTransfer.length > i + 1 && rawDataTransfer[i].trim() !== "-") {
+                            rawDataTransfer2.push(rawDataTransfer[i] + " " + rawDataTransfer[i + 1]);
+
+                            if (rawDataTransfer2.length % 10 == 0) {
+                                if (rawDataTransfer[i] !== "-") {
+                                    if (lastDate == "") { lastDate = rawDataTransfer[i]; }
+                                    firstDate = rawDataTransfer[i];
+                                }
+                            }
+                            
+                            i += 1;
+                            continue;
+                        }
+                    }
+                    
+                    if (rawDataTransfer2.length % 10 == 0) {
+                        if (rawDataTransfer[i] !== "-") {
+                            if (lastDate == "") { lastDate = rawDataTransfer[i]; }
+                            firstDate = rawDataTransfer[i];
+                        }
+                    }
+                    rawDataTransfer2.push(rawDataTransfer[i]);
+                }
+
+                let dataTransfer = [];
+                for (i = 0; i < rawDataTransfer2.length / 10; i++) {
+                    if (rawDataTransfer2.length < i * 10 + 10) {
+                        break;
+                    }
+
+                    let row = [];
+                    for (j = 0; j < 10; j++) {
+                        row.push(rawDataTransfer2[i * 10 + j]);
+                    }
+
+                    dataTransfer.push(row);
+                }
+
+                document.getElementById('dataTransaction').value = JSON.stringify(dataTransfer);
+                openModal("해당 정보의 수익을 확인합니다.<br><br>기간: " + firstDate + " ~ " + lastDate + "<br>총 거래수: " + addComma(dataTransfer.length) + "건");
+                return true;
+            };
         }
 
         function goUpbit() {
@@ -37,6 +169,43 @@
                 })
             }
         }
+
+        function cancel() {
+            // document.getElementById('edtTransaction').value = "";
+            document.getElementById('edtTransaction').focus();
+            let body = document.getElementsByTagName('body')[0];
+            let modalContainer = document.getElementById('modalContainer');
+
+            body.classList.remove("not-scroll");
+            modalContainer.remove();
+        }
+
+        function openModal(msg) {
+            let body = document.getElementsByTagName('body')[0];
+            let modalHtml = `
+                <div id="modalContainer" class="modalContainer">
+                    <div class="modalWrap modalAlertWrap">
+                        <div class="modal modalAlert">
+                            <div style="width:100%;text-align:center;font-size:20px;display:inline-block;color:white;word-break:break-all;">` +
+                                msg +
+                             `</div>
+
+                            <div style="text-align:center;margin-top:32px;">
+                                <button class="btn btn_sub" onclick="cancel();">취소</button>
+                                <button class="btn btn_main" onclick="commit();">확인</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            body.classList.add("not-scroll");
+            body.insertAdjacentHTML('afterend', modalHtml);
+        }
+
+        function commit() {
+            document.getElementById('frmTransaction').submit();
+        }
+
     </script>
 </head>
 
@@ -52,12 +221,14 @@
             <div class="center"
                 style="min-width:500px;max-width:1000px;width:100%;display:flex;margin-bottom:32px;margin-top:32px;">
                 <div id="title_div">
-                    <form action="./result.php" method="post" style="width:100%;">
+                    <form id="frmTransaction" action="./result.php" method="post" style="width:100%;">
+                        <input type="hidden" id="dataTransaction"/>
                         <div class="input-name">
                             <input type="textarea" id="edtTransaction" style=""
-                                placeholder="업비트의 거래내역을 여기에 붙여넣기 하세요." name="transaction" autocomplete="off" autofocus="on"/>
+                                placeholder="업비트의 거래내역을 여기에 붙여넣기 하세요." name="transaction" autocomplete="off" autofocus="on" readonly="on"/>
                             <span id="underlineTransaction"></span>
-                          </div>
+                        </div>
+                        <span id="errorTransaction" style="display:none;color:#EB5374"></span>
                         <div style="text-align:center;margin-top:32px;">
                             <button class="btn btn_sub" type="button"onclick="goUpbit();">거래내역 가져오기</button>
                             <button class="btn btn_main" type="submit" value="Submit">수익 확인하기</button>

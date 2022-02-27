@@ -177,7 +177,7 @@
                 url: "parse.php",
                 type: "post",
                 data: {
-                    transaction: '<?=$_POST["transaction"]?>',
+                    transaction: '<?=$_POST["dataTransaction"]?>',
                     balance: '<?=$_POST["balance"]?>'
                 }
             }).done(function(data) {

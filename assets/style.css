@@ -166,6 +166,10 @@ html {
     max-height: 500px;
 }
 
+.modalAlertWrap {
+    height: auto;
+}
+
 .modal {
     width: 700px;
     height: 100%;
@@ -175,6 +179,11 @@ html {
     padding-left: 16px;
     padding-right: 16px;
     display: inline-block;
+}
+
+.modalAlert {
+    width: 300px;
+    padding:32px;
 }
 
 .modal::-webkit-scrollbar {
