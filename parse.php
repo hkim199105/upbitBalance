@@ -1,5 +1,5 @@
 <?php
-    $logginYN = false;
+    $logginYN = true;
 
     function accessLog($keyword) {
         global $logginYN;
@@ -127,7 +127,12 @@
     # 8: 정산금액
     # 9: 주문일자
     accessLog("iterate transfer data");
+    $i = 0;
     foreach ( array_reverse($dataTransfer) as $row ) {
+        if ($i % 1000 == 0) 
+            accessLog((string)$i);
+        $i += 1;
+
         $mCoin = trim($row[1]);
         $mQuantity = filter_var($row[4], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
         $mPriceTotal = filter_var($row[6], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
