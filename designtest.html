@@ -1,65 +1,227 @@
-<html lang="ko"><head>
+<html>
+
+<head>
+    <title>UPBIT 수익 계산기</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <link href="./favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <title>UPBIT 수익 계산기</title>
-    <link rel="stylesheet" media="screen" href="./assets/style.css?1645354582">
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" media="screen" href="./assets/style.css">
+    <style>
+        .bar {
+            fill: #5673EB;
+            rx: 5px;
+            ry: 5px;
+        }
+
+        .negative {
+            fill: #EB5374;
+            rx: 5px;
+            ry: 5px;
+        }
+    </style>
     <script src="./jquery-3.6.0.min.js"></script>
     <script src="./jquery.sortElements.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        var coins = [{
+                name: "이더리움",
+                profit: -70064
+            },
+            {
+                name: "PXL",
+                profit: 373201
+            },
+            {
+                name: "비트코인",
+                profit: -21140
+            },
+            {
+                name: "네오",
+                profit: 90326
+            },
+            {
+                name: "비체인",
+                profit: 68255
+            },
+            {
+                name: "테조스",
+                profit: 108853
+            },
+            {
+                name: "이오스",
+                profit: 61643
+            },
+            {
+                name: "메타디움",
+                profit: -775219
+            },
+            {
+                name: "아하토큰",
+                profit: -5860
+            },
+            {
+                name: "디카르고",
+                profit: 2341099
+            },
+            {
+                name: "보라",
+                profit: -65708
+            },
+            {
+                name: "엠블",
+                profit: -3385853
+            },
+            {
+                name: "NPXS",
+                profit: -10000
+            },
+            {
+                name: "크립토닷컴체인",
+                profit: -10000
+            },
+            {
+                name: "에이다",
+                profit: -10000
+            },
+            {
+                name: "비트토렌트",
+                profit: -10000
+            },
+            {
+                name: "리플",
+                profit: -10000
+            },
+            {
+                name: "모스코인",
+                profit: -10000
+            },
+            {
+                name: "넴",
+                profit: -10000
+            },
+            {
+                name: "휴먼스케이프",
+                profit: -10000
+            },
+            {
+                name: "시아코인",
+                profit: -10000
+            },
+            {
+                name: "저스트",
+                profit: 170879
+            }
+        ];
 
+        window.onload = function () {
+
+            var tableCoinlySortDesc = false;
+            var tableCoinlySortThIndex = -1;
+            $('.tableCoinly_head_cell')
+                .wrapInner('<span title="sort this column"/>')
+                .each(function () {
+                    var th = $(this),
+                        thIndex = th.index();
+
+                    th.click(function () {
+                        if (tableCoinlySortThIndex > -1 && tableCoinlySortThIndex != thIndex) {
+                            tableCoinlySortDesc = false; // 다른 칼럼 누른 경우 초기화. 처음엔 숫자 내림차순, 문자 오름차순
+                        }
+                        tableCoinlySortThIndex = thIndex;
+
+                        $('#tableCoinly').find('td').filter(function () {
+                            return $(this).index() === thIndex;
+
+                        }).sortElements(function (a, b) {
+                            if (isNaN(parseFloat($.text([a]))) || isNaN(parseFloat($.text([
+                                b])))) {
+                                return $.text([a]) > $.text([b]) ?
+
+                                    tableCoinlySortDesc ? -1 : 1 :
+                                    tableCoinlySortDesc ? 1 : -1;
+
+                            } else {
+                                return parseFloat($.text([a]).replace(/,/g, '')) < parseFloat($
+                                        .text([b]).replace(/,/g, '')) ?
+
+                                    tableCoinlySortDesc ? -1 : 1 :
+                                    tableCoinlySortDesc ? 1 : -1;
+                            }
+                        }, function () {
+                            // parentNode is the element we want to move
+                            return this.parentNode;
+                        });
+
+                        tableCoinlySortDesc = !tableCoinlySortDesc;
+                    });
+
+                });
+            $('#tablecoinly_head_profit').click();
+
+
+
+            var render = (selector, size, data) => {
+                var margin = size.margin;
+                var width = size.width - margin.left - margin.right;
+                var height = size.height - margin.top - margin.bottom;
+
+                var y = d3.scaleLinear()
+                    .domain(d3.extent(data, d => d.profit))
+                    .range([0, height]);
+
+                var x = d3.scaleBand()
+                    .domain(data.map(d => d.name))
+                    .rangeRound([0, width])
+                    .padding(0.2);
+
+                var xAxis = d3.axisBottom(x);
+
+                var yAxis = d3.axisLeft(y);
+
+                var svg = d3.select(selector)
+                    .attr('width', size.width)
+                    .attr('height', size.height);
+
+                var chart = svg.append('g')
+                    .attr('transform', `translate(${ margin.left }, ${ margin.top })`);
+
+                var bar = chart.selectAll('.bar')
+                    .data(data)
+                    .enter().append('rect')
+                    .attr('class', d => `bar ${ d.profit < 0 ? 'negative': 'positive' }`)
+                    .attr('y', d => y(Math.min(0, -d.profit)))
+                    .attr('x', d => x(d.name))
+                    .attr('height', d => Math.abs(y(d.profit) - y(0)))
+                    .attr('width', x.bandwidth());
+
+                chart.append('g')
+                    .attr('transform', `translate(0, ${ width })`)
+                    .attr('class', 'axis y')
+                    .call(xAxis);
+
+                chart.append('g')
+                    .attr('class', 'axis x')
+                    .attr('transform', `translate(${ y(0) }, 0)`)
+                    .call(yAxis);
+            };
+
+            var settings = {
+                width: 1000,
+                height: 1000,
+                margin: {
+                    top: 20,
+                    right: 20,
+                    bottom: 30,
+                    left: 40
+                }
+            };
+
+            render('#chart', settings, coins);
+        }
+    </script>
+</head>
+
+<body>
     <style>
-        :root {
-            --background-color: ;
-            --positive-color:#EB5374;
-            --negative-color:#5673EB;
-            --neutral-color:#444444;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        #chart {
-            min-width: 500px;
-            max-width: 1000px;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top:30px;
-            margin-bottom:30px;
-            height:300px;
-            position:sticky;
-            bottom:-15px;
-            background-color: #0F1421;
-            box-shadow : 0px -10px 20px 10px #0F1421;
-        }
-
-        .title_small {
-            font-size: 14px;
-            font-weight: lighter;
-        }
-
         .tableCoinly_head_cell {
             text-align: left;
             font-size: 14px;
@@ -70,8 +232,8 @@
 
         .tableCoinly_body_cell {
             text-align: left;
-            white-space: nowrap;
             font-size: 16px;
+            white-space: nowrap;
             padding: 16px;
             padding-left: 32px;
             color: white;
@@ -126,22 +288,19 @@
         }
 
         .type_sell {
-            color: var(--negative-color)
+            color: #5673EB
         }
 
         .type_buy {
-            color: var(--positive-color)
+            color: #EB5374
         }
 
         .profit_positive {
-            color: var(--positive-color)
+            color: #EB5374
         }
 
         .profit_negative {
-            color: var(--negative-color)
-        }
-        .profit_neutral {
-            color: var(--neutral-color)
+            color: #5673EB
         }
 
         .profit_zero {
@@ -222,116 +381,392 @@
         .level {
             z-index: 2;
         }
-
-        @keyframes placeHolderShimmer{
-            0%{
-                background-position: -500px 0
-            }
-            100%{
-                background-position: 500px 0
-            }
-        }
-        .gradient {
-            animation-duration: 1.8s;
-            animation-fill-mode: forwards;
-            animation-iteration-count: infinite;
-            animation-name: placeHolderShimmer;
-            animation-timing-function: linear;
-            background: linear-gradient(0.25turn, #f8f6ff10 20%, #f8f6ff30, #f8f6ff10 80%);
-            background-size: 1000px 640px;
-        }
-
-        #title_div {
-            background-color: #f8f6ff10;
-            width: 100%;
-            border-radius: 16px;
-            padding: 32px;
-            display: flex;
-            border: 0.1px solid var(--neutral-color);
-        }
-
-        .floatingMainDiv {
-            width: 250px;
-            position: sticky;
-            top: 40px;
-            margin-left: 40px;
-            border-radius: 20px;
-            border: 1px solid #444444;
-            height: fit-content;
-            background-color: #f8f6ff10;
-            overflow: hidden;
-        }
-
-        .floatingMenuDiv {
-            display: flex;
-            padding: 16px;
-            cursor: pointer;
-        }
-
-        .floatingMenuDiv:hover {
-            background-color: #f8f6ff10;
-        }
-
-        .floatingMenuDivInactive:hover {
-            background-color: transparent;
-        }
-
-        .floatingLineDiv {
-            background-color: #444444;
-            width: 100%;
-            height: 1px;
-        }
-
-        .floatingMenuSpan {
-            margin-left: 8px;
-            font-size: 14px;
-            color: #ffffffee
-        }
-
     </style>
-    <script>
-        let coinlyDetails = [];
-        function addComma(num, fractionDigits = 0) {
-            if (isNaN(num)) {           // NaN인 경우
-                return "";
-            }
+    
+    <div style="flex-direction:row; display:flex; justify-content: center;;">
+    <div>
+    <div
+        style="display:flex;min-width:500px;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;display:flex;margin-bottom:32px;margin-top:32px;">
+        <div
+            class="gradient"
+            style="background-color: #f8f6ff10;width: 100%;margin-right:32px;border-radius: 16px;padding:32px;display:flex;border:0.1px solid #5673EB;">
+            <div style="margin:10px;width:50%;flex-direction: column;">
+                <div style="text-align: center;">
+                    <span id="title_sumProfit_lbl" style="font-size:14px;font-weight: lighter;">실현한 수익</span>
+                </div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;"><span
+                        class="profit_negative">-1,199,199,199,588</span></div>
+                <div style="text-align: center;font-size: 20px;font-weight: lighter;"><span
+                        class="profit_negative">-46.14%</span></div>
+            </div>
+            <div style="margin:10px;width:50%;flex-direction: column;">
+                <div style="text-align: center;font-size:14px;font-weight: lighter;">투자금액</div>
+                <div style="text-align: center;font-size:32px;font-weight: bolder;">199,199,199,588</div>
+            </div>
+        </div>
+    </div>
+    <!-- <div style="background-color: #ffffff11;margin:0px;border: 0px;padding:10px;">
+        <div style="text-align:left;font-size: 20px;min-width:500px;display: table;max-width:1000px;width:80%;margin-left:auto;margin-right:auto;font-weight: bolder;">
+            코인별 수익
+        </div>
+    </div> -->
 
-            if (num.substring) {        // 문자인 경우
-                if (!isNaN(num)) {
-                    num = Number(num);
-                } else {        // 숫자로 변환 불가한 문자
-                    return num;
-                }
-            }
-            // var regexp = /\B(?=(\d{3})+(?!\d))/g;
-            return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
+    <div style="text-align:center;    display:flex;">
+        <table id="tableCoinly"
+            style="margin-bottom:50px;width:80%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;margin-left:auto;margin-right:auto;">
+            
+            <thead>
+            <tr class="tableCoinly_head">
+                <th class="tableCoinly_head_cell" style="width:37%;">
+                    코인명
+                </th>
+                <th id="tablecoinly_head_profit" class="tableCoinly_head_cell" style="width:21%;">
+                    수익
+                </th>
+                <th class="tableCoinly_head_cell" style="width:21%;">
+                    투자원금
+                </th>
+                <th class="tableCoinly_head_cell" style="width:21%;">
+                    매도금액
+                </th>
+            </tr></thead>
+        <tbody>
+            <tr class="tableCoinly_body" onclick="openModal()">
+                <td class="tableCoinly_body_cell">이더리움 <span class="coin_eng">ETH</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-70,064 <span
+                            class="profit_percentage">-1.62%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    4,621,553
+                </td>
+                <td class="tableCoinly_body_cell">
+                    4,546,903
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">PXL
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+373,201 <span
+                            class="profit_percentage">7.46%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    4,802,953
+                </td>
+                <td class="tableCoinly_body_cell">
+                    5,161,171
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">비트코인 <span class="coin_eng">BTC</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-21,140 <span
+                            class="profit_percentage">-0.42%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    2,248,894
+                </td>
+                <td class="tableCoinly_body_cell">
+                    2,239,338
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">네오 <span class="coin_eng">NEO</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+90,326 <span
+                            class="profit_percentage">4.60%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    1,919,154
+                </td>
+                <td class="tableCoinly_body_cell">
+                    2,007,517
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">비체인 <span class="coin_eng">VET</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+68,255 <span
+                            class="profit_percentage">10.13%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    666,543
+                </td>
+                <td class="tableCoinly_body_cell">
+                    734,097
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">테조스 <span class="coin_eng">XTZ</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+108,853 <span
+                            class="profit_percentage">14.72%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    734,098
+                </td>
+                <td class="tableCoinly_body_cell">
+                    842,161
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">이오스 <span class="coin_eng">EOS</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+61,643 <span
+                            class="profit_percentage">3.98%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    1,509,371
+                </td>
+                <td class="tableCoinly_body_cell">
+                    1,569,475
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">메타디움 <span class="coin_eng">META</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-775,219 <span
+                            class="profit_percentage">-22.21%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    3,504,267
+                </td>
+                <td class="tableCoinly_body_cell">
+                    2,725,932
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">아하토큰 <span class="coin_eng">AHT</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-5,860 <span
+                            class="profit_percentage">-0.84%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    791,146
+                </td>
+                <td class="tableCoinly_body_cell">
+                    784,499
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">디카르고 <span class="coin_eng">DKA</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+2,341,099 <span
+                            class="profit_percentage">219.98%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    1,058,667
+                </td>
+                <td class="tableCoinly_body_cell">
+                    3,387,538
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">보라 <span class="coin_eng">BORA</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-65,708 <span
+                            class="profit_percentage">-8.47%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    784,501
+                </td>
+                <td class="tableCoinly_body_cell">
+                    718,042
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">엠블 <span class="coin_eng">MVL</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-3,385,853 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    3,387,546
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">NPXS
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">크립토닷컴체인 <span class="coin_eng">CRO</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">에이다 <span class="coin_eng">ADA</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">비트토렌트 <span class="coin_eng">BTT</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">리플 <span class="coin_eng">XRP</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">모스코인 <span class="coin_eng">MOC</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">넴 <span class="coin_eng">XEM</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">휴먼스케이프 <span class="coin_eng">HUM</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">시아코인 <span class="coin_eng">SC</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_negative">-10,000 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    10,005
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+            <tr class="tableCoinly_body">
+                <td class="tableCoinly_body_cell">저스트 <span class="coin_eng">JST</span>
+                </td>
+                <td class="tableCoinly_body_cell"><span class="profit_positive">+170,879 <span
+                            class="profit_percentage">-100.00%</span></span>
+                </td>
+                <td class="tableCoinly_body_cell">
+                    1,067,917
+                </td>
+                <td class="tableCoinly_body_cell">
+                    0
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <style>
+
+        
+        #chart {
+            min-width: 500px;
+            max-width: 1000px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top:30px;
+            margin-bottom:30px;
+            height:300px;
+            position:sticky;
+            bottom:-15px;
+            background-color: #0F1421;
+            box-shadow : 0px -10px 20px 10px #0F1421;
+            display:flex;
         }
+    </style>
+<div id="chart"></div>
 
-        function openModal(coin) {
+
+
+    <script>
+        function openModal() {
             let body = document.getElementsByTagName('body')[0];
-            let data = JSON.parse(document.getElementById('originalData').innerText);
             let modalHtml = `
-    <div id="modalContainer" class="modalContainer" onclick="closeModal();">
+    <div id="modalContainer" class="modalContainer">
         <div class="modalWrap">
             <img src="assets/btnClose.png" style="width:24px;
-                position:absolute;
-                z-index:999;
-                top:16px;
-                right:16px;" onclick="closeModal();">
+        position:absolute;
+        z-index:999;
+        top:16px;
+        right:16px;" onclick="closeModal();">
+
             <div class="modal">
                 <div
-                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;color:white;">`;
-                if (coin in data.coinInfo) {
-                    modalHtml += data.coinInfo[coin] + ` <span class="coin_eng">` + coin + `</span>`;
-                } else {
-                    modalHtml += coin;
-                }
-                modalHtml += `</div>
+                    style="width:100%;text-align: center;font-weight: bolder;font-size:20px;margin-bottom:8px;display:inline-block;margin-top:16px;">
+                    이더리움 <span class="coin_eng">ETH</span>
+                </div>
 
                 <div style="text-align: center;font-weight: lighter;font-size:14px;color:#ffffff88;margin-bottom:8px;">
-                    
+                    2021.01.01 - 2022.01.31
                 </div>
-                <table class='center' style="width:100%;">
+                <image src="./assets/temp_graph.png" style="width:100%;margin-bottom:8px;" />
+                <table style="margin-left:auto;margin-right:auto;width:100%;">
                     <thead>
                         <tr class="table_head">
                             <th class="tableCoinlyDetail_head_cell" style="width:20%;">
@@ -341,7 +776,7 @@
                                 구분
                             </th>
                             <th class="tableCoinlyDetail_head_cell" style="width:15%;">
-                                거래수량
+                                거래수량<br><span class="coin_eng">(ETH)</span>
                             </th>
                             <th class="tableCoinlyDetail_head_cell" style="width:15%;">
                                 거래단가
@@ -354,34 +789,33 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>`;
-            for (let i = 0; i < data.trx[coin].length; i++) {
-                let mTrxs = data.trx[coin][i];
-                let typeClassName;
-                if (mTrxs["type"] == "매수") { typeClassName = "type_buy" }
-                else if (mTrxs["type"] == "매도") { typeClassName = "type_sell" }
-                else if (mTrxs["type"] == "입금") { typeClassName = "type_input" }
-                else if (mTrxs["type"] == "출금") { typeClassName = "type_output" }
-
-                modalHtml = modalHtml + `
+                    <tbody>
                         <tr class="tableCoinlyDetail_body">
-                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["callDate"] + `</td>
-                            <td class="tableCoinlyDetail_body_cell"><span class="` + typeClassName +`">` + mTrxs["type"] + `</span></td>
-                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["quantity"], 8) + `</td>
-                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["priceUnit"]) + `</td>
-                            <td class="tableCoinlyDetail_body_cell">` + addComma(mTrxs["priceTotal"]) + `</td>
-                            <td class="tableCoinlyDetail_body_cell">` + mTrxs["orderDate"] + `</td>
-                        </tr>`;
-            }
-            modalHtml = modalHtml + `
+                            <td class="tableCoinlyDetail_body_cell">2021.12.01 09:32
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell"><span class="type_sell">매도</span>
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                393,319.90395507
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                4,546,903
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                4,546,903,546,903
+                            </td>
+                            <td class="tableCoinlyDetail_body_cell">
+                                2021.12.01 09:32
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <!-- <button onclick="openCheck()">확인</button>
-                <button onclick="closeModal()">닫기</button> -->
+            <button onclick="closeModal()">닫기</button> -->
             </div>
         </div>
     </div>
-        `;
+        `
             body.classList.add("not-scroll");
             body.insertAdjacentHTML('afterend', modalHtml);
         }
@@ -414,1133 +848,263 @@
             let check = document.getElementById('check');
             check.remove();
         }
-
-        function sendLink() {
-            if (Kakao.isInitialized() == true) {
-                Kakao.Link.sendScrap({
-                    requestUrl: 'http://129.154.198.214:8089/upbitBalance',
-                })
-            }
-        }
-
-        window.onload = function () {
-            Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
-            $.ajax({
-                url: "parse.php",
-                type: "post",
-                data: {
-                    transaction: '체결시간	코인	마켓	종류	거래수량	거래단가 	거래금액	수수료	정산금액	주문시간            2021.03.19 23:41            JST            KRW            매수            10,069.65094339JST            106KRW            1,067,383KRW            533.69KRW            1,067,917KRW            2021.03.19 23:41            2021.03.19 23:39            KRW            -            입금            600,000KRW            0KRW            600,000KRW            0KRW            600,000KRW            -            2021.03.19 19:11            TT            KRW            매수            342.46575342TT            29.20KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            SC            KRW            매수            373.13432835SC            26.80KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            HUM            KRW            매수            71.94244604HUM            139KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            PXL            KRW            매수            50.00000000PXL            200KRW            10,000KRW            5.00KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            PCI            KRW            매수            3.83141762PCI            2,610KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            QKC            KRW            매수            194.55252918QKC            51.40KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:11            SOLVE            KRW            매수            24.15458937SOLVE            414KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:11            2021.03.19 19:10            SSX            KRW            매수            59.88023952SSX            167KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            XEM            KRW            매수            22.17294900XEM            451KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            IQ            KRW            매수            313.47962382IQ            31.90KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            RFR            KRW            매수            460.82949308RFR            21.70KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            STMX            KRW            매수            184.84288354STMX            54.10KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            ORBS            KRW            매수            36.49635036ORBS            274KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:10            DKA            KRW            매수            28.90173410DKA            346KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:10            2021.03.19 19:09            CRE            KRW            매수            308.64197530CRE            32.40KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:09            MOC            KRW            매수            50.00000000MOC            200KRW            10,000KRW            5.00KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:09            XRP            KRW            매수            18.18181818XRP            550KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:09            BTT            KRW            매수            4,672.89719626BTT            2.14KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:09            ADA            KRW            매수            6.80272108ADA            1,470KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:09            CRO            KRW            매수            37.73584905CRO            265KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:09            2021.03.19 19:08            MED            KRW            매수            110.49723756MED            90.50KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:08            2021.03.19 19:08            CHZ            KRW            매수            12.07729468CHZ            828KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:08            2021.03.19 19:08            BTC            KRW            매수            0.00014654BTC            68,239,000KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:08            2021.03.19 19:08            NPXS            KRW            매수            1,862.19739292NPXS            5.37KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:08            2021.03.19 19:08            MBL            KRW            매수            406.50406504MBL            24.60KRW            10,000KRW            4.99KRW            10,005KRW            2021.03.19 19:08            2021.03.17 16:06            BORA            KRW            매도            2,190.24860335BORA            328KRW            718,401KRW            359.20KRW            718,042KRW            2021.03.17 16:06            2021.03.16 18:35            MVL            KRW            매수            26,854.90566037MVL            31.80KRW            853,986KRW            426.99KRW            854,413KRW            2021.03.16 18:35            2021.03.16 18:34            DKA            KRW            매도            1,257.11739130DKA            680KRW            854,839KRW            427.41KRW            854,412KRW            2021.03.16 18:34            2021.03.16 14:55            MVL            KRW            매수            79,368.87147335MVL            31.90KRW            2,531,867KRW            1,265.93KRW            2,533,133KRW            2021.03.16 14:55            2021.03.16 14:53            DKA            KRW            매도            260.41666666DKA            768KRW            199,999KRW            99.99KRW            199,899KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            173.22321300DKA            768KRW            133,035KRW            66.51KRW            132,968KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            65.10416666DKA            768KRW            49,999KRW            24.99KRW            49,974KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            167.72812500DKA            768KRW            128,815KRW            64.40KRW            128,750KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            651.04166666DKA            768KRW            499,999KRW            249.99KRW            499,749KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            1,426.75911458DKA            768KRW            1,095,750KRW            547.87KRW            1,095,203KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            311.53924551DKA            768KRW            239,262KRW            119.63KRW            239,142KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            163.89851949DKA            768KRW            125,874KRW            62.93KRW            125,811KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            10.71209187DKA            768KRW            8,226KRW            4.11KRW            8,222KRW            2021.03.16 14:53            2021.03.16 14:53            DKA            KRW            매도            69.57719057DKA            768KRW            53,435KRW            26.71KRW            53,408KRW            2021.03.16 14:53            2021.03.15 14:54            GAS            -            입금            0.03696495GAS            14,490KRW            536KRW            0GAS            0.03696495GAS            -            2021.03.15 12:36            BORA            KRW            매수            2,190.24860335BORA            358KRW            784,109KRW            392.05KRW            784,501KRW            2021.03.15 12:36            2021.03.15 12:35            AHT            KRW            매도            45,525.90499575AHT            13.40KRW            610,047KRW            305.02KRW            609,742KRW            2021.03.15 12:35            2021.03.15 12:35            AHT            KRW            매도            746.26865671AHT            13.40KRW            9,999KRW            4.99KRW            9,994KRW            2021.03.15 12:35            2021.03.15 12:35            AHT            KRW            매도            740.74074074AHT            13.40KRW            9,925KRW            4.96KRW            9,920KRW            2021.03.15 12:35            2021.03.15 12:35            AHT            KRW            매도            11,561.23375494AHT            13.40KRW            154,920KRW            77.46KRW            154,843KRW            2021.03.15 12:35            2021.03.15 08:56            AHT            KRW            매수            58,574.14814814AHT            13.50KRW            790,751KRW            395.37KRW            791,147KRW            2021.03.15 08:56            2021.03.15 08:55            EOS            KRW            매도            7.04264110EOS            4,630KRW            32,607KRW            16.30KRW            32,591KRW            2021.03.15 08:55            2021.03.15 08:55            EOS            KRW            매도            163.91674249EOS            4,630KRW            758,934KRW            379.46KRW            758,555KRW            2021.03.15 08:55            2021.03.14 11:58            DKA            KRW            매수            2,108.20466959DKA            230KRW            484,887KRW            242.44KRW            485,130KRW            2021.03.14 11:58            2021.03.14 11:58            DKA            KRW            매수            1,188.24687150DKA            230KRW            273,297KRW            136.64KRW            273,434KRW            2021.03.14 11:58            2021.03.14 11:58            DKA            KRW            매수            1,260.66585021DKA            230KRW            289,954KRW            144.97KRW            290,099KRW            2021.03.14 11:58            2021.03.14 11:58            NEO            KRW            매도            21.65055528NEO            48,460KRW            1,049,185KRW            524.59KRW            1,048,661KRW            2021.03.14 11:58            2021.03.09 20:32            META            KRW            매수            15,400.52552552META            66.60KRW            1,025,675KRW            512.83KRW            1,026,188KRW            2021.03.09 20:32            2021.03.09 20:31            META            KRW            매도            15,650.94095940META            65.60KRW            1,026,701KRW            513.35KRW            1,026,188KRW            2021.03.09 20:31            2021.03.09 18:21            META            KRW            매수            11,629.52031674META            54.20KRW            630,320KRW            315.16KRW            630,636KRW            2021.03.09 18:21            2021.03.09 18:21            META            KRW            매수            4,021.42064266META            54.20KRW            217,961KRW            108.98KRW            218,070KRW            2021.03.09 18:21            2021.03.09 18:09            META            KRW            매도            14,870.90909090META            57.10KRW            849,128KRW            424.56KRW            848,704KRW            2021.03.09 18:09            2021.03.09 17:54            META            KRW            매수            14,870.90909090META            57.20KRW            850,616KRW            425.30KRW            851,042KRW            2021.03.09 17:54            2021.03.09 17:45            META            KRW            매도            15,204.78412149META            56.00KRW            851,467KRW            425.73KRW            851,042KRW            2021.03.09 17:45            2021.03.09 16:57            META            KRW            매수            104.18679049META            51.10KRW            5,324KRW            2.66KRW            5,327KRW            2021.03.09 16:57            2021.03.09 16:57            META            KRW            매수            4,320.34947894META            51.30KRW            221,634KRW            110.81KRW            221,745KRW            2021.03.09 16:57            2021.03.09 16:57            META            KRW            매수            671.63316523META            51.20KRW            34,388KRW            17.19KRW            34,405KRW            2021.03.09 16:57            2021.03.09 16:57            META            KRW            매수            1,270.63289253META            51.10KRW            64,930KRW            32.46KRW            64,962KRW            2021.03.09 16:57            2021.03.09 16:57            META            KRW            매수            462.98179430META            51.20KRW            23,705KRW            11.85KRW            23,717KRW            2021.03.09 16:57            2021.03.09 16:57            META            KRW            매수            8,375.00000000META            51.10KRW            427,963KRW            213.98KRW            428,177KRW            2021.03.09 16:57            2021.03.09 16:57            EOS            KRW            매도            170.95938359EOS            4,555KRW            778,719KRW            389.35KRW            778,330KRW            2021.03.09 16:57            2021.03.09 00:05            EOS            KRW            매수            190.87142857EOS            4,410KRW            841,743KRW            420.87KRW            842,164KRW            2021.03.09 00:05            2021.03.09 00:03            XTZ            KRW            매도            44.77130177XTZ            5,070KRW            226,990KRW            113.49KRW            226,877KRW            2021.03.09 00:03            2021.03.09 00:03            XTZ            KRW            매도            45.82311178XTZ            5,070KRW            232,323KRW            116.16KRW            232,207KRW            2021.03.09 00:03            2021.03.09 00:03            XTZ            KRW            매도            64.96230769XTZ            5,070KRW            329,358KRW            164.67KRW            329,194KRW            2021.03.09 00:03            2021.03.09 00:03            XTZ            KRW            매도            4.06404292XTZ            5,070KRW            20,604KRW            10.30KRW            20,594KRW            2021.03.09 00:03            2021.03.09 00:03            XTZ            KRW            매도            6.56949631XTZ            5,070KRW            33,307KRW            16.65KRW            33,290KRW            2021.03.09 00:03            2021.03.08 11:04            VTHO            -            입금            36.28794438VTHO            0KRW            0KRW            0VTHO            36.28794438VTHO            -            2021.03.08 10:54            GAS            -            입금            0.03675107GAS            14,170KRW            521KRW            0GAS            0.03675107GAS            -            2021.03.07 14:34            XTZ            KRW            매수            117.90548516XTZ            4,415KRW            520,553KRW            260.27KRW            520,813KRW            2021.03.07 14:34            2021.03.07 14:34            XTZ            KRW            매수            48.28477531XTZ            4,415KRW            213,178KRW            106.58KRW            213,284KRW            2021.03.07 14:34            2021.03.07 14:32            VET            KRW            매도            11,044.58161388VET            66.50KRW            734,464KRW            367.23KRW            734,097KRW            2021.03.07 14:32            2021.03.04 17:56            VET            KRW            매수            8,837.29478544VET            60.30KRW            532,889KRW            266.44KRW            533,156KRW            2021.03.04 17:56            2021.03.04 17:56            VET            KRW            매수            298.28731867VET            60.40KRW            18,017KRW            9.00KRW            18,026KRW            2021.03.04 17:56            2021.03.04 17:56            VET            KRW            매수            1,908.99950977VET            60.40KRW            115,304KRW            57.65KRW            115,362KRW            2021.03.04 17:56            2021.03.04 17:56            EOS            KRW            매수            151.04733861EOS            4,415KRW            666,874KRW            333.43KRW            667,208KRW            2021.03.04 17:56            2021.03.04 10:00            PXL            KRW            매도            259.06735751PXL            38.60KRW            9,999KRW            4.99KRW            9,994KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            229.90932642PXL            38.50KRW            8,851KRW            4.42KRW            8,847KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            5,192.20779200PXL            38.50KRW            199,899KRW            99.94KRW            199,800KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            16,787.89446810PXL            38.50KRW            646,333KRW            323.16KRW            646,010KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            7,556.00313375PXL            38.50KRW            290,906KRW            145.45KRW            290,760KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            1,298.07823361PXL            38.50KRW            49,976KRW            24.98KRW            49,951KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            1,501.76744186PXL            38.70KRW            58,118KRW            29.05KRW            58,089KRW            2021.03.04 10:00            2021.03.04 10:00            PXL            KRW            매도            1,822.03975577PXL            38.60KRW            70,330KRW            35.16KRW            70,295KRW            2021.03.04 10:00            2021.02.27 21:01            PXL            KRW            매수            34,646.96750902PXL            27.70KRW            959,721KRW            479.86KRW            960,201KRW            2021.02.27 21:01            2021.02.27 21:01            NEO            KRW            매도            21.65055527NEO            44,310KRW            959,336KRW            479.66KRW            958,856KRW            2021.02.27 20:52            2021.02.27 20:47            NEO            KRW            매수            41.05289684NEO            44,300KRW            1,818,644KRW            909.32KRW            1,819,553KRW            2021.02.27 20:47            2021.02.27 20:47            NEO            KRW            매수            2.24821371NEO            44,280KRW            99,551KRW            49.77KRW            99,601KRW            2021.02.27 20:47            2021.02.22 21:04            ETH            KRW            매도            0.46240536ETH            2,020,000KRW            934,058KRW            467.02KRW            933,591KRW            2021.02.22 21:04            2021.02.22 21:04            BTC            KRW            매도            0.01611371BTC            61,277,000KRW            987,399KRW            493.69KRW            986,906KRW            2021.02.22 21:04            2021.02.20 09:41            ETH            KRW            매수            0.46240536ETH            2,198,000KRW            1,016,367KRW            508.18KRW            1,016,876KRW            2021.02.20 09:41            2021.02.20 09:40            BTC            KRW            매수            0.00237852BTC            63,194,000KRW            150,309KRW            208.92KRW            150,518KRW            2021.02.20 09:37            2021.02.20 09:40            BTC            KRW            매수            0.00663519BTC            63,194,000KRW            419,305KRW            582.83KRW            419,887KRW            2021.02.20 09:37            2021.02.20 09:40            BTC            KRW            매수            0.00710000BTC            63,194,000KRW            448,678KRW            623.66KRW            449,301KRW            2021.02.20 09:37            2021.02.20 09:36            BTC            KRW            매도            0.00339048BTC            63,083,000KRW            213,881KRW            106.94KRW            213,774KRW            2021.02.20 09:36            2021.02.20 09:36            BTC            KRW            매도            0.01195862BTC            63,082,000KRW            754,373KRW            377.18KRW            753,996KRW            2021.02.20 09:36            2021.02.20 09:36            BTC            KRW            매도            0.00078131BTC            63,083,000KRW            49,287KRW            24.64KRW            49,262KRW            2021.02.20 09:36            2021.02.20 09:34            BTC            KRW            매수            0.01266826BTC            63,146,000KRW            799,950KRW            399.97KRW            800,350KRW            2021.02.20 09:34            2021.02.20 09:34            BTC            KRW            매수            0.00006571BTC            63,146,000KRW            4,150KRW            2.07KRW            4,152KRW            2021.02.20 09:34            2021.02.20 09:34            BTC            KRW            매수            0.00339644BTC            63,146,000KRW            214,472KRW            107.23KRW            214,579KRW            2021.02.20 09:34            2021.02.20 09:16            ETH            KRW            매도            0.82682282ETH            2,182,000KRW            1,804,127KRW            902.06KRW            1,803,225KRW            2021.02.20 09:16            2021.02.20 09:15            BTC            KRW            매도            0.00372686BTC            63,195,000KRW            235,518KRW            117.75KRW            235,401KRW            2021.02.20 09:15            2021.02.19 09:21            ETH            KRW            매수            0.57342282ETH            2,182,000KRW            1,251,209KRW            625.60KRW            1,251,835KRW            2021.02.19 09:20            2021.02.19 09:20            ETH            KRW            매수            0.25340000ETH            2,181,000KRW            552,666KRW            276.33KRW            552,942KRW            2021.02.19 09:20            2021.02.19 09:15            PXL            KRW            매도            59,989.31750741PXL            30.10KRW            1,805,678KRW            902.83KRW            1,804,775KRW            2021.02.19 09:15            2021.02.19 09:07            PXL            KRW            매수            59,989.31750741PXL            33.70KRW            2,021,640KRW            1,010.81KRW            2,022,651KRW            2021.02.19 09:07            2021.02.19 09:07            PXL            KRW            매도            59,695.08182452PXL            33.90KRW            2,023,663KRW            1,011.83KRW            2,022,651KRW            2021.02.19 09:07            2021.02.18 21:44            PXL            KRW            매수            1,978.55727414PXL            30.40KRW            60,149KRW            30.07KRW            60,179KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            3,354.02684500PXL            30.40KRW            101,963KRW            50.98KRW            102,014KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            23,478.18791900PXL            30.40KRW            713,737KRW            356.86KRW            714,094KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            498.08970100PXL            30.40KRW            15,142KRW            7.57KRW            15,150KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            992.88079470PXL            30.40KRW            30,184KRW            15.09KRW            30,199KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            166.03540335PXL            30.40KRW            5,048KRW            2.52KRW            5,050KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            333.16666600PXL            30.30KRW            10,095KRW            5.04KRW            10,100KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            1,773.04964539PXL            30.20KRW            53,546KRW            26.77KRW            53,573KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            3,084.64660178PXL            30.20KRW            93,157KRW            46.57KRW            93,203KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            999.50000000PXL            30.20KRW            30,185KRW            15.09KRW            30,200KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            21,333.03311714PXL            30.20KRW            644,258KRW            322.12KRW            644,580KRW            2021.02.18 21:44            2021.02.18 21:44            PXL            KRW            매수            375.62463022PXL            30.20KRW            11,344KRW            5.67KRW            11,350KRW            2021.02.18 21:44            2021.02.18 21:43            ETH            KRW            매도            0.85666666ETH            2,114,000KRW            1,810,993KRW            905.49KRW            1,810,087KRW            2021.02.18 21:43            2021.02.18 12:46            ETH            KRW            매수            0.38002224ETH            2,100,000KRW            798,047KRW            399.02KRW            798,446KRW            2021.02.18 12:46            2021.02.18 12:46            ETH            KRW            매수            0.47664442ETH            2,100,000KRW            1,000,954KRW            500.47KRW            1,001,454KRW            2021.02.18 12:46            2021.02.18 12:42            BTC            KRW            매수            0.00346686BTC            57,689,000KRW            200,000KRW            99.99KRW            200,100KRW            2021.02.18 12:42            2021.02.18 11:45            KRW            -            입금            2,000,000KRW            0KRW            2,000,000KRW            0KRW            2,000,000KRW            -            2021.02.18 11:43            BTC            -            입금            0.00026000BTC            57,792,000KRW            15,026KRW            0BTC            0.00026000BTC            -',
-                    balance: ''
-                }
-            }).done(function(data) {
-                $('#originalData').text(data);
-                data = JSON.parse(data);
-                console.log(data);
-
-                //   "balanceExpected": {
-                //     "BTC": {
-                //       "Quantity": -0.02238757,
-                //       "PriceAvg": 79149544.407837,
-                //       "PriceBuyTotal": 27318204,
-                //       "FeeBuyTotal": 13658.97,
-                //       "PriceSellTotal": 27146352,
-                //       "FeeSellTotal": 13573.02
-                //     },
-                var sumProfit = 0;
-                for (var coin in data.profitCoinly) {
-                    sumProfit += data.profitCoinly[coin];
-                }
-                
-
-                // titleDiv 출력
-                if (sumProfit > 0) {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--positive-color")); 
-                    $('#title_sumProfit_lbl').addClass('profit_positive');
-                    $('#title_sumProfit').addClass('profit_positive');
-                    $('#title_sumProfitPercent').addClass('profit_positive');
-                } else if (sumProfit < 0) {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--negative-color")); 
-                    $('#title_sumProfit_lbl').addClass('profit_negative');
-                    $('#title_sumProfit').addClass('profit_negative');
-                    $('#title_sumProfitPercent').addClass('profit_negative');
-                } else {
-			        $("#title_div").css("border","0.1px solid " + getComputedStyle(document.body).getPropertyValue("--neutral-color"));
-                }
-
-                $('#title_div').removeClass('gradient');
-                $('#title_sumProfit_lbl').text('실현한 수익');
-                $('#title_sumProfit').text(addComma(sumProfit));
-                $('#title_sumProfitPercent').text(addComma((sumProfit + data.withdraw.KRW) / data.withdraw.KRW * 100, 2) + "%");
-                $('#title_sumWon_lbl').text('입금한 원화');
-                $('#title_sumWon').text(addComma(data.withdraw.KRW));
-
-                // tableCoinly 출력
-                for (var coin in data.profitCoinly) {
-                    var mTr = '<tr class="tableCoinly_body" onclick="openModal(`' + coin + '`)">' + 
-                        '<td class="tableCoinly_body_cell">';
-                    
-                    if (coin in data.coinInfo) {
-                        mTr += data.coinInfo[coin] + ' <span class="coin_eng">' + coin + '</span>';
-                    } else {
-                        mTr += coin;
-                    }
-                    
-                    mTr += '</td>' +
-                        '<td class="tableCoinly_body_cell">';
-                    
-                    var mProfit = data.profitCoinly[coin];
-                    var mProfitRate = data.profitCoinly[coin];
-
-                    var mAsisAsset = data.balanceExpected[coin].PriceBuyTotal + data.balanceExpected[coin].FeeBuyTotal;
-                    var mTobeAsset = data.balanceExpected[coin].PriceSellTotal - data.balanceExpected[coin].FeeSellTotal;
-                    var mProfitRate = (mTobeAsset - mAsisAsset) / mAsisAsset * 100;
-
-                    if (mProfit > 0) {
-                        mTr += '<span class="profit_positive">+' + addComma(mProfit) + ' <span class="profit_percentage">' + addComma(mProfitRate, 2) + '%</span></span>';
-                    } else if (mProfit < 0) {
-                        mTr += '<span class="profit_negative">' + addComma(mProfit) + ' <span class="profit_percentage">' + addComma(mProfitRate, 2) + '%</span></span>';
-                    } else {
-                        mTr += '<span class="profit_zero">-</span>';
-                    }
-                    
-                    mTr += '</td>' + 
-                        '<td class="tableCoinly_body_cell">' +
-                        addComma(mAsisAsset) +
-                        '</td>' +
-                        '<td class="tableCoinly_body_cell">' +
-                        addComma(mTobeAsset) +
-                        '</td>' +
-                    '</tr>';
-
-                    $("#tableCoinly>tbody").append(mTr);
-                }
-
-                $('#tablecoinly_head_profit').click();      // 최초 데이터 노출시 수익 기준 정렬
-
-                // graphDaily 출력
-                // data.profitTimely: [['2021.02.18 21:43', 'ETH', 11993], ['2021.02.18 21:43', 'ETH', 11993], ...]
-                var profitDaily = [];
-                data.profitTimely.forEach(function(mProfit){
-                    const mDate = new Date(mProfit[0]);
-                    const mYear = String(mDate.getFullYear()).padStart(4,'0');
-                    const mMonth = String(mDate.getMonth() + 1).padStart(2,'0')
-                    const mDay = String(mDate.getDate()).padStart(2,'0');
-                    const YYYYMMDD = mYear + '-' + mMonth + '-' + mDay
-
-                    if (YYYYMMDD in profitDaily) {
-                        profitDaily[YYYYMMDD].totalProfit += mProfit[2];
-
-                        if (mProfit[1] in profitDaily[YYYYMMDD].coinlyProfit) {
-                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] += mProfit[2];
-                        } else {
-                            profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] = mProfit[2];
-                        }
-                    } else {
-                        profitDaily[YYYYMMDD] = {totalProfit: mProfit[2], coinlyProfit: {}};
-                        profitDaily[YYYYMMDD].coinlyProfit[mProfit[1]] = mProfit[2];
-                    }
-                });
-
-                let dates = [];
-                let profits = [];
-                for (var mDate in profitDaily) {
-                    dates.push(mDate);
-                    profits.push(profitDaily[mDate].totalProfit);
-                }
-                
-                let mPositiveColor = getComputedStyle(document.body).getPropertyValue("--positive-color");
-                let mNegativeColor = getComputedStyle(document.body).getPropertyValue("--negative-color")
-                let options = {
-                    series: [{
-                        name: '수익',
-                        data: profits
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 300,
-                        background: '#0F1421',
-                        sparkline: {
-                            enabled: false,
-                        },
-                        defaultLocale: 'en'
-                    },
-                    plotOptions: {
-                        bar: {
-                            columnWidth: '90%',
-                        }
-                    },
-                    colors: [function({ value, seriesIndex, w }) {
-                        if (value < 0) {
-                            return mNegativeColor;
-                        } else {
-                            return mPositiveColor;
-                        }
-                    }],
-                    dataLabels: {
-                        enabled: false,
-                    },
-                    yaxis: {
-                        show: true,
-                        floating: false,
-                        labels: {
-                            formatter: function (y) {
-                                return addComma(y.toFixed(0));
-                            }
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        shared: false, 
-                        intersect: false,
-                        // followCursor: true,
-                        custom: function({series, seriesIndex, dataPointIndex, w}) {
-                            let mTotalProfit = series[seriesIndex][dataPointIndex];
-                            let mClass;
-                            if (mTotalProfit > 0) {
-                                mClass = "profit_positive";
-                            } else if (mTotalProfit < 0) {
-                                mClass = "profit_negative";
-                            } else {
-                                mClass = "profit_neutral";
-                            }
-                            let divTooltip = '<div style="padding:8px;background:#ffffff11;border-radius:10px;">' +
-                                '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
-                                '<div class="' + mClass + '" style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(mTotalProfit) + '원</div>';
-                            
-                            let YYYYMMDD = w.config.xaxis.categories[dataPointIndex];
-                            if (Object.keys(profitDaily[YYYYMMDD].coinlyProfit).length > 0) {
-                                divTooltip += '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">';
-                                
-                                for (var coin in profitDaily[YYYYMMDD].coinlyProfit) {
-                                    let mCoinlyProfit = profitDaily[YYYYMMDD].coinlyProfit[coin];
-                                    let mClass;
-                                    let mCoinName;
-                                    if (mCoinlyProfit > 0) {
-                                        mClass = "profit_positive";
-                                    } else if (mCoinlyProfit < 0) {
-                                        mClass = "profit_negative";
-                                    } else {
-                                        mClass = "profit_neutral";
-                                    }
-
-                                    if (coin in data.coinInfo) {
-                                        mCoinName = data.coinInfo[coin];
-                                    } else {
-                                        mCoinName = coin;
-                                    }
-
-                                    divTooltip += '<div style="display:flex;"><div>' + mCoinName + '</div>' +
-                                        '<div class="' + mClass + '" style="margin-left:10px;text-align:right;flex:1;">' + addComma(mCoinlyProfit) + '원</div></div>';
-                                }
-                                divTooltip += '</div>';
-                            }
-                            divTooltip += '</div>';
-
-                            return divTooltip;
-                        },
-                    },
-                    theme: {
-                        mode: 'dark'
-                    },
-                    grid: {
-                        show: true,
-                        borderColor: '#ffffff11',
-                        strokeDashArray: 0
-                    },
-                    xaxis: {
-                        type: 'datetime',
-                        categories: dates,
-                        labels: {
-                            rotate: -90
-                        },
-                        crosshairs: {
-                            show: true,
-                            width: 1,
-                            stroke: {
-                                color: '#ffffff33',
-                                width: 1,
-                                dashArray: 2,
-                            },
-                        },
-                        axisTicks: {
-                            show: false,
-                        },
-                        axisBorder: {
-                            show: false,
-                        },
-                    }
-                };
-
-                var chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
-
-
-
-            });
-
-            // tableCoinly 정렬기능
-            var tableCoinlySortDesc = false;
-            var tableCoinlySortThIndex = -1;
-            $('.tableCoinly_head_cell')
-                .wrapInner('<span title="sort this column"/>')
-                .each(function () {
-                    var th = $(this),
-                        thIndex = th.index();
-
-                    th.click(function () {
-                        if (tableCoinlySortThIndex > -1 && tableCoinlySortThIndex != thIndex) {
-                            tableCoinlySortDesc = false; // 다른 칼럼 누른 경우 초기화. 처음엔 숫자 내림차순, 문자 오름차순
-                        }
-                        tableCoinlySortThIndex = thIndex;
-
-                        $('#tableCoinly').find('td').filter(function () {
-                            return $(this).index() === thIndex;
-
-                        }).sortElements(function (a, b) {
-                            if (isNaN(parseFloat($.text([a]))) || isNaN(parseFloat($.text([
-                                b])))) {
-                                return $.text([a]) > $.text([b]) ?
-
-                                    tableCoinlySortDesc ? -1 : 1 :
-                                    tableCoinlySortDesc ? 1 : -1;
-
-                            } else {
-                                return parseFloat($.text([a]).replace(/,/g, '')) < parseFloat($
-                                        .text([b]).replace(/,/g, '')) ?
-
-                                    tableCoinlySortDesc ? -1 : 1 :
-                                    tableCoinlySortDesc ? 1 : -1;
-                            }
-                        }, function () {
-                            // parentNode is the element we want to move
-                            return this.parentNode;
-                        });
-
-                        tableCoinlySortDesc = !tableCoinlySortDesc;
-                    });
-
-                });
-        }
-
     </script>
-<style id="apexcharts-css">.apexcharts-canvas {
-  position: relative;
-  user-select: none;
-  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */
-}
 
 
-/* scrollbar is not visible by default for legend, hence forcing the visibility */
-.apexcharts-canvas ::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 6px;
-}
 
-.apexcharts-canvas ::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-}
 
 
-.apexcharts-inner {
-  position: relative;
-}
-
-.apexcharts-text tspan {
-  font-family: inherit;
-}
-
-.legend-mouseover-inactive {
-  transition: 0.15s ease all;
-  opacity: 0.20;
-}
-
-.apexcharts-series-collapsed {
-  opacity: 0;
-}
-
-.apexcharts-tooltip {
-  border-radius: 5px;
-  box-shadow: 2px 2px 6px -4px #999;
-  cursor: default;
-  font-size: 14px;
-  left: 62px;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 20px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  white-space: nowrap;
-  z-index: 12;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-tooltip.apexcharts-active {
-  opacity: 1;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-tooltip.apexcharts-theme-light {
-  border: 1px solid #e3e3e3;
-  background: rgba(255, 255, 255, 0.96);
-}
-
-.apexcharts-tooltip.apexcharts-theme-dark {
-  color: #fff;
-  background: rgba(30, 30, 30, 0.8);
-}
-
-.apexcharts-tooltip * {
-  font-family: inherit;
-}
-
-
-.apexcharts-tooltip-title {
-  padding: 6px;
-  font-size: 15px;
-  margin-bottom: 4px;
-}
-
-.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
-  background: #ECEFF1;
-  border-bottom: 1px solid #ddd;
-}
-
-.apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
-  background: rgba(0, 0, 0, 0.7);
-  border-bottom: 1px solid #333;
-}
-
-.apexcharts-tooltip-text-y-value,
-.apexcharts-tooltip-text-goals-value,
-.apexcharts-tooltip-text-z-value {
-  display: inline-block;
-  font-weight: 600;
-  margin-left: 5px;
-}
-
-.apexcharts-tooltip-title:empty,
-.apexcharts-tooltip-text-y-label:empty,
-.apexcharts-tooltip-text-y-value:empty,
-.apexcharts-tooltip-text-goals-label:empty,
-.apexcharts-tooltip-text-goals-value:empty,
-.apexcharts-tooltip-text-z-value:empty {
-  display: none;
-}
-
-.apexcharts-tooltip-text-y-value,
-.apexcharts-tooltip-text-goals-value,
-.apexcharts-tooltip-text-z-value {
-  font-weight: 600;
-}
-
-.apexcharts-tooltip-text-goals-label, 
-.apexcharts-tooltip-text-goals-value {
-  padding: 6px 0 5px;
-}
-
-.apexcharts-tooltip-goals-group, 
-.apexcharts-tooltip-text-goals-label, 
-.apexcharts-tooltip-text-goals-value {
-  display: flex;
-}
-.apexcharts-tooltip-text-goals-label:not(:empty),
-.apexcharts-tooltip-text-goals-value:not(:empty) {
-  margin-top: -6px;
-}
-
-.apexcharts-tooltip-marker {
-  width: 12px;
-  height: 12px;
-  position: relative;
-  top: 0px;
-  margin-right: 10px;
-  border-radius: 50%;
-}
-
-.apexcharts-tooltip-series-group {
-  padding: 0 10px;
-  display: none;
-  text-align: left;
-  justify-content: left;
-  align-items: center;
-}
-
-.apexcharts-tooltip-series-group.apexcharts-active .apexcharts-tooltip-marker {
-  opacity: 1;
-}
-
-.apexcharts-tooltip-series-group.apexcharts-active,
-.apexcharts-tooltip-series-group:last-child {
-  padding-bottom: 4px;
-}
-
-.apexcharts-tooltip-series-group-hidden {
-  opacity: 0;
-  height: 0;
-  line-height: 0;
-  padding: 0 !important;
-}
-
-.apexcharts-tooltip-y-group {
-  padding: 6px 0 5px;
-}
-
-.apexcharts-tooltip-box, .apexcharts-custom-tooltip {
-  padding: 4px 8px;
-}
-
-.apexcharts-tooltip-boxPlot {
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-.apexcharts-tooltip-box>div {
-  margin: 4px 0;
-}
-
-.apexcharts-tooltip-box span.value {
-  font-weight: bold;
-}
-
-.apexcharts-tooltip-rangebar {
-  padding: 5px 8px;
-}
-
-.apexcharts-tooltip-rangebar .category {
-  font-weight: 600;
-  color: #777;
-}
-
-.apexcharts-tooltip-rangebar .series-name {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.apexcharts-xaxistooltip {
-  opacity: 0;
-  padding: 9px 10px;
-  pointer-events: none;
-  color: #373d3f;
-  font-size: 13px;
-  text-align: center;
-  border-radius: 2px;
-  position: absolute;
-  z-index: 10;
-  background: #ECEFF1;
-  border: 1px solid #90A4AE;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-xaxistooltip.apexcharts-theme-dark {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  color: #fff;
-}
-
-.apexcharts-xaxistooltip:after,
-.apexcharts-xaxistooltip:before {
-  left: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.apexcharts-xaxistooltip:after {
-  border-color: rgba(236, 239, 241, 0);
-  border-width: 6px;
-  margin-left: -6px;
-}
-
-.apexcharts-xaxistooltip:before {
-  border-color: rgba(144, 164, 174, 0);
-  border-width: 7px;
-  margin-left: -7px;
-}
-
-.apexcharts-xaxistooltip-bottom:after,
-.apexcharts-xaxistooltip-bottom:before {
-  bottom: 100%;
-}
-
-.apexcharts-xaxistooltip-top:after,
-.apexcharts-xaxistooltip-top:before {
-  top: 100%;
-}
-
-.apexcharts-xaxistooltip-bottom:after {
-  border-bottom-color: #ECEFF1;
-}
-
-.apexcharts-xaxistooltip-bottom:before {
-  border-bottom-color: #90A4AE;
-}
-
-.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:after {
-  border-bottom-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:before {
-  border-bottom-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip-top:after {
-  border-top-color: #ECEFF1
-}
-
-.apexcharts-xaxistooltip-top:before {
-  border-top-color: #90A4AE;
-}
-
-.apexcharts-xaxistooltip-top.apexcharts-theme-dark:after {
-  border-top-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip-top.apexcharts-theme-dark:before {
-  border-top-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip.apexcharts-active {
-  opacity: 1;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-yaxistooltip {
-  opacity: 0;
-  padding: 4px 10px;
-  pointer-events: none;
-  color: #373d3f;
-  font-size: 13px;
-  text-align: center;
-  border-radius: 2px;
-  position: absolute;
-  z-index: 10;
-  background: #ECEFF1;
-  border: 1px solid #90A4AE;
-}
-
-.apexcharts-yaxistooltip.apexcharts-theme-dark {
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  color: #fff;
-}
-
-.apexcharts-yaxistooltip:after,
-.apexcharts-yaxistooltip:before {
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.apexcharts-yaxistooltip:after {
-  border-color: rgba(236, 239, 241, 0);
-  border-width: 6px;
-  margin-top: -6px;
-}
-
-.apexcharts-yaxistooltip:before {
-  border-color: rgba(144, 164, 174, 0);
-  border-width: 7px;
-  margin-top: -7px;
-}
-
-.apexcharts-yaxistooltip-left:after,
-.apexcharts-yaxistooltip-left:before {
-  left: 100%;
-}
-
-.apexcharts-yaxistooltip-right:after,
-.apexcharts-yaxistooltip-right:before {
-  right: 100%;
-}
-
-.apexcharts-yaxistooltip-left:after {
-  border-left-color: #ECEFF1;
-}
-
-.apexcharts-yaxistooltip-left:before {
-  border-left-color: #90A4AE;
-}
-
-.apexcharts-yaxistooltip-left.apexcharts-theme-dark:after {
-  border-left-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip-left.apexcharts-theme-dark:before {
-  border-left-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip-right:after {
-  border-right-color: #ECEFF1;
-}
-
-.apexcharts-yaxistooltip-right:before {
-  border-right-color: #90A4AE;
-}
-
-.apexcharts-yaxistooltip-right.apexcharts-theme-dark:after {
-  border-right-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip-right.apexcharts-theme-dark:before {
-  border-right-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip.apexcharts-active {
-  opacity: 1;
-}
-
-.apexcharts-yaxistooltip-hidden {
-  display: none;
-}
-
-.apexcharts-xcrosshairs,
-.apexcharts-ycrosshairs {
-  pointer-events: none;
-  opacity: 0;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-xcrosshairs.apexcharts-active,
-.apexcharts-ycrosshairs.apexcharts-active {
-  opacity: 1;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-ycrosshairs-hidden {
-  opacity: 0;
-}
-
-.apexcharts-selection-rect {
-  cursor: move;
-}
-
-.svg_select_boundingRect, .svg_select_points_rot {
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-}
-.apexcharts-selection-rect + g .svg_select_boundingRect,
-.apexcharts-selection-rect + g .svg_select_points_rot {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.apexcharts-selection-rect + g .svg_select_points_l,
-.apexcharts-selection-rect + g .svg_select_points_r {
-  cursor: ew-resize;
-  opacity: 1;
-  visibility: visible;
-}
-
-.svg_select_points {
-  fill: #efefef;
-  stroke: #333;
-  rx: 2;
-}
-
-.apexcharts-svg.apexcharts-zoomable.hovering-zoom {
-  cursor: crosshair
-}
-
-.apexcharts-svg.apexcharts-zoomable.hovering-pan {
-  cursor: move
-}
-
-.apexcharts-zoom-icon,
-.apexcharts-zoomin-icon,
-.apexcharts-zoomout-icon,
-.apexcharts-reset-icon,
-.apexcharts-pan-icon,
-.apexcharts-selection-icon,
-.apexcharts-menu-icon,
-.apexcharts-toolbar-custom-icon {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  line-height: 24px;
-  color: #6E8192;
-  text-align: center;
-}
-
-.apexcharts-zoom-icon svg,
-.apexcharts-zoomin-icon svg,
-.apexcharts-zoomout-icon svg,
-.apexcharts-reset-icon svg,
-.apexcharts-menu-icon svg {
-  fill: #6E8192;
-}
-
-.apexcharts-selection-icon svg {
-  fill: #444;
-  transform: scale(0.76)
-}
-
-.apexcharts-theme-dark .apexcharts-zoom-icon svg,
-.apexcharts-theme-dark .apexcharts-zoomin-icon svg,
-.apexcharts-theme-dark .apexcharts-zoomout-icon svg,
-.apexcharts-theme-dark .apexcharts-reset-icon svg,
-.apexcharts-theme-dark .apexcharts-pan-icon svg,
-.apexcharts-theme-dark .apexcharts-selection-icon svg,
-.apexcharts-theme-dark .apexcharts-menu-icon svg,
-.apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg {
-  fill: #f3f4f5;
-}
-
-.apexcharts-canvas .apexcharts-zoom-icon.apexcharts-selected svg,
-.apexcharts-canvas .apexcharts-selection-icon.apexcharts-selected svg,
-.apexcharts-canvas .apexcharts-reset-zoom-icon.apexcharts-selected svg {
-  fill: #008FFB;
-}
-
-.apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg,
-.apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg,
-.apexcharts-theme-light .apexcharts-zoomin-icon:hover svg,
-.apexcharts-theme-light .apexcharts-zoomout-icon:hover svg,
-.apexcharts-theme-light .apexcharts-reset-icon:hover svg,
-.apexcharts-theme-light .apexcharts-menu-icon:hover svg {
-  fill: #333;
-}
-
-.apexcharts-selection-icon,
-.apexcharts-menu-icon {
-  position: relative;
-}
-
-.apexcharts-reset-icon {
-  margin-left: 5px;
-}
-
-.apexcharts-zoom-icon,
-.apexcharts-reset-icon,
-.apexcharts-menu-icon {
-  transform: scale(0.85);
-}
-
-.apexcharts-zoomin-icon,
-.apexcharts-zoomout-icon {
-  transform: scale(0.7)
-}
-
-.apexcharts-zoomout-icon {
-  margin-right: 3px;
-}
-
-.apexcharts-pan-icon {
-  transform: scale(0.62);
-  position: relative;
-  left: 1px;
-  top: 0px;
-}
-
-.apexcharts-pan-icon svg {
-  fill: #fff;
-  stroke: #6E8192;
-  stroke-width: 2;
-}
-
-.apexcharts-pan-icon.apexcharts-selected svg {
-  stroke: #008FFB;
-}
-
-.apexcharts-pan-icon:not(.apexcharts-selected):hover svg {
-  stroke: #333;
-}
-
-.apexcharts-toolbar {
-  position: absolute;
-  z-index: 11;
-  max-width: 176px;
-  text-align: right;
-  border-radius: 3px;
-  padding: 0px 6px 2px 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.apexcharts-menu {
-  background: #fff;
-  position: absolute;
-  top: 100%;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 3px;
-  right: 10px;
-  opacity: 0;
-  min-width: 110px;
-  transition: 0.15s ease all;
-  pointer-events: none;
-}
-
-.apexcharts-menu.apexcharts-menu-open {
-  opacity: 1;
-  pointer-events: all;
-  transition: 0.15s ease all;
-}
-
-.apexcharts-menu-item {
-  padding: 6px 7px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.apexcharts-theme-light .apexcharts-menu-item:hover {
-  background: #eee;
-}
-
-.apexcharts-theme-dark .apexcharts-menu {
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-}
-
-@media screen and (min-width: 768px) {
-  .apexcharts-canvas:hover .apexcharts-toolbar {
-    opacity: 1;
+<script>
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+      )
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+      )
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+      )
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    
+    function addComma(num, fractionDigits = 0) {
+            if (num.substring) {        // 문자인 경우
+                if (!isNaN(num)) {
+                    num = Number(num);
+                } else {        // 숫자로 변환 불가한 문자
+                    return num;
+                }
+            }
+            // var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toLocaleString("ko-KR", {maximumFractionDigits: fractionDigits});
+        }
+    var options = {
+        series: [{
+            name: '수익',
+            data: [18114, 41792, -98865, 63516, 92353, 187162, 660468, 3373, 176506, 1093567, 8372, 309781, 1015487, 361491, 284348, -413605, -26505, -113686, 804896, -135834, 122366, -343169, 46839, 551077, 253528, 1010671, 45008, -16056, 1337045, 1176079, 557655, -407333, 36486, -48416, 442314, -64094, -134161, 51507, -34462, 170165, 958659, 767456, -7083, -229569, 145271, 1064730, -551553, -41335, 166367, 1155859, 1059432, 1030113, 132892, 63603, -25382, -1837418, -1371, -143633, -225338, -437281, -1535014, -23657, -33972, 431206, 33310, 2628693, 2971580, 180580, 94962, -501482, -104347, -34737, -24830, 4008951, 1077347, 565439, 79058, 995965, 416430]
+        }],
+        chart: {
+            type: 'bar',
+            height:300,
+            background: '#0F1421',
+            sparkline: {
+                enabled: false,
+            },
+            defaultLocale: 'en'
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '90%',
+            }
+        },
+        colors: [function({ value, seriesIndex, w }) {
+            if (value < 0) {
+                return '#FEB019'
+            } else {
+                return '#ffffff'
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        yaxis: {
+            show: true,
+            floating: false,
+            labels: {
+                formatter: function (y) {
+                    return addComma(y.toFixed(0));
+                }
+            }
+        },
+        tooltip: {
+            enabled: true,
+            shared: false, 
+            intersect: false,
+            // followCursor: true,
+            custom: function({series, seriesIndex, dataPointIndex, w}) {
+                console.log({series, seriesIndex, dataPointIndex, w})
+                return '<div class="arrow_box" style="padding:8px;background:#ffffff11;border-radius:10px;">' +
+                
+                    '<div style="font-size:13px;color:#ffffff88">' + w.config.xaxis.categories[dataPointIndex] + '</div>' +
+                    '<div style="margin-top:8px;text-align:right;font-size:20px;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div>' +
+                    '<div style="padding:8px;margin-top:8px;background:#ffffff11;border-radius:10px;">' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움234324234234</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더리움</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                        '<div style="display:flex;"><div>이더</div><div style="margin-left:10px;text-align:right;flex:1;">' + addComma(series[seriesIndex][dataPointIndex]) + '원</div></div>' +
+                    '</div>'+
+                '</div>'
+                
+            },
+        },
+        theme: {
+            mode: 'dark'
+        },
+        grid: {
+            show: true,
+            borderColor: '#ffffff11',
+            strokeDashArray: 0
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: ['2021-01-08', '2021-01-10', '2021-01-20', '2021-02-06', '2021-02-09', '2021-02-10', '2021-02-11', '2021-02-12', '2021-02-13', '2021-02-14', '2021-02-15', '2021-02-16', '2021-02-17', '2021-02-18', '2021-02-19', '2021-02-20', '2021-02-27', '2021-03-03', '2021-03-04', '2021-03-06', '2021-03-08', '2021-03-09', '2021-03-11', '2021-03-13', '2021-03-14', '2021-03-15', '2021-03-16', '2021-03-17', '2021-03-18', '2021-03-19', '2021-03-20', '2021-03-21', '2021-03-22', '2021-03-23', '2021-03-24', '2021-03-25', '2021-03-26', '2021-03-27', '2021-03-28', '2021-03-29', '2021-03-30', '2021-03-31', '2021-04-01', '2021-04-03', '2021-04-04', '2021-04-05', '2021-04-06', '2021-04-08', '2021-04-09', '2021-04-11', '2021-04-13', '2021-04-14', '2021-04-15', '2021-04-16', '2021-04-21', '2021-04-27', '2021-05-05', '2021-05-20', '2021-05-24', '2021-05-25', '2021-06-23', '2021-08-06', '2021-08-13', '2021-08-16', '2021-08-20', '2021-08-24', '2021-09-05', '2021-09-19', '2021-09-20', '2021-09-24', '2021-10-22', '2021-10-29', '2021-11-16', '2021-11-24', '2021-11-25', '2021-11-26', '2021-11-29', '2021-12-01', '2021-12-02'],
+            labels: {
+                rotate: -90
+            },
+            crosshairs: {
+                show: true,
+                width: 1,
+                stroke: {
+                    color: '#ffffff33',
+                    width: 1,
+                    dashArray: 2,
+                },
+            },
+            axisTicks: {
+                show: false,
+            },
+            axisBorder: {
+                show: false,
+            },
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+    </script>
+  
+
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+  <script src="YOUR_SDK_FILE_PATH"></script>
+  <script>
+      // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init('1dfc8898d7f9970d07ed87b2304c5212');
+
+      // SDK 초기화 여부를 판단합니다.
+      console.log(Kakao.isInitialized());
+  </script>
+<script type="text/javascript">
+  function sendLink() {
+    Kakao.Link.sendScrap({
+      requestUrl: 'https://developers.kakao.com',
+    })
   }
-}
+</script>
+</div>
 
-.apexcharts-datalabel.apexcharts-element-hidden {
-  opacity: 0;
-}
+<style>
+    .floatingMainDiv {
+        width: 250px;
+        position: sticky;
+        top: 40px;
+        margin-left: 40px;
+        border-radius: 20px;
+        border: 1px solid #444444;
+        height: fit-content;
+        background-color: #f8f6ff10;
+        overflow: hidden;
+    }
 
-.apexcharts-pie-label,
-.apexcharts-datalabels,
-.apexcharts-datalabel,
-.apexcharts-datalabel-label,
-.apexcharts-datalabel-value {
-  cursor: default;
-  pointer-events: none;
-}
+    .floatingMenuDiv {
+        display: flex;
+        padding: 16px;
+        cursor: pointer;
+    }
 
-.apexcharts-pie-label-delay {
-  opacity: 0;
-  animation-name: opaque;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease;
-}
+    .floatingMenuDiv:hover {
+        background-color: #f8f6ff10;
+    }
 
-.apexcharts-canvas .apexcharts-element-hidden {
-  opacity: 0;
-}
+    .floatingMenuDivInactive:hover {
+        background-color: transparent;
+    }
 
-.apexcharts-hide .apexcharts-series-points {
-  opacity: 0;
-}
+    .floatingLineDiv {
+        background-color: #444444;
+        width: 100%;
+        height: 1px;
+    }
 
-.apexcharts-gridline,
-.apexcharts-annotation-rect,
-.apexcharts-tooltip .apexcharts-marker,
-.apexcharts-area-series .apexcharts-area,
-.apexcharts-line,
-.apexcharts-zoom-rect,
-.apexcharts-toolbar svg,
-.apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
-.apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
-.apexcharts-radar-series path,
-.apexcharts-radar-series polygon {
-  pointer-events: none;
-}
+    .floatingMenuSpan {
+        margin-left: 8px;
+        font-size: 14px;
+        color: #ffffffee
+    }
 
-
-/* markers */
-
-.apexcharts-marker {
-  transition: 0.15s ease all;
-}
-
-@keyframes opaque {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-
-/* Resize generated styles */
-
-@keyframes resizeanim {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.resize-triggers {
-  animation: 1ms resizeanim;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.resize-triggers,
-.resize-triggers>div,
-.contract-trigger:before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
-.resize-triggers>div {
-  background: #eee;
-  overflow: auto;
-}
-
-.contract-trigger:before {
-  width: 200%;
-  height: 200%;
-}</style></head>
-
-<body>
-    <span id="originalData" style="display:none;">{"coinInfo":{"BTC":"\ube44\ud2b8\ucf54\uc778","ETH":"\uc774\ub354\ub9ac\uc6c0","LTC":"\ub77c\uc774\ud2b8\ucf54\uc778","XRP":"\ub9ac\ud50c","ETC":"\uc774\ub354\ub9ac\uc6c0\ud074\ub798\uc2dd","OMG":"\uc624\ubbf8\uc138\uace0","CVC":"\uc2dc\ube45","DGB":"\ub514\uc9c0\ubc14\uc774\ud2b8","SC":"\uc2dc\uc544\ucf54\uc778","SNT":"\uc2a4\ud14c\uc774\ud130\uc2a4\ub124\ud2b8\uc6cc\ud06c\ud1a0\ud070","WAVES":"\uc6e8\uc774\ube0c","NMR":"\ub274\uba54\ub808\ub974","XEM":"\ub134","QTUM":"\ud000\ud140","BAT":"\ubca0\uc774\uc9c1\uc5b4\ud150\uc158\ud1a0\ud070","LSK":"\ub9ac\uc2a4\ud06c","STEEM":"\uc2a4\ud300","DOGE":"\ub3c4\uc9c0\ucf54\uc778","BNT":"\ubc45\ucf54\ub974","XLM":"\uc2a4\ud154\ub77c\ub8e8\uba58","ARDR":"\uc544\ub354","ARK":"\uc544\ud06c","STORJ":"\uc2a4\ud1a0\ub9ac\uc9c0","GRS":"\uadf8\ub85c\uc2a4\ud1a8\ucf54\uc778","REP":"\uc5b4\uac70","RLC":"\uc544\uc774\uc81d","NEO":"\ub124\uc624","MTL":"\uba54\ud0c8","ADA":"\uc5d0\uc774\ub2e4","MANA":"\ub514\uc13c\ud2b8\ub7f4\ub79c\ub4dc","SBD":"\uc2a4\ud300\ub2ec\ub7ec","POWR":"\ud30c\uc6cc\ub81b\uc800","BTG":"\ube44\ud2b8\ucf54\uc778\uace8\ub4dc","DNT":"\ub514\uc2a4\ud2b8\ub9ad\ud2b80x","ZRX":"\uc81c\ub85c\uc5d1\uc2a4","TRX":"\ud2b8\ub860","TUSD":"\ud2b8\ub8e8USD","LRC":"\ub8e8\ud504\ub9c1","ICX":"\uc544\uc774\ucf58","EOS":"\uc774\uc624\uc2a4","POLY":"\ud3f4\ub9ac\ub9e4\uc4f0","ONT":"\uc628\ud1a8\ub85c\uc9c0","ZIL":"\uc9c8\ub9ac\uce74","LOOM":"\ub8f8\ub124\ud2b8\uc6cc\ud06c","BCH":"\ube44\ud2b8\ucf54\uc778\uce90\uc2dc","MFT":"\uba54\uc778\ud504\ub808\uc784","IOST":"\uc544\uc774\uc624\uc5d0\uc2a4\ud2f0","RFR":"\ub9ac\ud37c\ub9ac\uc6c0","IQ":"\uc5d0\ube0c\ub9ac\ud53c\ub514\uc544","IOTA":"\uc544\uc774\uc624\ud0c0","RVN":"\ub808\uc774\ube10\ucf54\uc778","GO":"\uace0\uccb4\uc778","UPP":"\uc13c\ud2f0\ub12c\ud504\ub85c\ud1a0\ucf5c","ENJ":"\uc5d4\uc9c4\ucf54\uc778","ONG":"\uc628\ud1a8\ub85c\uc9c0\uac00\uc2a4","GAS":"\uac00\uc2a4","ELF":"\uc5d8\ud504","KNC":"\uce74\uc774\ubc84\ub124\ud2b8\uc6cc\ud06c","MOC":"\ubaa8\uc2a4\ucf54\uc778","BSV":"\ube44\ud2b8\ucf54\uc778\uc5d0\uc2a4\ube0c\uc774","THETA":"\uc384\ud0c0\ud1a0\ud070","DENT":"\ub374\ud2b8","QKC":"\ucffc\ud06c\uccb4\uc778","BTT":"\ube44\ud2b8\ud1a0\ub80c\ud2b8","IOTX":"\uc544\uc774\uc624\ud14d\uc2a4","SOLVE":"\uc194\ube0c\ucf00\uc5b4","NKN":"\uc5d4\ucf00\uc774\uc5d4","META":"\uba54\ud0c0\ub514\uc6c0","ANKR":"\uc575\ucee4","CRO":"\ud06c\ub9bd\ud1a0\ub2f7\ucef4\uccb4\uc778","TFUEL":"\uc384\ud0c0\ud4e8\uc5d8","ORBS":"\uc624\ube0c\uc2a4","AERGO":"\uc544\ub974\uace0","ATOM":"\ucf54\uc2a4\ubaa8\uc2a4","TT":"\uc36c\ub354\ucf54\uc5b4","CRE":"\uce90\ub9ac\ud504\ub85c\ud1a0\ucf5c","STPT":"\uc5d0\uc2a4\ud2f0\ud53c","MBL":"\ubb34\ube44\ube14\ub85d","LUNA":"\ub8e8\ub098","DAI":"\ub2e4\uc774","MKR":"\uba54\uc774\ucee4","BORA":"\ubcf4\ub77c","WAXP":"\uc641\uc2a4","HBAR":"\ud5e4\ub370\ub77c","MED":"\uba54\ub514\ube14\ub85d","MLK":"\ubc00\ud06c","VET":"\ube44\uccb4\uc778","CHZ":"\uce60\ub9ac\uc988","FX":"\ud391\uc158\uc5d1\uc2a4","OGN":"\uc624\ub9ac\uc9c4\ud504\ub85c\ud1a0\ucf5c","XTZ":"\ud14c\uc870\uc2a4","HIVE":"\ud558\uc774\ube0c","HBD":"\ud558\uc774\ube0c\ub2ec\ub7ec","OBSR":"\uc635\uc800\ubc84","DKA":"\ub514\uce74\ub974\uace0","STMX":"\uc2a4\ud1b0\uc5d1\uc2a4","AHT":"\uc544\ud558\ud1a0\ud070","PCI":"\ud398\uc774\ucf54\uc778","LINK":"\uccb4\uc778\ub9c1\ud06c","KAVA":"\uce74\ubc14","JST":"\uc800\uc2a4\ud2b8","CHR":"\ud06c\ub85c\ubbf8\uc544","DAD":"\ub2e4\ub4dc","TON":"\ud1a4","CTSI":"\uce74\ub974\ud14c\uc2dc","DOT":"\ud3f4\uce74\ub2f7","COMP":"\ucef4\ud30c\uc6b4\ub4dc","SXP":"\uc2a4\uc640\uc774\ud504","HUNT":"\ud5cc\ud2b8","ONIT":"\uc628\ubc84\ud504","CRV":"\ucee4\ube0c","ALGO":"\uc54c\uace0\ub79c\ub4dc","RSR":"\ub9ac\uc800\ube0c\ub77c\uc774\ud2b8","OXT":"\uc624\ud0a4\ub4dc","PLA":"\ud50c\ub808\uc774\ub311","MARO":"\ub9c8\ub85c","SAND":"\uc0cc\ub4dc\ubc15\uc2a4","SUN":"\uc36c","SRM":"\uc138\ub7fc","QTCON":"\ud034\uc988\ud1a1","MVL":"\uc5e0\ube14","GXC":"\uc9c0\uc5d1\uc2a4\uccb4\uc778","AQT":"\uc54c\ud30c\ucffc\ud06c","AXS":"\uc5d1\uc2dc\uc778\ud53c\ub2c8\ud2f0","STRAX":"\uc2a4\ud2b8\ub77c\ud2f0\uc2a4","GLM":"\uace8\ub818","FCT2":"\ud53c\ub974\ub9c8\uccb4\uc778","SSX":"\uc378\uc53d","FIL":"\ud30c\uc77c\ucf54\uc778","UNI":"\uc720\ub2c8\uc2a4\uc651","BASIC":"\ubca0\uc774\uc9c1","INJ":"\uc778\uc81d\ud2f0\ube0c\ud504\ub85c\ud1a0\ucf5c","PROM":"\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4","VAL":"\ubc38\ub9ac\ub514\ud2f0","PSG":"\ud30c\ub9ac\uc0dd\uc81c\ub974\ub9f9","JUV":"\uc720\ubca4\ud22c\uc2a4","CBK":"\ucf54\ubc15\ud1a0\ud070","FOR":"\ud3ec\ud29c\ube0c","BFC":"\ubc14\uc774\ud504\ub85c\uc2a4\ud2b8","LINA":"\ub9ac\ub2c8\uc5b4\ud30c\uc774\ub0b8\uc2a4","HUM":"\ud734\uba3c\uc2a4\ucf00\uc774\ud504","CELO":"\uc140\ub85c","STX":"\uc2a4\ud0dd\uc2a4","NEAR":"\ub2c8\uc5b4\ud504\ub85c\ud1a0\ucf5c","AUCTION":"\ubc14\uc6b4\uc2a4\ud1a0\ud070","DAWN":"\ub358\ud504\ub85c\ud1a0\ucf5c","FLOW":"\ud50c\ub85c\uc6b0","STRK":"\uc2a4\ud2b8\ub77c\uc774\ud06c","PUNDIX":"\ud380\ub514\uc5d1\uc2a4","GRT":"\uadf8\ub798\ud504","SNX":"\uc2e0\uc138\ud2f1\uc2a4","USDP":"\ud30d\uc2a4\ub2ec\ub7ec","XEC":"\uc774\uce90\uc2dc","SOL":"\uc194\ub77c\ub098","MATIC":"\ud3f4\ub9ac\uace4","NU":"\ub204\uc0ac\uc774\ud37c","AAVE":"\uc5d0\uc774\ube0c","1INCH":"1\uc778\uce58\ub124\ud2b8\uc6cc\ud06c","MASK":"\ub9c8\uc2a4\ud06c\ub124\ud2b8\uc6cc\ud06c","AUDIO":"\uc624\ub514\uc6b0\uc2a4","YGG":"\uc77c\ub4dc\uae38\ub4dc\uac8c\uc784\uc988","GTC":"\uae43\ucf54\uc778","OCEAN":"\uc624\uc158\ud504\ub85c\ud1a0\ucf5c","CTC":"\ud06c\ub808\ub527\ucf54\uc778","LPT":"\ub77c\uc774\ube0c\ud53c\uc5b4","WEMIX":"\uc704\ubbf9\uc2a4","AVAX":"\uc544\ubc1c\ub780\uccb4","IMX":"\uc774\ubba4\ud130\ube14\uc5d1\uc2a4","RNDR":"\ub80c\ub354\ud1a0\ud070","RLY":"\ub7a0\ub9ac"},"balanceExpected":{"BTC":{"Quantity":-0.00011346,"PriceAvg":56674593.813171,"PriceBuyTotal":2246864,"FeeBuyTotal":2029.66,"PriceSellTotal":2240458,"FeeSellTotal":1120.2},"ETH":{"Quantity":1.1102230246252e-16,"PriceAvg":2198000.040484,"PriceBuyTotal":4619243,"FeeBuyTotal":2309.6,"PriceSellTotal":4549178,"FeeSellTotal":2274.57},"PXL":{"Quantity":50.000000000018,"PriceAvg":199.99999999994,"PriceBuyTotal":4800553,"FeeBuyTotal":2400.18,"PriceSellTotal":5163753,"FeeSellTotal":2581.81},"NEO":{"Quantity":3.5527136788005e-15,"PriceAvg":44298.977063506,"PriceBuyTotal":1918195,"FeeBuyTotal":959.09,"PriceSellTotal":2008521,"FeeSellTotal":1004.25},"EOS":{"Quantity":5.4178883601708e-14,"PriceAvg":4412.2088190876,"PriceBuyTotal":1508617,"FeeBuyTotal":754.3,"PriceSellTotal":1570260,"FeeSellTotal":785.11},"VET":{"Quantity":0,"PriceAvg":60.320036890566,"PriceBuyTotal":666210,"FeeBuyTotal":333.09,"PriceSellTotal":734464,"FeeSellTotal":367.23},"XTZ":{"Quantity":0,"PriceAvg":4415.0017029795,"PriceBuyTotal":733731,"FeeBuyTotal":366.85,"PriceSellTotal":842582,"FeeSellTotal":421.27},"META":{"Quantity":15400.52552552,"PriceAvg":66.600000000024,"PriceBuyTotal":3502516,"FeeBuyTotal":1751.22,"PriceSellTotal":2727296,"FeeSellTotal":1363.64},"DKA":{"Quantity":28.9017341,"PriceAvg":346.00000004844,"PriceBuyTotal":1058138,"FeeBuyTotal":529.04,"PriceSellTotal":3389233,"FeeSellTotal":1694.54},"AHT":{"Quantity":-7.2759576141834e-12,"PriceAvg":"13.50","PriceBuyTotal":"790751","FeeBuyTotal":"395.37","PriceSellTotal":784891,"FeeSellTotal":392.43},"BORA":{"Quantity":0,"PriceAvg":"358","PriceBuyTotal":"784109","FeeBuyTotal":"392.05","PriceSellTotal":718401,"FeeSellTotal":359.2},"MVL":{"Quantity":106223.77713372,"PriceAvg":31.874718555127,"PriceBuyTotal":3385853,"FeeBuyTotal":1692.92,"PriceSellTotal":0,"FeeSellTotal":0},"MBL":{"Quantity":"406.50406504","PriceAvg":"24.60","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"NPXS":{"Quantity":"1862.19739292","PriceAvg":"5.37","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"CHZ":{"Quantity":"12.07729468","PriceAvg":"828","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"MED":{"Quantity":"110.49723756","PriceAvg":"90.50","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"CRO":{"Quantity":"37.73584905","PriceAvg":"265","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"ADA":{"Quantity":"6.80272108","PriceAvg":"1470","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"BTT":{"Quantity":"4672.89719626","PriceAvg":"2.14","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"XRP":{"Quantity":"18.18181818","PriceAvg":"550","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"MOC":{"Quantity":"50.00000000","PriceAvg":"200","PriceBuyTotal":"10000","FeeBuyTotal":"5.00","PriceSellTotal":0,"FeeSellTotal":0},"CRE":{"Quantity":"308.64197530","PriceAvg":"32.40","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"ORBS":{"Quantity":"36.49635036","PriceAvg":"274","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"STMX":{"Quantity":"184.84288354","PriceAvg":"54.10","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"RFR":{"Quantity":"460.82949308","PriceAvg":"21.70","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"IQ":{"Quantity":"313.47962382","PriceAvg":"31.90","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"XEM":{"Quantity":"22.17294900","PriceAvg":"451","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"SSX":{"Quantity":"59.88023952","PriceAvg":"167","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"SOLVE":{"Quantity":"24.15458937","PriceAvg":"414","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"QKC":{"Quantity":"194.55252918","PriceAvg":"51.40","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"PCI":{"Quantity":"3.83141762","PriceAvg":"2610","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"HUM":{"Quantity":"71.94244604","PriceAvg":"139","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"SC":{"Quantity":"373.13432835","PriceAvg":"26.80","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"TT":{"Quantity":"342.46575342","PriceAvg":"29.20","PriceBuyTotal":"10000","FeeBuyTotal":"4.99","PriceSellTotal":0,"FeeSellTotal":0},"JST":{"Quantity":"10069.65094339","PriceAvg":"106","PriceBuyTotal":"1067383","FeeBuyTotal":"533.69","PriceSellTotal":0,"FeeSellTotal":0}},"trx":{"BTC":[{"callDate":"2021.03.19 19:08","type":"\ub9e4\uc218","quantity":"0.00014654","priceUnit":"68239000","priceTotal":"10000","orderDate":"2021.03.19 19:08"},{"callDate":"2021.02.22 21:04","type":"\ub9e4\ub3c4","quantity":"0.01611371","priceUnit":"61277000","priceTotal":"987399","orderDate":"2021.02.22 21:04"},{"callDate":"2021.02.20 09:40","type":"\ub9e4\uc218","quantity":"0.00237852","priceUnit":"63194000","priceTotal":"150309","orderDate":"2021.02.20 09:37"},{"callDate":"2021.02.20 09:40","type":"\ub9e4\uc218","quantity":"0.00663519","priceUnit":"63194000","priceTotal":"419305","orderDate":"2021.02.20 09:37"},{"callDate":"2021.02.20 09:40","type":"\ub9e4\uc218","quantity":"0.00710000","priceUnit":"63194000","priceTotal":"448678","orderDate":"2021.02.20 09:37"},{"callDate":"2021.02.20 09:36","type":"\ub9e4\ub3c4","quantity":"0.00339048","priceUnit":"63083000","priceTotal":"213881","orderDate":"2021.02.20 09:36"},{"callDate":"2021.02.20 09:36","type":"\ub9e4\ub3c4","quantity":"0.01195862","priceUnit":"63082000","priceTotal":"754373","orderDate":"2021.02.20 09:36"},{"callDate":"2021.02.20 09:36","type":"\ub9e4\ub3c4","quantity":"0.00078131","priceUnit":"63083000","priceTotal":"49287","orderDate":"2021.02.20 09:36"},{"callDate":"2021.02.20 09:34","type":"\ub9e4\uc218","quantity":"0.01266826","priceUnit":"63146000","priceTotal":"799950","orderDate":"2021.02.20 09:34"},{"callDate":"2021.02.20 09:34","type":"\ub9e4\uc218","quantity":"0.00006571","priceUnit":"63146000","priceTotal":"4150","orderDate":"2021.02.20 09:34"},{"callDate":"2021.02.20 09:34","type":"\ub9e4\uc218","quantity":"0.00339644","priceUnit":"63146000","priceTotal":"214472","orderDate":"2021.02.20 09:34"},{"callDate":"2021.02.20 09:15","type":"\ub9e4\ub3c4","quantity":"0.00372686","priceUnit":"63195000","priceTotal":"235518","orderDate":"2021.02.20 09:15"},{"callDate":"2021.02.18 12:42","type":"\ub9e4\uc218","quantity":"0.00346686","priceUnit":"57689000","priceTotal":"200000","orderDate":"2021.02.18 12:42"},{"callDate":"2021.02.18 11:43","type":"\uc785\uae08","quantity":"0.00026000","priceUnit":"57792000","priceTotal":"15026","orderDate":"-"}],"KRW":[{"callDate":"2021.03.19 23:39","type":"\uc785\uae08","quantity":"600000","priceUnit":"0","priceTotal":"600000","orderDate":"-"},{"callDate":"2021.02.18 11:45","type":"\uc785\uae08","quantity":"2000000","priceUnit":"0","priceTotal":"2000000","orderDate":"-"}],"ETH":[{"callDate":"2021.02.22 21:04","type":"\ub9e4\ub3c4","quantity":"0.46240536","priceUnit":"2020000","priceTotal":"934058","orderDate":"2021.02.22 21:04"},{"callDate":"2021.02.20 09:41","type":"\ub9e4\uc218","quantity":"0.46240536","priceUnit":"2198000","priceTotal":"1016367","orderDate":"2021.02.20 09:41"},{"callDate":"2021.02.20 09:16","type":"\ub9e4\ub3c4","quantity":"0.82682282","priceUnit":"2182000","priceTotal":"1804127","orderDate":"2021.02.20 09:16"},{"callDate":"2021.02.19 09:21","type":"\ub9e4\uc218","quantity":"0.57342282","priceUnit":"2182000","priceTotal":"1251209","orderDate":"2021.02.19 09:20"},{"callDate":"2021.02.19 09:20","type":"\ub9e4\uc218","quantity":"0.25340000","priceUnit":"2181000","priceTotal":"552666","orderDate":"2021.02.19 09:20"},{"callDate":"2021.02.18 21:43","type":"\ub9e4\ub3c4","quantity":"0.85666666","priceUnit":"2114000","priceTotal":"1810993","orderDate":"2021.02.18 21:43"},{"callDate":"2021.02.18 12:46","type":"\ub9e4\uc218","quantity":"0.38002224","priceUnit":"2100000","priceTotal":"798047","orderDate":"2021.02.18 12:46"},{"callDate":"2021.02.18 12:46","type":"\ub9e4\uc218","quantity":"0.47664442","priceUnit":"2100000","priceTotal":"1000954","orderDate":"2021.02.18 12:46"}],"PXL":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"50.00000000","priceUnit":"200","priceTotal":"10000","orderDate":"2021.03.19 19:11"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"259.06735751","priceUnit":"38.60","priceTotal":"9999","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"229.90932642","priceUnit":"38.50","priceTotal":"8851","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"5192.20779200","priceUnit":"38.50","priceTotal":"199899","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"16787.89446810","priceUnit":"38.50","priceTotal":"646333","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"7556.00313375","priceUnit":"38.50","priceTotal":"290906","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"1298.07823361","priceUnit":"38.50","priceTotal":"49976","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"1501.76744186","priceUnit":"38.70","priceTotal":"58118","orderDate":"2021.03.04 10:00"},{"callDate":"2021.03.04 10:00","type":"\ub9e4\ub3c4","quantity":"1822.03975577","priceUnit":"38.60","priceTotal":"70330","orderDate":"2021.03.04 10:00"},{"callDate":"2021.02.27 21:01","type":"\ub9e4\uc218","quantity":"34646.96750902","priceUnit":"27.70","priceTotal":"959721","orderDate":"2021.02.27 21:01"},{"callDate":"2021.02.19 09:15","type":"\ub9e4\ub3c4","quantity":"59989.31750741","priceUnit":"30.10","priceTotal":"1805678","orderDate":"2021.02.19 09:15"},{"callDate":"2021.02.19 09:07","type":"\ub9e4\uc218","quantity":"59989.31750741","priceUnit":"33.70","priceTotal":"2021640","orderDate":"2021.02.19 09:07"},{"callDate":"2021.02.19 09:07","type":"\ub9e4\ub3c4","quantity":"59695.08182452","priceUnit":"33.90","priceTotal":"2023663","orderDate":"2021.02.19 09:07"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"1978.55727414","priceUnit":"30.40","priceTotal":"60149","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"3354.02684500","priceUnit":"30.40","priceTotal":"101963","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"23478.18791900","priceUnit":"30.40","priceTotal":"713737","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"498.08970100","priceUnit":"30.40","priceTotal":"15142","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"992.88079470","priceUnit":"30.40","priceTotal":"30184","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"166.03540335","priceUnit":"30.40","priceTotal":"5048","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"333.16666600","priceUnit":"30.30","priceTotal":"10095","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"1773.04964539","priceUnit":"30.20","priceTotal":"53546","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"3084.64660178","priceUnit":"30.20","priceTotal":"93157","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"999.50000000","priceUnit":"30.20","priceTotal":"30185","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"21333.03311714","priceUnit":"30.20","priceTotal":"644258","orderDate":"2021.02.18 21:44"},{"callDate":"2021.02.18 21:44","type":"\ub9e4\uc218","quantity":"375.62463022","priceUnit":"30.20","priceTotal":"11344","orderDate":"2021.02.18 21:44"}],"NEO":[{"callDate":"2021.03.14 11:58","type":"\ub9e4\ub3c4","quantity":"21.65055528","priceUnit":"48460","priceTotal":"1049185","orderDate":"2021.03.14 11:58"},{"callDate":"2021.02.27 21:01","type":"\ub9e4\ub3c4","quantity":"21.65055527","priceUnit":"44310","priceTotal":"959336","orderDate":"2021.02.27 20:52"},{"callDate":"2021.02.27 20:47","type":"\ub9e4\uc218","quantity":"41.05289684","priceUnit":"44300","priceTotal":"1818644","orderDate":"2021.02.27 20:47"},{"callDate":"2021.02.27 20:47","type":"\ub9e4\uc218","quantity":"2.24821371","priceUnit":"44280","priceTotal":"99551","orderDate":"2021.02.27 20:47"}],"EOS":[{"callDate":"2021.03.15 08:55","type":"\ub9e4\ub3c4","quantity":"7.04264110","priceUnit":"4630","priceTotal":"32607","orderDate":"2021.03.15 08:55"},{"callDate":"2021.03.15 08:55","type":"\ub9e4\ub3c4","quantity":"163.91674249","priceUnit":"4630","priceTotal":"758934","orderDate":"2021.03.15 08:55"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\ub3c4","quantity":"170.95938359","priceUnit":"4555","priceTotal":"778719","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 00:05","type":"\ub9e4\uc218","quantity":"190.87142857","priceUnit":"4410","priceTotal":"841743","orderDate":"2021.03.09 00:05"},{"callDate":"2021.03.04 17:56","type":"\ub9e4\uc218","quantity":"151.04733861","priceUnit":"4415","priceTotal":"666874","orderDate":"2021.03.04 17:56"}],"VET":[{"callDate":"2021.03.07 14:32","type":"\ub9e4\ub3c4","quantity":"11044.58161388","priceUnit":"66.50","priceTotal":"734464","orderDate":"2021.03.07 14:32"},{"callDate":"2021.03.04 17:56","type":"\ub9e4\uc218","quantity":"8837.29478544","priceUnit":"60.30","priceTotal":"532889","orderDate":"2021.03.04 17:56"},{"callDate":"2021.03.04 17:56","type":"\ub9e4\uc218","quantity":"298.28731867","priceUnit":"60.40","priceTotal":"18017","orderDate":"2021.03.04 17:56"},{"callDate":"2021.03.04 17:56","type":"\ub9e4\uc218","quantity":"1908.99950977","priceUnit":"60.40","priceTotal":"115304","orderDate":"2021.03.04 17:56"}],"XTZ":[{"callDate":"2021.03.09 00:03","type":"\ub9e4\ub3c4","quantity":"44.77130177","priceUnit":"5070","priceTotal":"226990","orderDate":"2021.03.09 00:03"},{"callDate":"2021.03.09 00:03","type":"\ub9e4\ub3c4","quantity":"45.82311178","priceUnit":"5070","priceTotal":"232323","orderDate":"2021.03.09 00:03"},{"callDate":"2021.03.09 00:03","type":"\ub9e4\ub3c4","quantity":"64.96230769","priceUnit":"5070","priceTotal":"329358","orderDate":"2021.03.09 00:03"},{"callDate":"2021.03.09 00:03","type":"\ub9e4\ub3c4","quantity":"4.06404292","priceUnit":"5070","priceTotal":"20604","orderDate":"2021.03.09 00:03"},{"callDate":"2021.03.09 00:03","type":"\ub9e4\ub3c4","quantity":"6.56949631","priceUnit":"5070","priceTotal":"33307","orderDate":"2021.03.09 00:03"},{"callDate":"2021.03.07 14:34","type":"\ub9e4\uc218","quantity":"117.90548516","priceUnit":"4415","priceTotal":"520553","orderDate":"2021.03.07 14:34"},{"callDate":"2021.03.07 14:34","type":"\ub9e4\uc218","quantity":"48.28477531","priceUnit":"4415","priceTotal":"213178","orderDate":"2021.03.07 14:34"}],"GAS":[{"callDate":"2021.03.15 14:54","type":"\uc785\uae08","quantity":"0.03696495","priceUnit":"14490","priceTotal":"536","orderDate":"-"},{"callDate":"2021.03.08 10:54","type":"\uc785\uae08","quantity":"0.03675107","priceUnit":"14170","priceTotal":"521","orderDate":"-"}],"VTHO":[{"callDate":"2021.03.08 11:04","type":"\uc785\uae08","quantity":"36.28794438","priceUnit":"0","priceTotal":"0","orderDate":"-"}],"META":[{"callDate":"2021.03.09 20:32","type":"\ub9e4\uc218","quantity":"15400.52552552","priceUnit":"66.60","priceTotal":"1025675","orderDate":"2021.03.09 20:32"},{"callDate":"2021.03.09 20:31","type":"\ub9e4\ub3c4","quantity":"15650.94095940","priceUnit":"65.60","priceTotal":"1026701","orderDate":"2021.03.09 20:31"},{"callDate":"2021.03.09 18:21","type":"\ub9e4\uc218","quantity":"11629.52031674","priceUnit":"54.20","priceTotal":"630320","orderDate":"2021.03.09 18:21"},{"callDate":"2021.03.09 18:21","type":"\ub9e4\uc218","quantity":"4021.42064266","priceUnit":"54.20","priceTotal":"217961","orderDate":"2021.03.09 18:21"},{"callDate":"2021.03.09 18:09","type":"\ub9e4\ub3c4","quantity":"14870.90909090","priceUnit":"57.10","priceTotal":"849128","orderDate":"2021.03.09 18:09"},{"callDate":"2021.03.09 17:54","type":"\ub9e4\uc218","quantity":"14870.90909090","priceUnit":"57.20","priceTotal":"850616","orderDate":"2021.03.09 17:54"},{"callDate":"2021.03.09 17:45","type":"\ub9e4\ub3c4","quantity":"15204.78412149","priceUnit":"56.00","priceTotal":"851467","orderDate":"2021.03.09 17:45"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"104.18679049","priceUnit":"51.10","priceTotal":"5324","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"4320.34947894","priceUnit":"51.30","priceTotal":"221634","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"671.63316523","priceUnit":"51.20","priceTotal":"34388","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"1270.63289253","priceUnit":"51.10","priceTotal":"64930","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"462.98179430","priceUnit":"51.20","priceTotal":"23705","orderDate":"2021.03.09 16:57"},{"callDate":"2021.03.09 16:57","type":"\ub9e4\uc218","quantity":"8375.00000000","priceUnit":"51.10","priceTotal":"427963","orderDate":"2021.03.09 16:57"}],"DKA":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"28.90173410","priceUnit":"346","priceTotal":"10000","orderDate":"2021.03.19 19:10"},{"callDate":"2021.03.16 18:34","type":"\ub9e4\ub3c4","quantity":"1257.11739130","priceUnit":"680","priceTotal":"854839","orderDate":"2021.03.16 18:34"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"260.41666666","priceUnit":"768","priceTotal":"199999","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"173.22321300","priceUnit":"768","priceTotal":"133035","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"65.10416666","priceUnit":"768","priceTotal":"49999","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"167.72812500","priceUnit":"768","priceTotal":"128815","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"651.04166666","priceUnit":"768","priceTotal":"499999","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"1426.75911458","priceUnit":"768","priceTotal":"1095750","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"311.53924551","priceUnit":"768","priceTotal":"239262","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"163.89851949","priceUnit":"768","priceTotal":"125874","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"10.71209187","priceUnit":"768","priceTotal":"8226","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.16 14:53","type":"\ub9e4\ub3c4","quantity":"69.57719057","priceUnit":"768","priceTotal":"53435","orderDate":"2021.03.16 14:53"},{"callDate":"2021.03.14 11:58","type":"\ub9e4\uc218","quantity":"2108.20466959","priceUnit":"230","priceTotal":"484887","orderDate":"2021.03.14 11:58"},{"callDate":"2021.03.14 11:58","type":"\ub9e4\uc218","quantity":"1188.24687150","priceUnit":"230","priceTotal":"273297","orderDate":"2021.03.14 11:58"},{"callDate":"2021.03.14 11:58","type":"\ub9e4\uc218","quantity":"1260.66585021","priceUnit":"230","priceTotal":"289954","orderDate":"2021.03.14 11:58"}],"AHT":[{"callDate":"2021.03.15 12:35","type":"\ub9e4\ub3c4","quantity":"45525.90499575","priceUnit":"13.40","priceTotal":"610047","orderDate":"2021.03.15 12:35"},{"callDate":"2021.03.15 12:35","type":"\ub9e4\ub3c4","quantity":"746.26865671","priceUnit":"13.40","priceTotal":"9999","orderDate":"2021.03.15 12:35"},{"callDate":"2021.03.15 12:35","type":"\ub9e4\ub3c4","quantity":"740.74074074","priceUnit":"13.40","priceTotal":"9925","orderDate":"2021.03.15 12:35"},{"callDate":"2021.03.15 12:35","type":"\ub9e4\ub3c4","quantity":"11561.23375494","priceUnit":"13.40","priceTotal":"154920","orderDate":"2021.03.15 12:35"},{"callDate":"2021.03.15 08:56","type":"\ub9e4\uc218","quantity":"58574.14814814","priceUnit":"13.50","priceTotal":"790751","orderDate":"2021.03.15 08:56"}],"BORA":[{"callDate":"2021.03.17 16:06","type":"\ub9e4\ub3c4","quantity":"2190.24860335","priceUnit":"328","priceTotal":"718401","orderDate":"2021.03.17 16:06"},{"callDate":"2021.03.15 12:36","type":"\ub9e4\uc218","quantity":"2190.24860335","priceUnit":"358","priceTotal":"784109","orderDate":"2021.03.15 12:36"}],"MVL":[{"callDate":"2021.03.16 18:35","type":"\ub9e4\uc218","quantity":"26854.90566037","priceUnit":"31.80","priceTotal":"853986","orderDate":"2021.03.16 18:35"},{"callDate":"2021.03.16 14:55","type":"\ub9e4\uc218","quantity":"79368.87147335","priceUnit":"31.90","priceTotal":"2531867","orderDate":"2021.03.16 14:55"}],"MBL":[{"callDate":"2021.03.19 19:08","type":"\ub9e4\uc218","quantity":"406.50406504","priceUnit":"24.60","priceTotal":"10000","orderDate":"2021.03.19 19:08"}],"NPXS":[{"callDate":"2021.03.19 19:08","type":"\ub9e4\uc218","quantity":"1862.19739292","priceUnit":"5.37","priceTotal":"10000","orderDate":"2021.03.19 19:08"}],"CHZ":[{"callDate":"2021.03.19 19:08","type":"\ub9e4\uc218","quantity":"12.07729468","priceUnit":"828","priceTotal":"10000","orderDate":"2021.03.19 19:08"}],"MED":[{"callDate":"2021.03.19 19:08","type":"\ub9e4\uc218","quantity":"110.49723756","priceUnit":"90.50","priceTotal":"10000","orderDate":"2021.03.19 19:08"}],"CRO":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"37.73584905","priceUnit":"265","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"ADA":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"6.80272108","priceUnit":"1470","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"BTT":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"4672.89719626","priceUnit":"2.14","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"XRP":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"18.18181818","priceUnit":"550","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"MOC":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"50.00000000","priceUnit":"200","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"CRE":[{"callDate":"2021.03.19 19:09","type":"\ub9e4\uc218","quantity":"308.64197530","priceUnit":"32.40","priceTotal":"10000","orderDate":"2021.03.19 19:09"}],"ORBS":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"36.49635036","priceUnit":"274","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"STMX":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"184.84288354","priceUnit":"54.10","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"RFR":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"460.82949308","priceUnit":"21.70","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"IQ":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"313.47962382","priceUnit":"31.90","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"XEM":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"22.17294900","priceUnit":"451","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"SSX":[{"callDate":"2021.03.19 19:10","type":"\ub9e4\uc218","quantity":"59.88023952","priceUnit":"167","priceTotal":"10000","orderDate":"2021.03.19 19:10"}],"SOLVE":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"24.15458937","priceUnit":"414","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"QKC":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"194.55252918","priceUnit":"51.40","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"PCI":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"3.83141762","priceUnit":"2610","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"HUM":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"71.94244604","priceUnit":"139","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"SC":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"373.13432835","priceUnit":"26.80","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"TT":[{"callDate":"2021.03.19 19:11","type":"\ub9e4\uc218","quantity":"342.46575342","priceUnit":"29.20","priceTotal":"10000","orderDate":"2021.03.19 19:11"}],"JST":[{"callDate":"2021.03.19 23:41","type":"\ub9e4\uc218","quantity":"10069.65094339","priceUnit":"106","priceTotal":"1067383","orderDate":"2021.03.19 23:41"}]},"withdraw":{"BTC":"0.00026000","KRW":2600000,"GAS":0.07371602,"VTHO":"36.28794438"},"profitCoinly":{"ETH":-70064,"PXL":373201,"BTC":-12835,"NEO":90326,"VET":68255,"XTZ":108853,"EOS":61643,"META":250456,"AHT":-5860,"DKA":2341099,"BORA":-65708},"profitTimely":[["2021.02.18 21:43","ETH",11993],["2021.02.19 09:07","PXL",214471],["2021.02.19 09:15","PXL",-215962],["2021.02.20 09:15","BTC",20520],["2021.02.20 09:16","ETH",252],["2021.02.20 09:36","BTC",-120],["2021.02.20 09:36","BTC",-1836],["2021.02.20 09:36","BTC",-517],["2021.02.22 21:04","BTC",-30882],["2021.02.22 21:04","ETH",-82309],["2021.02.27 21:01","NEO",238],["2021.03.04 10:00","PXL",19860],["2021.03.04 10:00","PXL",16519],["2021.03.04 10:00","PXL",14019],["2021.03.04 10:00","PXL",81604],["2021.03.04 10:00","PXL",181309],["2021.03.04 10:00","PXL",56075],["2021.03.04 10:00","PXL",2483],["2021.03.04 10:00","PXL",2823],["2021.03.07 14:32","VET",68255],["2021.03.09 00:03","XTZ",4303],["2021.03.09 00:03","XTZ",2661],["2021.03.09 00:03","XTZ",42550],["2021.03.09 00:03","XTZ",30014],["2021.03.09 00:03","XTZ",29325],["2021.03.09 16:57","EOS",24411],["2021.03.09 17:45","META",73524],["2021.03.09 18:09","META",-1488],["2021.03.09 20:31","META",178420],["2021.03.14 11:58","NEO",90088],["2021.03.15 08:55","EOS",35699],["2021.03.15 08:55","EOS",1533],["2021.03.15 12:35","AHT",-1157],["2021.03.15 12:35","AHT",-75],["2021.03.15 12:35","AHT",-75],["2021.03.15 12:35","AHT",-4553],["2021.03.16 14:53","DKA",37432],["2021.03.16 14:53","DKA",5763],["2021.03.16 14:53","DKA",88177],["2021.03.16 14:53","DKA",167608],["2021.03.16 14:53","DKA",767596],["2021.03.16 14:53","DKA",350260],["2021.03.16 14:53","DKA",90237],["2021.03.16 14:53","DKA",35026],["2021.03.16 14:53","DKA",93194],["2021.03.16 14:53","DKA",140104],["2021.03.16 18:34","DKA",565702],["2021.03.17 16:06","BORA",-65708]]}</span>
-    <div style="flex-direction:row; display:flex; justify-content: center;;">
-        <div>
-            <div class="center" style="min-width:500px;max-width:1000px;width:100%;display:flex;margin-bottom:32px;margin-top:32px;">
-                <div id="title_div" class="" style="border: 0.1px solid rgb(235, 83, 116);">
-                    <div style="margin:10px;width:50%;flex-direction: column;">
-                        <div style="text-align: center;">
-                            <span id="title_sumProfit_lbl" class="title_small profit_positive">실현한 수익</span>
-                        </div>
-                        <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                            <span id="title_sumProfit" class="profit_positive">3,139,366</span>
-                        </div>
-                        <div style="text-align: center;font-size: 20px;font-weight: lighter;">
-                            <span id="title_sumProfitPercent" class="profit_positive">220.74%</span>
-                        </div>
-                    </div>
-                    <div style="margin:10px;width:50%;flex-direction: column;">
-                        <div style="text-align: center;font-size:14px;font-weight: lighter;">
-                            <span id="title_sumWon_lbl" class="title_small">입금한 원화</span>
-                        </div>
-                        <div style="text-align: center;font-size:32px;font-weight: bolder;">
-                            <span id="title_sumWon">2,600,000</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align:center;">
-                <table id="tableCoinly" class="center" style="margin-bottom:50px;width:100%;border-spacing: 0 8px;min-width:500px;display: table;max-width:1000px;">
-                    <thead>
-                        <tr class="tableCoinly_head">
-                            <th class="tableCoinly_head_cell" style="width:37%;"><span title="sort this column">
-                                코인명
-                            </span></th>
-                            <th id="tablecoinly_head_profit" class="tableCoinly_head_cell" style="width:21%;"><span title="sort this column">
-                                수익
-                            </span></th>
-                            <th class="tableCoinly_head_cell" style="width:21%;"><span title="sort this column">
-                                투자금액
-                            </span></th>
-                            <th class="tableCoinly_head_cell" style="width:21%;"><span title="sort this column">
-                                매도금액
-                            </span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="tableCoinly_body" onclick="openModal(`DKA`)"><td class="tableCoinly_body_cell">디카르고 <span class="coin_eng">DKA</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+2,341,099 <span class="profit_percentage">219.98%</span></span></td><td class="tableCoinly_body_cell">1,058,667</td><td class="tableCoinly_body_cell">3,387,538</td></tr><tr class="tableCoinly_body" onclick="openModal(`PXL`)"><td class="tableCoinly_body_cell">PXL</td><td class="tableCoinly_body_cell"><span class="profit_positive">+373,201 <span class="profit_percentage">7.46%</span></span></td><td class="tableCoinly_body_cell">4,802,953</td><td class="tableCoinly_body_cell">5,161,171</td></tr><tr class="tableCoinly_body" onclick="openModal(`META`)"><td class="tableCoinly_body_cell">메타디움 <span class="coin_eng">META</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+250,456 <span class="profit_percentage">-22.21%</span></span></td><td class="tableCoinly_body_cell">3,504,267</td><td class="tableCoinly_body_cell">2,725,932</td></tr><tr class="tableCoinly_body" onclick="openModal(`XTZ`)"><td class="tableCoinly_body_cell">테조스 <span class="coin_eng">XTZ</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+108,853 <span class="profit_percentage">14.72%</span></span></td><td class="tableCoinly_body_cell">734,098</td><td class="tableCoinly_body_cell">842,161</td></tr><tr class="tableCoinly_body" onclick="openModal(`NEO`)"><td class="tableCoinly_body_cell">네오 <span class="coin_eng">NEO</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+90,326 <span class="profit_percentage">4.6%</span></span></td><td class="tableCoinly_body_cell">1,919,154</td><td class="tableCoinly_body_cell">2,007,517</td></tr><tr class="tableCoinly_body" onclick="openModal(`VET`)"><td class="tableCoinly_body_cell">비체인 <span class="coin_eng">VET</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+68,255 <span class="profit_percentage">10.13%</span></span></td><td class="tableCoinly_body_cell">666,543</td><td class="tableCoinly_body_cell">734,097</td></tr><tr class="tableCoinly_body" onclick="openModal(`EOS`)"><td class="tableCoinly_body_cell">이오스 <span class="coin_eng">EOS</span></td><td class="tableCoinly_body_cell"><span class="profit_positive">+61,643 <span class="profit_percentage">3.98%</span></span></td><td class="tableCoinly_body_cell">1,509,371</td><td class="tableCoinly_body_cell">1,569,475</td></tr><tr class="tableCoinly_body" onclick="openModal(`AHT`)"><td class="tableCoinly_body_cell">아하토큰 <span class="coin_eng">AHT</span></td><td class="tableCoinly_body_cell"><span class="profit_negative">-5,860 <span class="profit_percentage">-99.9%</span></span></td><td class="tableCoinly_body_cell">790,751,395</td><td class="tableCoinly_body_cell">784,499</td></tr><tr class="tableCoinly_body" onclick="openModal(`BTC`)"><td class="tableCoinly_body_cell">비트코인 <span class="coin_eng">BTC</span></td><td class="tableCoinly_body_cell"><span class="profit_negative">-12,835 <span class="profit_percentage">-0.42%</span></span></td><td class="tableCoinly_body_cell">2,248,894</td><td class="tableCoinly_body_cell">2,239,338</td></tr><tr class="tableCoinly_body" onclick="openModal(`BORA`)"><td class="tableCoinly_body_cell">보라 <span class="coin_eng">BORA</span></td><td class="tableCoinly_body_cell"><span class="profit_negative">-65,708 <span class="profit_percentage">-99.91%</span></span></td><td class="tableCoinly_body_cell">784,109,392</td><td class="tableCoinly_body_cell">718,042</td></tr><tr class="tableCoinly_body" onclick="openModal(`ETH`)"><td class="tableCoinly_body_cell">이더리움 <span class="coin_eng">ETH</span></td><td class="tableCoinly_body_cell"><span class="profit_negative">-70,064 <span class="profit_percentage">-1.62%</span></span></td><td class="tableCoinly_body_cell">4,621,553</td><td class="tableCoinly_body_cell">4,546,903</td></tr></tbody>
-                </table>
-            </div>
-            
-            <div id="chart" style="min-height: 315px;"><div id="apexchartsfo8lxgmq" class="apexcharts-canvas apexchartsfo8lxgmq apexcharts-theme-dark" style="width: 582px; height: 300px;"><svg id="SvgjsSvg1260" width="582" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg apexcharts-zoomable" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: rgb(15, 20, 33);"><g id="SvgjsG1262" class="apexcharts-inner apexcharts-graphical" transform="translate(95.96111111111111, 30)"><defs id="SvgjsDefs1261"><linearGradient id="SvgjsLinearGradient1267" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1268" stop-opacity="0.4" stop-color="rgba(216,227,240,0.4)" offset="0"></stop><stop id="SvgjsStop1269" stop-opacity="0.5" stop-color="rgba(190,209,230,0.5)" offset="1"></stop><stop id="SvgjsStop1270" stop-opacity="0.5" stop-color="rgba(190,209,230,0.5)" offset="1"></stop></linearGradient><clipPath id="gridRectMaskfo8lxgmq"><rect id="SvgjsRect1302" width="500.0625" height="238.2" x="-18.02361111111111" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskfo8lxgmq"></clipPath><clipPath id="nonForecastMaskfo8lxgmq"></clipPath><clipPath id="gridRectMarkerMaskfo8lxgmq"><rect id="SvgjsRect1303" width="468.0152777777778" height="242.2" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><line id="SvgjsLine1272" x1="0" y1="0" x2="0" y2="238.2" stroke="#ffffff33" stroke-dasharray="2" stroke-linecap="butt" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="238.2" fill="url(#SvgjsLinearGradient1267)" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1332" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1333" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"><text id="SvgjsText1335" font-family="Helvetica, Arial, sans-serif" x="0" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1336">18 Feb</tspan><title>18 Feb</title></text><text id="SvgjsText1338" font-family="Helvetica, Arial, sans-serif" x="68.74300411522634" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1339">22 Feb</tspan><title>22 Feb</title></text><text id="SvgjsText1341" font-family="Helvetica, Arial, sans-serif" x="137.48600823045265" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1342">26 Feb</tspan><title>26 Feb</title></text><text id="SvgjsText1344" font-family="Helvetica, Arial, sans-serif" x="206.22901234567897" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1345">02 Mar</tspan><title>02 Mar</title></text><text id="SvgjsText1347" font-family="Helvetica, Arial, sans-serif" x="274.9720164609053" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1348">06 Mar</tspan><title>06 Mar</title></text><text id="SvgjsText1350" font-family="Helvetica, Arial, sans-serif" x="343.7150205761316" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1351">10 Mar</tspan><title>10 Mar</title></text><text id="SvgjsText1353" font-family="Helvetica, Arial, sans-serif" x="412.45802469135793" y="267.2" text-anchor="middle" dominant-baseline="auto" font-size="12px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1354">14 Mar</tspan><title>14 Mar</title></text></g></g><g id="SvgjsG1369" class="apexcharts-grid"><g id="SvgjsG1370" class="apexcharts-gridlines-horizontal"><line id="SvgjsLine1372" x1="-16.02361111111111" y1="0" x2="480.0388888888889" y2="0" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1373" x1="-16.02361111111111" y1="47.64" x2="480.0388888888889" y2="47.64" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1374" x1="-16.02361111111111" y1="95.28" x2="480.0388888888889" y2="95.28" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1375" x1="-16.02361111111111" y1="142.92000000000002" x2="480.0388888888889" y2="142.92000000000002" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1376" x1="-16.02361111111111" y1="190.56" x2="480.0388888888889" y2="190.56" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1377" x1="-16.02361111111111" y1="238.2" x2="480.0388888888889" y2="238.2" stroke="#ffffff11" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line></g><g id="SvgjsG1371" class="apexcharts-gridlines-vertical"></g><line id="SvgjsLine1379" x1="0" y1="238.2" x2="464.0152777777778" y2="238.2" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line><line id="SvgjsLine1378" x1="0" y1="1" x2="0" y2="238.2" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line></g><g id="SvgjsG1304" class="apexcharts-bar-series apexcharts-plot-series"><g id="SvgjsG1305" class="apexcharts-series" rel="1" seriesName="수익" data:realIndex="0"><path id="SvgjsPath1309" d="M -7.733587962962962 190.56L -7.733587962962962 189.6077558Q -7.733587962962962 189.6077558 -7.733587962962962 189.6077558L 7.733587962962962 189.6077558Q 7.733587962962962 189.6077558 7.733587962962962 189.6077558L 7.733587962962962 189.6077558L 7.733587962962962 190.56L 7.733587962962962 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M -7.733587962962962 190.56L -7.733587962962962 189.6077558Q -7.733587962962962 189.6077558 -7.733587962962962 189.6077558L 7.733587962962962 189.6077558Q 7.733587962962962 189.6077558 7.733587962962962 189.6077558L 7.733587962962962 189.6077558L 7.733587962962962 190.56L 7.733587962962962 190.56z" pathFrom="M -7.733587962962962 190.56L -7.733587962962962 190.56L 7.733587962962962 190.56L 7.733587962962962 190.56L 7.733587962962962 190.56L 7.733587962962962 190.56L 7.733587962962962 190.56L -7.733587962962962 190.56" cy="189.6077558" cx="7.733587962962962" j="0" val="11993" barHeight="0.9522442" barWidth="15.467175925925924"></path><path id="SvgjsPath1311" d="M 9.45216306584362 190.56L 9.45216306584362 190.6783854Q 9.45216306584362 190.6783854 9.45216306584362 190.6783854L 24.919338991769543 190.6783854Q 24.919338991769543 190.6783854 24.919338991769543 190.6783854L 24.919338991769543 190.6783854L 24.919338991769543 190.56L 24.919338991769543 190.56z" fill="rgba(86,115,235,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 9.45216306584362 190.56L 9.45216306584362 190.6783854Q 9.45216306584362 190.6783854 9.45216306584362 190.6783854L 24.919338991769543 190.6783854Q 24.919338991769543 190.6783854 24.919338991769543 190.6783854L 24.919338991769543 190.6783854L 24.919338991769543 190.56L 24.919338991769543 190.56z" pathFrom="M 9.45216306584362 190.56L 9.45216306584362 190.56L 24.919338991769543 190.56L 24.919338991769543 190.56L 24.919338991769543 190.56L 24.919338991769543 190.56L 24.919338991769543 190.56L 9.45216306584362 190.56" cy="190.6783854" cx="24.919338991769543" j="1" val="-1491" barHeight="-0.11838539999999999" barWidth="15.467175925925924"></path><path id="SvgjsPath1313" d="M 26.637914094650203 190.56L 26.637914094650203 189.1070594Q 26.637914094650203 189.1070594 26.637914094650203 189.1070594L 42.10509002057613 189.1070594Q 42.10509002057613 189.1070594 42.10509002057613 189.1070594L 42.10509002057613 189.1070594L 42.10509002057613 190.56L 42.10509002057613 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 26.637914094650203 190.56L 26.637914094650203 189.1070594Q 26.637914094650203 189.1070594 26.637914094650203 189.1070594L 42.10509002057613 189.1070594Q 42.10509002057613 189.1070594 42.10509002057613 189.1070594L 42.10509002057613 189.1070594L 42.10509002057613 190.56L 42.10509002057613 190.56z" pathFrom="M 26.637914094650203 190.56L 26.637914094650203 190.56L 42.10509002057613 190.56L 42.10509002057613 190.56L 42.10509002057613 190.56L 42.10509002057613 190.56L 42.10509002057613 190.56L 26.637914094650203 190.56" cy="189.1070594" cx="42.10509002057613" j="2" val="18299" barHeight="1.4529405999999998" barWidth="15.467175925925924"></path><path id="SvgjsPath1315" d="M 61.00941615226336 190.56L 61.00941615226336 199.5473654Q 61.00941615226336 199.5473654 61.00941615226336 199.5473654L 76.47659207818928 199.5473654Q 76.47659207818928 199.5473654 76.47659207818928 199.5473654L 76.47659207818928 199.5473654L 76.47659207818928 190.56L 76.47659207818928 190.56z" fill="rgba(86,115,235,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 61.00941615226336 190.56L 61.00941615226336 199.5473654Q 61.00941615226336 199.5473654 61.00941615226336 199.5473654L 76.47659207818928 199.5473654Q 76.47659207818928 199.5473654 76.47659207818928 199.5473654L 76.47659207818928 199.5473654L 76.47659207818928 190.56L 76.47659207818928 190.56z" pathFrom="M 61.00941615226336 190.56L 61.00941615226336 190.56L 76.47659207818928 190.56L 76.47659207818928 190.56L 76.47659207818928 190.56L 76.47659207818928 190.56L 76.47659207818928 190.56L 61.00941615226336 190.56" cy="199.5473654" cx="76.47659207818928" j="3" val="-113191" barHeight="-8.9873654" barWidth="15.467175925925924"></path><path id="SvgjsPath1317" d="M 146.9381712962963 190.56L 146.9381712962963 190.5411028Q 146.9381712962963 190.5411028 146.9381712962963 190.5411028L 162.40534722222222 190.5411028Q 162.40534722222222 190.5411028 162.40534722222222 190.5411028L 162.40534722222222 190.5411028L 162.40534722222222 190.56L 162.40534722222222 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 146.9381712962963 190.56L 146.9381712962963 190.5411028Q 146.9381712962963 190.5411028 146.9381712962963 190.5411028L 162.40534722222222 190.5411028Q 162.40534722222222 190.5411028 162.40534722222222 190.5411028L 162.40534722222222 190.5411028L 162.40534722222222 190.56L 162.40534722222222 190.56z" pathFrom="M 146.9381712962963 190.56L 146.9381712962963 190.56L 162.40534722222222 190.56L 162.40534722222222 190.56L 162.40534722222222 190.56L 162.40534722222222 190.56L 162.40534722222222 190.56L 146.9381712962963 190.56" cy="190.5411028" cx="162.40534722222222" j="4" val="238" barHeight="0.0188972" barWidth="15.467175925925924"></path><path id="SvgjsPath1319" d="M 232.8669264403292 190.56L 232.8669264403292 160.8094552Q 232.8669264403292 160.8094552 232.8669264403292 160.8094552L 248.3341023662551 160.8094552Q 248.3341023662551 160.8094552 248.3341023662551 160.8094552L 248.3341023662551 160.8094552L 248.3341023662551 190.56L 248.3341023662551 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 232.8669264403292 190.56L 232.8669264403292 160.8094552Q 232.8669264403292 160.8094552 232.8669264403292 160.8094552L 248.3341023662551 160.8094552Q 248.3341023662551 160.8094552 248.3341023662551 160.8094552L 248.3341023662551 160.8094552L 248.3341023662551 190.56L 248.3341023662551 190.56z" pathFrom="M 232.8669264403292 190.56L 232.8669264403292 190.56L 248.3341023662551 190.56L 248.3341023662551 190.56L 248.3341023662551 190.56L 248.3341023662551 190.56L 248.3341023662551 190.56L 232.8669264403292 190.56" cy="160.8094552" cx="248.3341023662551" j="5" val="374692" barHeight="29.750544799999997" barWidth="15.467175925925924"></path><path id="SvgjsPath1321" d="M 284.4241795267489 190.56L 284.4241795267489 185.140553Q 284.4241795267489 185.140553 284.4241795267489 185.140553L 299.8913554526748 185.140553Q 299.8913554526748 185.140553 299.8913554526748 185.140553L 299.8913554526748 185.140553L 299.8913554526748 190.56L 299.8913554526748 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 284.4241795267489 190.56L 284.4241795267489 185.140553Q 284.4241795267489 185.140553 284.4241795267489 185.140553L 299.8913554526748 185.140553Q 299.8913554526748 185.140553 299.8913554526748 185.140553L 299.8913554526748 185.140553L 299.8913554526748 190.56L 299.8913554526748 190.56z" pathFrom="M 284.4241795267489 190.56L 284.4241795267489 190.56L 299.8913554526748 190.56L 299.8913554526748 190.56L 299.8913554526748 190.56L 299.8913554526748 190.56L 299.8913554526748 190.56L 284.4241795267489 190.56" cy="185.140553" cx="299.8913554526748" j="6" val="68255" barHeight="5.419447" barWidth="15.467175925925924"></path><path id="SvgjsPath1323" d="M 318.7956815843621 190.56L 318.7956815843621 160.092632Q 318.7956815843621 160.092632 318.7956815843621 160.092632L 334.26285751028803 160.092632Q 334.26285751028803 160.092632 334.26285751028803 160.092632L 334.26285751028803 160.092632L 334.26285751028803 190.56L 334.26285751028803 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 318.7956815843621 190.56L 318.7956815843621 160.092632Q 318.7956815843621 160.092632 318.7956815843621 160.092632L 334.26285751028803 160.092632Q 334.26285751028803 160.092632 334.26285751028803 160.092632L 334.26285751028803 160.092632L 334.26285751028803 190.56L 334.26285751028803 190.56z" pathFrom="M 318.7956815843621 190.56L 318.7956815843621 190.56L 334.26285751028803 190.56L 334.26285751028803 190.56L 334.26285751028803 190.56L 334.26285751028803 190.56L 334.26285751028803 190.56L 318.7956815843621 190.56" cy="160.092632" cx="334.26285751028803" j="7" val="383720" barHeight="30.467367999999997" barWidth="15.467175925925924"></path><path id="SvgjsPath1325" d="M 404.724436728395 190.56L 404.724436728395 183.4070128Q 404.724436728395 183.4070128 404.724436728395 183.4070128L 420.1916126543209 183.4070128Q 420.1916126543209 183.4070128 420.1916126543209 183.4070128L 420.1916126543209 183.4070128L 420.1916126543209 190.56L 420.1916126543209 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 404.724436728395 190.56L 404.724436728395 183.4070128Q 404.724436728395 183.4070128 404.724436728395 183.4070128L 420.1916126543209 183.4070128Q 420.1916126543209 183.4070128 420.1916126543209 183.4070128L 420.1916126543209 183.4070128L 420.1916126543209 190.56L 420.1916126543209 190.56z" pathFrom="M 404.724436728395 190.56L 404.724436728395 190.56L 420.1916126543209 190.56L 420.1916126543209 190.56L 420.1916126543209 190.56L 420.1916126543209 190.56L 420.1916126543209 190.56L 404.724436728395 190.56" cy="183.4070128" cx="420.1916126543209" j="8" val="90088" barHeight="7.152987199999999" barWidth="15.467175925925924"></path><path id="SvgjsPath1327" d="M 421.9101877572016 190.56L 421.9101877572016 188.06906320000002Q 421.9101877572016 188.06906320000002 421.9101877572016 188.06906320000002L 437.3773636831275 188.06906320000002Q 437.3773636831275 188.06906320000002 437.3773636831275 188.06906320000002L 437.3773636831275 188.06906320000002L 437.3773636831275 190.56L 437.3773636831275 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 421.9101877572016 190.56L 421.9101877572016 188.06906320000002Q 421.9101877572016 188.06906320000002 421.9101877572016 188.06906320000002L 437.3773636831275 188.06906320000002Q 437.3773636831275 188.06906320000002 437.3773636831275 188.06906320000002L 437.3773636831275 188.06906320000002L 437.3773636831275 190.56L 437.3773636831275 190.56z" pathFrom="M 421.9101877572016 190.56L 421.9101877572016 190.56L 437.3773636831275 190.56L 437.3773636831275 190.56L 437.3773636831275 190.56L 437.3773636831275 190.56L 437.3773636831275 190.56L 421.9101877572016 190.56" cy="188.06906320000002" cx="437.3773636831275" j="9" val="31372" barHeight="2.4909368" barWidth="15.467175925925924"></path><path id="SvgjsPath1329" d="M 439.09593878600816 190.56L 439.09593878600816 4.676739400000002Q 439.09593878600816 4.676739400000002 439.09593878600816 4.676739400000002L 454.5631147119341 4.676739400000002Q 454.5631147119341 4.676739400000002 454.5631147119341 4.676739400000002L 454.5631147119341 4.676739400000002L 454.5631147119341 190.56L 454.5631147119341 190.56z" fill="rgba(235,83,116,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 439.09593878600816 190.56L 439.09593878600816 4.676739400000002Q 439.09593878600816 4.676739400000002 439.09593878600816 4.676739400000002L 454.5631147119341 4.676739400000002Q 454.5631147119341 4.676739400000002 454.5631147119341 4.676739400000002L 454.5631147119341 4.676739400000002L 454.5631147119341 190.56L 454.5631147119341 190.56z" pathFrom="M 439.09593878600816 190.56L 439.09593878600816 190.56L 454.5631147119341 190.56L 454.5631147119341 190.56L 454.5631147119341 190.56L 454.5631147119341 190.56L 454.5631147119341 190.56L 439.09593878600816 190.56" cy="4.676739400000002" cx="454.5631147119341" j="10" val="2341099" barHeight="185.8832606" barWidth="15.467175925925924"></path><path id="SvgjsPath1331" d="M 456.28168981481474 190.56L 456.28168981481474 195.7772152Q 456.28168981481474 195.7772152 456.28168981481474 195.7772152L 471.74886574074065 195.7772152Q 471.74886574074065 195.7772152 471.74886574074065 195.7772152L 471.74886574074065 195.7772152L 471.74886574074065 190.56L 471.74886574074065 190.56z" fill="rgba(86,115,235,0.85)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskfo8lxgmq)" pathTo="M 456.28168981481474 190.56L 456.28168981481474 195.7772152Q 456.28168981481474 195.7772152 456.28168981481474 195.7772152L 471.74886574074065 195.7772152Q 471.74886574074065 195.7772152 471.74886574074065 195.7772152L 471.74886574074065 195.7772152L 471.74886574074065 190.56L 471.74886574074065 190.56z" pathFrom="M 456.28168981481474 190.56L 456.28168981481474 190.56L 471.74886574074065 190.56L 471.74886574074065 190.56L 471.74886574074065 190.56L 471.74886574074065 190.56L 471.74886574074065 190.56L 456.28168981481474 190.56" cy="195.7772152" cx="471.74886574074065" j="11" val="-65708" barHeight="-5.2172152" barWidth="15.467175925925924"></path><g id="SvgjsG1307" class="apexcharts-bar-goals-markers" style="pointer-events: none"><g id="SvgjsG1308" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1310" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1312" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1314" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1316" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1318" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1320" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1322" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1324" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1326" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1328" className="apexcharts-bar-goals-groups"></g><g id="SvgjsG1330" className="apexcharts-bar-goals-groups"></g></g></g><g id="SvgjsG1306" class="apexcharts-datalabels" data:realIndex="0"></g></g><line id="SvgjsLine1380" x1="-16.02361111111111" y1="0" x2="480.0388888888889" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1381" x1="-16.02361111111111" y1="0" x2="480.0388888888889" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1382" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1383" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1384" class="apexcharts-point-annotations"></g><rect id="SvgjsRect1385" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe" class="apexcharts-zoom-rect"></rect><rect id="SvgjsRect1386" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe" class="apexcharts-selection-rect"></rect></g><rect id="SvgjsRect1271" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect><g id="SvgjsG1355" class="apexcharts-yaxis" rel="0" transform="translate(45.9375, 0)"><g id="SvgjsG1356" class="apexcharts-yaxis-texts-g"><text id="SvgjsText1357" font-family="Helvetica, Arial, sans-serif" x="20" y="31.5" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1358">2,400,000</tspan><title>2,400,000</title></text><text id="SvgjsText1359" font-family="Helvetica, Arial, sans-serif" x="20" y="79.14" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1360">1,800,000</tspan><title>1,800,000</title></text><text id="SvgjsText1361" font-family="Helvetica, Arial, sans-serif" x="20" y="126.78" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1362">1,200,000</tspan><title>1,200,000</title></text><text id="SvgjsText1363" font-family="Helvetica, Arial, sans-serif" x="20" y="174.42000000000002" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1364">600,000</tspan><title>600,000</title></text><text id="SvgjsText1365" font-family="Helvetica, Arial, sans-serif" x="20" y="222.06" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1366">0</tspan><title>0</title></text><text id="SvgjsText1367" font-family="Helvetica, Arial, sans-serif" x="20" y="269.7" text-anchor="end" dominant-baseline="auto" font-size="11px" font-weight="400" fill="#f6f7f8" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Helvetica, Arial, sans-serif;"><tspan id="SvgjsTspan1368">-600,000</tspan><title>-600,000</title></text></g></g><g id="SvgjsG1263" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend" style="max-height: 150px;"></div><div class="apexcharts-tooltip apexcharts-theme-dark"><div class="apexcharts-tooltip-title" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"></div><div class="apexcharts-tooltip-series-group" style="order: 1;"><span class="apexcharts-tooltip-marker" style="background-color: rgb(235, 83, 116);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-dark"><div class="apexcharts-yaxistooltip-text"></div></div><div class="apexcharts-toolbar" style="top: 0px; right: 3px;"><div class="apexcharts-zoomin-icon" title="Zoom In"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-</svg>
-</div><div class="apexcharts-zoomout-icon" title="Zoom Out"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-</svg>
-</div><div class="apexcharts-zoom-icon apexcharts-selected" title="Selection Zoom"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-    <path d="M0 0h24v24H0V0z" fill="none"></path>
-    <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"></path>
-</svg></div><div class="apexcharts-pan-icon" title="Panning"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-    <defs>
-        <path d="M0 0h24v24H0z" id="a"></path>
-    </defs>
-    <clipPath id="b">
-        <use overflow="visible" xlink:href="#a"></use>
-    </clipPath>
-    <path clip-path="url(#b)" d="M23 5.5V20c0 2.2-1.8 4-4 4h-7.3c-1.08 0-2.1-.43-2.85-1.19L1 14.83s1.26-1.23 1.3-1.25c.22-.19.49-.29.79-.29.22 0 .42.06.6.16.04.01 4.31 2.46 4.31 2.46V4c0-.83.67-1.5 1.5-1.5S11 3.17 11 4v7h1V1.5c0-.83.67-1.5 1.5-1.5S15 .67 15 1.5V11h1V2.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V11h1V5.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5z"></path>
-</svg></div><div class="apexcharts-reset-icon" title="Reset Zoom"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
-    <path d="M0 0h24v24H0z" fill="none"></path>
-</svg></div><div class="apexcharts-menu-icon" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></div><div class="apexcharts-menu"><div class="apexcharts-menu-item exportSVG" title="Download SVG">Download SVG</div><div class="apexcharts-menu-item exportPNG" title="Download PNG">Download PNG</div><div class="apexcharts-menu-item exportCSV" title="Download CSV">Download CSV</div></div></div></div></div>
-        </div>
-        
-        <div class="floatingMainDiv">
-            <div class="floatingMenuDiv">
-                <svg width="20px" height="20px" viewBox="0 0 17 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g id="Rounded" transform="translate(-885.000000, -200.000000)">
-                            <g id="Action" transform="translate(100.000000, 100.000000)">
-                                <g id="-Round-/-Action-/-contact_support" transform="translate(782.000000, 98.000000)">
-                                    <g transform="translate(0.000000, 0.000000)">
-                                        <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
-                                        <path d="M11.5,2 C6.81,2 3,5.81 3,10.5 C3,15.19 6.81,19 11.5,19 L12,19 L12,22 C16.86,19.66 20,15 20,10.5 C20,5.81 16.19,2 11.5,2 Z M12.5,16.5 L10.5,16.5 L10.5,14.5 L12.5,14.5 L12.5,16.5 Z M12.9,11.72 C12.89,11.73 12.88,11.75 12.87,11.77 C12.82,11.85 12.77,11.93 12.73,12.01 C12.71,12.04 12.7,12.08 12.69,12.12 C12.66,12.19 12.63,12.26 12.61,12.33 C12.54,12.54 12.51,12.76 12.51,13.01 L10.5,13.01 C10.5,12.5 10.58,12.07 10.7,11.71 C10.7,11.7 10.7,11.69 10.71,11.68 C10.72,11.64 10.75,11.62 10.76,11.58 C10.82,11.42 10.89,11.28 10.98,11.14 C11.01,11.09 11.05,11.04 11.08,10.99 C11.11,10.95 11.13,10.9 11.16,10.87 L11.17,10.88 C12.01,9.78 13.38,9.44 13.49,8.2 C13.58,7.22 12.88,6.27 11.92,6.07 C10.88,5.85 9.94,6.46 9.62,7.35 C9.48,7.71 9.15,8 8.74,8 L8.54,8 C7.94,8 7.5,7.41 7.67,6.83 C8.22,5.01 10.04,3.74 12.1,4.04 C13.79,4.29 15.14,5.68 15.43,7.37 C15.87,9.81 13.8,10.4 12.9,11.72 Z" id="🔹Icon-Color" fill="#FFFFFF88"></path>
-                                    </g>
-                                </g>
+</style>
+<div class="floatingMainDiv">
+    <div class="floatingMenuDiv">
+        <svg width="20px" height="20px" viewBox="0 0 17 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Rounded" transform="translate(-885.000000, -200.000000)">
+                    <g id="Action" transform="translate(100.000000, 100.000000)">
+                        <g id="-Round-/-Action-/-contact_support" transform="translate(782.000000, 98.000000)">
+                            <g transform="translate(0.000000, 0.000000)">
+                                <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
+                                <path
+                                    d="M11.5,2 C6.81,2 3,5.81 3,10.5 C3,15.19 6.81,19 11.5,19 L12,19 L12,22 C16.86,19.66 20,15 20,10.5 C20,5.81 16.19,2 11.5,2 Z M12.5,16.5 L10.5,16.5 L10.5,14.5 L12.5,14.5 L12.5,16.5 Z M12.9,11.72 C12.89,11.73 12.88,11.75 12.87,11.77 C12.82,11.85 12.77,11.93 12.73,12.01 C12.71,12.04 12.7,12.08 12.69,12.12 C12.66,12.19 12.63,12.26 12.61,12.33 C12.54,12.54 12.51,12.76 12.51,13.01 L10.5,13.01 C10.5,12.5 10.58,12.07 10.7,11.71 C10.7,11.7 10.7,11.69 10.71,11.68 C10.72,11.64 10.75,11.62 10.76,11.58 C10.82,11.42 10.89,11.28 10.98,11.14 C11.01,11.09 11.05,11.04 11.08,10.99 C11.11,10.95 11.13,10.9 11.16,10.87 L11.17,10.88 C12.01,9.78 13.38,9.44 13.49,8.2 C13.58,7.22 12.88,6.27 11.92,6.07 C10.88,5.85 9.94,6.46 9.62,7.35 C9.48,7.71 9.15,8 8.74,8 L8.54,8 C7.94,8 7.5,7.41 7.67,6.83 C8.22,5.01 10.04,3.74 12.1,4.04 C13.79,4.29 15.14,5.68 15.43,7.37 C15.87,9.81 13.8,10.4 12.9,11.72 Z"
+                                    id="🔹Icon-Color" fill="#FFFFFF88"></path>
                             </g>
                         </g>
                     </g>
-                </svg>
-                <span class="floatingMenuSpan">
-                    문의하기
-                </span>
-            </div>
-            <div class="floatingLineDiv">
-            </div>
-            <div class="floatingMenuDiv floatingMenuDivInactive" style="cursor:auto;">
-                <svg width="20px" height="20px" viewBox="0 0 24 24">
-                    <path id="🔹Icon-Color" fill="#FFFFFF88" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path>
-                </svg>
-                <span class="floatingMenuSpan" "="">
-                    공유하기
-                </span>
-            </div>
-            <div style="display:flex;justify-content:space-around;padding:16px;padding-top:0px;">
-                <a href="javascript:sendLink()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 48 48" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M24 0C10.7452 0 0 10.7452 0 24C0 37.2548 10.7452 48 24 48C37.2548 48 48 37.2548 48 24C48 10.7452 37.2548 0 24 0ZM8 23.6154C8 16.6482 15.1634 11 24 11C32.8366 11 40 16.6482 40 23.6154C40 30.5828 32.8366 36.2308 24 36.2308C23.0302 36.2308 22.0805 36.1629 21.1582 36.0323C20.2349 36.6829 14.9009 40.4297 14.3975 40.5C14.3975 40.5 14.1911 40.5803 14.0155 40.4769C13.84 40.3735 13.8718 40.1025 13.8718 40.1025C13.9248 39.7417 15.2546 35.1494 15.4997 34.3042C10.9948 32.0723 8 28.1198 8 23.6154Z" fill="#ffffff88"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.1538 28.0193C14.6447 28.0193 14.2307 27.6239 14.2307 27.1377V21.6539H12.7904C12.2908 21.6539 11.8845 21.2483 11.8845 20.75C11.8845 20.2517 12.291 19.8462 12.7904 19.8462H17.5171C18.0167 19.8462 18.423 20.2517 18.423 20.75C18.423 21.2483 18.0165 21.6539 17.5171 21.6539H16.0768V27.1377C16.0768 27.6239 15.6628 28.0193 15.1538 28.0193ZM23.2479 28.0073C22.863 28.0073 22.5685 27.851 22.4798 27.5996L22.0227 26.403L19.2079 26.4028L18.7505 27.6002C18.6621 27.8511 18.3678 28.0073 17.9828 28.0073C17.7804 28.0075 17.5802 27.964 17.3961 27.8799C17.1416 27.7625 16.897 27.4397 17.1773 26.5691L19.3853 20.7574C19.5408 20.3154 20.0133 19.86 20.6145 19.8463C21.2174 19.8599 21.6899 20.3154 21.8458 20.7583L24.0528 26.5674C24.3337 27.44 24.0891 27.763 23.8347 27.88C23.6505 27.964 23.4504 28.0074 23.2479 28.0073ZM21.5373 24.7679L20.6153 22.1487L19.6933 24.7679H21.5373ZM25.5384 27.8847C25.0505 27.8847 24.6538 27.505 24.6538 27.0385V20.7693C24.6538 20.2602 25.0765 19.8462 25.5961 19.8462C26.1156 19.8462 26.5384 20.2602 26.5384 20.7693V26.1923H28.4999C28.9877 26.1923 29.3845 26.572 29.3845 27.0385C29.3845 27.505 28.9877 27.8847 28.4999 27.8847H25.5384ZM30.6667 28.0073C30.1576 28.0073 29.7436 27.5933 29.7436 27.0842V20.7693C29.7436 20.2602 30.1576 19.8462 30.6667 19.8462C31.1757 19.8462 31.5897 20.2602 31.5897 20.7693V22.7533L34.1651 20.1779C34.2976 20.0454 34.4796 19.9725 34.6771 19.9725C34.9076 19.9725 35.139 20.0719 35.3124 20.2451C35.4741 20.4067 35.5705 20.6145 35.5837 20.8303C35.5971 21.048 35.5247 21.2476 35.3801 21.3923L33.2765 23.4956L35.5487 26.5057C35.622 26.6023 35.6755 26.7125 35.7059 26.8299C35.7363 26.9473 35.7431 27.0695 35.7259 27.1896C35.7094 27.3097 35.6693 27.4254 35.6078 27.5299C35.5464 27.6344 35.4648 27.7256 35.3678 27.7983C35.2081 27.9197 35.013 27.9851 34.8125 27.9847C34.6695 27.9853 34.5283 27.9525 34.4003 27.8888C34.2722 27.825 34.1609 27.7322 34.0751 27.6177L31.9104 24.7494L31.5901 25.0697V27.0837C31.5898 27.3286 31.4924 27.5633 31.3193 27.7364C31.1462 27.9095 30.9115 28.0069 30.6667 28.0073Z" fill="#ffffff88"></path>
-                    </svg>
-                </a>
-                <a href="https://telegram.me/share/url?url=&amp;text=업비트 수익률 계산기" target="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 48 48" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24ZM16.0715 21.8015C13.6673 22.8512 11.1971 23.9298 8.93825 25.174C7.75877 26.0376 9.32638 26.6485 10.7971 27.2215C11.0309 27.3126 11.2622 27.4027 11.4797 27.4927C11.6607 27.5484 11.8447 27.607 12.0312 27.6664C13.6669 28.1875 15.4907 28.7686 17.0787 27.8945C19.6873 26.396 22.149 24.6636 24.6089 22.9325C25.4148 22.3653 26.2205 21.7983 27.0311 21.2397C27.0691 21.2154 27.1119 21.1876 27.1588 21.1573C27.8493 20.7096 29.4024 19.7029 28.8279 21.0901C27.4695 22.5757 26.0144 23.8907 24.5515 25.213C23.5655 26.1041 22.5759 26.9985 21.6099 27.9505C20.7686 28.6341 19.8949 30.0088 20.837 30.9661C23.0069 32.4851 25.2107 33.9673 27.4132 35.4487C28.1299 35.9307 28.8466 36.4127 29.5618 36.8959C30.774 37.8637 32.6685 37.0808 32.935 35.5685C33.0535 34.8728 33.1725 34.1772 33.2915 33.4815C33.9491 29.6368 34.6069 25.7907 35.188 21.9335C35.267 21.3284 35.3565 20.7234 35.4461 20.1181C35.6632 18.651 35.8806 17.1821 35.9485 15.7071C35.7735 14.2351 33.9887 14.5588 32.9955 14.8898C27.8903 16.8324 22.8361 18.919 17.8019 21.0424C17.2316 21.295 16.6535 21.5474 16.0715 21.8015Z" fill="#ffffff88"></path>
-                    </svg>
-                </a>
-                <a href="javascript:sendLink()">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40px" height="40px" version="1.1" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve" fill="#ffffff88">
-                        <g>
-                            <path d="M500,10C229.4,10,10,229.4,10,500s219.4,490,490,490c270.6,0,490-219.4,490-490C990,229.4,770.6,10,500,10z M435.3,743.6c-49.3,49.3-129.6,49.3-179,0c-49.3-49.3-49.3-129.6,0-178.9l126.8-126.8c49.3-49.3,129.6-49.3,179,0c1.3,1.3,2.6,2.7,3.9,4.1c0.7,0.6,1.5,1.3,2.1,1.9c2,2,3.6,4.2,5,6.5c0.2,0.2,0.3,0.4,0.5,0.6c0,0-0.1,0.1-0.1,0.1c6.1,11.5,4.3,26-5.4,35.6c-9.7,9.7-24.4,11.5-35.9,5.2c-0.8,0.8-8.7-7.1-13-11.3l0,0c-25.8-25.8-67.3-26-93.1-0.2l-127,127c-25.8,25.8-25.8,67.5,0,93.3l0,0c25.8,25.8,67.5,25.8,93.3,0l76.4-76.4c26.5,13,57.7,13.4,84.5,1.1L435.3,743.6z M743.6,435.3L616.9,562.1c-49.3,49.3-129.6,49.3-179,0c-1.3-1.3-2.6-2.7-3.9-4.1c-0.7-0.6-1.5-1.3-2.1-1.9c-2-2-3.6-4.2-5-6.5c-0.2-0.2-0.3-0.4-0.5-0.6c0,0,0.1-0.1,0.1-0.1c-6.1-11.5-4.3-26,5.4-35.6c9.7-9.7,24.4-11.5,35.9-5.2c0.8-0.8,8.7,7.1,13,11.3l0,0c25.8,25.8,67.3,26,93.1,0.2l127-127c25.8-25.8,25.8-67.5,0-93.3l0,0c-25.8-25.8-67.5-25.8-93.3,0L531,375.6c-26.4-12.9-57.7-13.4-84.5-1.1l118.1-118.1c49.3-49.3,129.6-49.3,179,0C793,305.7,793,386,743.6,435.3z"></path>
-                        </g>
-                    </svg>
-                </a>
-            </div>
-        </div>
+                </g>
+            </g>
+        </svg>
+        <span class="floatingMenuSpan">
+            문의하기
+        </span>
     </div>
+    <div class="floatingLineDiv">
+    </div>
+    <div class="floatingMenuDiv floatingMenuDivInactive" style="cursor:auto;">
+        <svg width="20px" height="20px" viewBox="0 0 24 24">
+            <path id="🔹Icon-Color" fill="#FFFFFF88" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+        </svg>
+        <span class="floatingMenuSpan"">
+            공유하기
+        </span>
+    </div>
+    <div style="display:flex;justify-content:space-around;padding:16px;padding-top:0px;">
+        <a href="javascript:sendLink()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 48 48" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M24 0C10.7452 0 0 10.7452 0 24C0 37.2548 10.7452 48 24 48C37.2548 48 48 37.2548 48 24C48 10.7452 37.2548 0 24 0ZM8 23.6154C8 16.6482 15.1634 11 24 11C32.8366 11 40 16.6482 40 23.6154C40 30.5828 32.8366 36.2308 24 36.2308C23.0302 36.2308 22.0805 36.1629 21.1582 36.0323C20.2349 36.6829 14.9009 40.4297 14.3975 40.5C14.3975 40.5 14.1911 40.5803 14.0155 40.4769C13.84 40.3735 13.8718 40.1025 13.8718 40.1025C13.9248 39.7417 15.2546 35.1494 15.4997 34.3042C10.9948 32.0723 8 28.1198 8 23.6154Z"
+                fill="#ffffff88"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.1538 28.0193C14.6447 28.0193 14.2307 27.6239 14.2307 27.1377V21.6539H12.7904C12.2908 21.6539 11.8845 21.2483 11.8845 20.75C11.8845 20.2517 12.291 19.8462 12.7904 19.8462H17.5171C18.0167 19.8462 18.423 20.2517 18.423 20.75C18.423 21.2483 18.0165 21.6539 17.5171 21.6539H16.0768V27.1377C16.0768 27.6239 15.6628 28.0193 15.1538 28.0193ZM23.2479 28.0073C22.863 28.0073 22.5685 27.851 22.4798 27.5996L22.0227 26.403L19.2079 26.4028L18.7505 27.6002C18.6621 27.8511 18.3678 28.0073 17.9828 28.0073C17.7804 28.0075 17.5802 27.964 17.3961 27.8799C17.1416 27.7625 16.897 27.4397 17.1773 26.5691L19.3853 20.7574C19.5408 20.3154 20.0133 19.86 20.6145 19.8463C21.2174 19.8599 21.6899 20.3154 21.8458 20.7583L24.0528 26.5674C24.3337 27.44 24.0891 27.763 23.8347 27.88C23.6505 27.964 23.4504 28.0074 23.2479 28.0073ZM21.5373 24.7679L20.6153 22.1487L19.6933 24.7679H21.5373ZM25.5384 27.8847C25.0505 27.8847 24.6538 27.505 24.6538 27.0385V20.7693C24.6538 20.2602 25.0765 19.8462 25.5961 19.8462C26.1156 19.8462 26.5384 20.2602 26.5384 20.7693V26.1923H28.4999C28.9877 26.1923 29.3845 26.572 29.3845 27.0385C29.3845 27.505 28.9877 27.8847 28.4999 27.8847H25.5384ZM30.6667 28.0073C30.1576 28.0073 29.7436 27.5933 29.7436 27.0842V20.7693C29.7436 20.2602 30.1576 19.8462 30.6667 19.8462C31.1757 19.8462 31.5897 20.2602 31.5897 20.7693V22.7533L34.1651 20.1779C34.2976 20.0454 34.4796 19.9725 34.6771 19.9725C34.9076 19.9725 35.139 20.0719 35.3124 20.2451C35.4741 20.4067 35.5705 20.6145 35.5837 20.8303C35.5971 21.048 35.5247 21.2476 35.3801 21.3923L33.2765 23.4956L35.5487 26.5057C35.622 26.6023 35.6755 26.7125 35.7059 26.8299C35.7363 26.9473 35.7431 27.0695 35.7259 27.1896C35.7094 27.3097 35.6693 27.4254 35.6078 27.5299C35.5464 27.6344 35.4648 27.7256 35.3678 27.7983C35.2081 27.9197 35.013 27.9851 34.8125 27.9847C34.6695 27.9853 34.5283 27.9525 34.4003 27.8888C34.2722 27.825 34.1609 27.7322 34.0751 27.6177L31.9104 24.7494L31.5901 25.0697V27.0837C31.5898 27.3286 31.4924 27.5633 31.3193 27.7364C31.1462 27.9095 30.9115 28.0069 30.6667 28.0073Z"
+                fill="#ffffff88"/>
+            </svg>
+        </a>
+        <a href="https://telegram.me/share/url?url=&text=업비트 수익률 계산기" target="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 48 48" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24ZM16.0715 21.8015C13.6673 22.8512 11.1971 23.9298 8.93825 25.174C7.75877 26.0376 9.32638 26.6485 10.7971 27.2215C11.0309 27.3126 11.2622 27.4027 11.4797 27.4927C11.6607 27.5484 11.8447 27.607 12.0312 27.6664C13.6669 28.1875 15.4907 28.7686 17.0787 27.8945C19.6873 26.396 22.149 24.6636 24.6089 22.9325C25.4148 22.3653 26.2205 21.7983 27.0311 21.2397C27.0691 21.2154 27.1119 21.1876 27.1588 21.1573C27.8493 20.7096 29.4024 19.7029 28.8279 21.0901C27.4695 22.5757 26.0144 23.8907 24.5515 25.213C23.5655 26.1041 22.5759 26.9985 21.6099 27.9505C20.7686 28.6341 19.8949 30.0088 20.837 30.9661C23.0069 32.4851 25.2107 33.9673 27.4132 35.4487C28.1299 35.9307 28.8466 36.4127 29.5618 36.8959C30.774 37.8637 32.6685 37.0808 32.935 35.5685C33.0535 34.8728 33.1725 34.1772 33.2915 33.4815C33.9491 29.6368 34.6069 25.7907 35.188 21.9335C35.267 21.3284 35.3565 20.7234 35.4461 20.1181C35.6632 18.651 35.8806 17.1821 35.9485 15.7071C35.7735 14.2351 33.9887 14.5588 32.9955 14.8898C27.8903 16.8324 22.8361 18.919 17.8019 21.0424C17.2316 21.295 16.6535 21.5474 16.0715 21.8015Z"
+                fill="#ffffff88"/>
+            </svg>
+        </a>
+        <a href="javascript:sendLink()">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40px" height="40px" version="1.1" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve" fill="#ffffff88">
+                <g>
+                    <path d="M500,10C229.4,10,10,229.4,10,500s219.4,490,490,490c270.6,0,490-219.4,490-490C990,229.4,770.6,10,500,10z M435.3,743.6c-49.3,49.3-129.6,49.3-179,0c-49.3-49.3-49.3-129.6,0-178.9l126.8-126.8c49.3-49.3,129.6-49.3,179,0c1.3,1.3,2.6,2.7,3.9,4.1c0.7,0.6,1.5,1.3,2.1,1.9c2,2,3.6,4.2,5,6.5c0.2,0.2,0.3,0.4,0.5,0.6c0,0-0.1,0.1-0.1,0.1c6.1,11.5,4.3,26-5.4,35.6c-9.7,9.7-24.4,11.5-35.9,5.2c-0.8,0.8-8.7-7.1-13-11.3l0,0c-25.8-25.8-67.3-26-93.1-0.2l-127,127c-25.8,25.8-25.8,67.5,0,93.3l0,0c25.8,25.8,67.5,25.8,93.3,0l76.4-76.4c26.5,13,57.7,13.4,84.5,1.1L435.3,743.6z M743.6,435.3L616.9,562.1c-49.3,49.3-129.6,49.3-179,0c-1.3-1.3-2.6-2.7-3.9-4.1c-0.7-0.6-1.5-1.3-2.1-1.9c-2-2-3.6-4.2-5-6.5c-0.2-0.2-0.3-0.4-0.5-0.6c0,0,0.1-0.1,0.1-0.1c-6.1-11.5-4.3-26,5.4-35.6c9.7-9.7,24.4-11.5,35.9-5.2c0.8-0.8,8.7,7.1,13,11.3l0,0c25.8,25.8,67.3,26,93.1,0.2l127-127c25.8-25.8,25.8-67.5,0-93.3l0,0c-25.8-25.8-67.5-25.8-93.3,0L531,375.6c-26.4-12.9-57.7-13.4-84.5-1.1l118.1-118.1c49.3-49.3,129.6-49.3,179,0C793,305.7,793,386,743.6,435.3z"/>
+                </g>
+            </svg>
+        </a>
+    </div>
+</div>
+</div>
+</body>
 
-
-<svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1002"></defs><polyline id="SvgjsPolyline1003" points="0,0"></polyline><path id="SvgjsPath1004" d="M0 0 "></path></svg></body></html>
+</html>
