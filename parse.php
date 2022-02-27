@@ -285,6 +285,7 @@
     $result["withdraw"] = $withdraw;
     $result["profitCoinly"] = $profitCoinly;
     $result["profitTimely"] = $profitTimely;
+    $result["TEST"] = $dataTransfer;
 
     sleep(2);
     echo(json_encode($result));

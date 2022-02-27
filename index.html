@@ -148,7 +148,7 @@
                 }
 
                 document.getElementById('dataTransaction').value = JSON.stringify(dataTransfer);
-                openModal("해당 정보의 수익을 확인합니다.<br><br>기간: " + firstDate + " ~ " + lastDate + "<br>총 거래수: " + addComma(dataTransfer.length) + "건");
+                openModal("아래 기간동안의 수익을 확인하시는게 맞나요?<br><br>" + firstDate + " ~ " + lastDate);
                 return true;
             };
         }
