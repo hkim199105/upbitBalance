@@ -77,7 +77,7 @@
     }
 
     # parse data: Transfer
-    $dataTransfer = json_encode($rawDataTransfer);
+    $dataTransfer = json_decode($rawDataTransfer);
 
 
     # parse data: Balance
