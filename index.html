@@ -223,10 +223,10 @@
                 style="min-width:500px;max-width:1000px;width:100%;display:flex;margin-bottom:32px;margin-top:32px;">
                 <div id="title_div">
                     <form id="frmTransaction" action="./result.php" method="post" style="width:100%;">
-                        <input type="hidden" id="dataTransaction"/>
+                        <input type="hidden" id="dataTransaction" name="transaction"/>
                         <div class="input-name">
                             <input type="textarea" id="edtTransaction" style=""
-                                placeholder="업비트의 거래내역을 여기에 붙여넣기 하세요." name="transaction" autocomplete="off" autofocus="on" readonly="on"/>
+                                placeholder="업비트의 거래내역을 여기에 붙여넣기 하세요." autocomplete="off" autofocus="on" readonly="on"/>
                             <span id="underlineTransaction"></span>
                         </div>
                         <span id="errorTransaction" style="display:none;color:#EB5374"></span>
